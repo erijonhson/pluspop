@@ -1,0 +1,41 @@
+#################
+# Caso de Uso 2 #
+#################
+iniciaSistema
+
+login email="fatima@email.com.br" senha="will_S2"
+expect "Fatima Bernardes" getInfoUsuario atributo="Nome"
+expect "resources/fatima.jpg" getInfoUsuario atributo="Foto"
+expectError "A senha dx usuarix eh protegida." getInfoUsuario atributo="Senha"
+
+atualizaPerfil atributo="Nome" valor="Fatima Bernardes Bonner"
+atualizaPerfil atributo="Foto" valor="resources/fofinho.jpg"
+atualizaPerfil atributo="E-mail" valor="fafa_bernardes@email.com.br"
+atualizaPerfil atributo="Data de Nascimento" valor="17/09/1972"
+atualizaPerfil atributo="Senha" valor="fafa_S2" velhaSenha="will_S2"
+
+expect "Fatima Bernardes Bonner" getInfoUsuario atributo="Nome"
+expect "resources/fofinho.jpg" getInfoUsuario atributo="Foto"
+expect "1972-09-17" getInfoUsuario atributo="Data de Nascimento"
+
+#Casos para tratamento de erros.
+expectError "Erro na atualizacao de perfil. Nome dx usuarix nao pode ser vazio." atualizaPerfil atributo="Nome" valor=""
+expectError "Erro na atualizacao de perfil. Formato de e-mail esta invalido." atualizaPerfil atributo="E-mail" valor="algumemailatemail.com"
+expectError "Erro na atualizacao de perfil. Formato de data esta invalida." atualizaPerfil atributo="Data de Nascimento" valor="01/04/199s"
+expectError "Erro na atualizacao de perfil. Data nao existe." atualizaPerfil atributo="Data de Nascimento" valor="29/02/2001"
+expectError "Erro na atualizacao de perfil. A senha fornecida esta incorreta." atributo="Senha" valor="fafa123" velhaSenha="will_S2"
+
+logout
+
+expectError "Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="Nome" valor=""
+expectError "Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="E-mail" valor="algumemailatemail.com"
+
+expectError "Nao foi possivel realizar login. Senha invalida." login email="fafa_bernardes@email.com.br" senha="will_S2"
+login email="fafa_bernardes@email.com.br" senha="fafa_S2"
+
+expect "Fatima Bernardes Bonner" getInfoUsuario atributo="Nome"
+expect "resources/fofinho.jpg" getInfoUsuario atributo="Foto"
+expect "1972-09-17" getInfoUsuario atributo="Data de Nascimento"
+
+logout
+fechaSistema

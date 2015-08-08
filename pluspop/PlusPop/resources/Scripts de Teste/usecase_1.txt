@@ -1,0 +1,68 @@
+#################
+# Caso de Uso 2 #
+#################
+
+#iniciaSistema e fechaSistema serao usados para carregar/armazenar os dados do sistema nos arquivos de dados.
+iniciaSistema
+
+######################
+#Cadastro de Usuarios#
+######################
+id1=cadastraUsuario nome="Fatima Bernardes" email="fatima@email.com.br" senha="will_S2" dataNasc="17/09/1962" imagem="resources/fatima.jpg"
+id2=cadastraUsuario nome="Madonna" email="madonna@email.com" senha="iamawesome" dataNasc="16/08/1958" imagem="resources/madonna.jpg"
+id3=cadastraUsuario nome="Jo Soares" email="jo@uol.com.br" senha="!soares!" dataNasc="16/01/1938" 
+
+expectError "Erro no cadastro de Usuarios. Nome dx usuarix nao pode ser vazio." cadastraUsuario nome="" email="alguem@email.com.br" senha="senha_besta" dataNasc="10/10/2010"
+expectError "Erro no cadastro de Usuarios. Nome dx usuarix nao pode ser vazio."  cadastraUsuario nome="  " email="alguem@email.com.br" senha="senha_besta" dataNasc="10/10/2010"
+expectError "Erro no cadastro de Usuarios. Formato de e-mail esta invalido."  cadastraUsuario nome="Fulaninho" email="alguem@email" senha="senha_besta" dataNasc="10/10/2010"
+expectError "Erro no cadastro de Usuarios. Formato de data esta invalida."  cadastraUsuario nome="Fulaninho" email="alguem@email.com" senha="senha_besta" dataNasc="1510/10/2010"
+expectError "Erro no cadastro de Usuarios. Data nao existe."  cadastraUsuario nome="Fulaninho" email="alguem@email" senha="senha_besta" dataNasc="32/10/2010"
+
+expect "Fatima Bernardes" getInfoUsuario atributo="Nome" usuario=${id1}
+expect "1962-09-17" getInfoUsuario atributo="Data de Nascimento" usuario=${id1}
+expectError "A senha dx usuarix eh protegida." getInfoUsuario atributo="Senha" usuario=${id1}
+expect "resources/fatima.jpg" getInfoUsuario atributo="Foto" usuario=${id1}
+
+expect "Madonna" getInfoUsuario atributo="Nome"  usuario=${id2}
+expect "1958-08-16" getInfoUsuario atributo="Data de Nascimento" usuario=${id2}
+expectError "A senha dx usuarix eh protegida." getInfoUsuario atributo="Senha" usuario=${id2}
+expect "resources/madonna.jpg" getInfoUsuario atributo="Foto" usuario=${id2}
+
+expect "Jo Soares" getInfoUsuario atributo="Nome"  usuario=${id3}
+expect "1938-01-16" getInfoUsuario atributo="Data de Nascimento" usuario=${id3}
+expectError "A senha dx usuarix eh protegida." getInfoUsuario atributo="Senha" usuario=${id3}
+expect "resources/default.jpg" getInfoUsuario atributo="Foto" usuario=${id3}
+
+expectError "Um usuarix com email alguem@email.com nao esta cadastradx." getInfoUsuario atributo="Nome"  usuario="alguem@email.com"
+
+############################################################################
+# Login de Usuarios                                                        #
+############################################################################
+# Note que o getInfoUsuario tem diferentes parametros.                     #
+# - Para esse caso, ele retorna as informacoes dx usuarix que esta logadx. #
+############################################################################
+
+login email="fatima@email.com.br" senha="will_S2"
+expect "Fatima Bernardes" getInfoUsuario atributo="Nome"
+expect "resources/fatima.jpg" getInfoUsuario atributo="Foto"
+expectError "A senha dx usuarix eh protegida." getInfoUsuario atributo="Senha"
+
+expectError "Nao foi possivel realizar login. Um usuarix ja esta logadx: Fatima Bernardes." login email="madonna@email.com" senha="iamawesome"
+logout
+expectError "Nao eh possivel realizar logout. Nenhum usuarix esta logadx no +pop." logout
+
+login email="madonna@email.com" senha="iamawesome"
+expect "Madonna" getInfoUsuario atributo="Nome"
+logout
+
+expectError "Nao foi possivel realizar login. Um usuarix com email gal_costa@email.com.br nao esta cadastradx." login email="gal_costa@email.com.br" senha="vaca_profana"
+expectError "Nao foi possivel realizar login. Senha invalida." login email="fatima@email.com.br" senha="nada a ver"
+
+login email="fatima@email.com.br" senha="will_S2"
+expectError "Nao foi possivel fechar o sistema. Um usuarix ainda esta logadx." fechaSistema
+logout
+
+removeUsuario usuario=${id3}
+expectError "Nao foi possivel realizar login. Um usuarix com email jo@uol.com.br nao esta cadastradx." login email="jo@uol.com.br" senha="!soares!"
+
+fechaSistema

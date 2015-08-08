@@ -1,0 +1,46 @@
+iniciaSistema
+
+id1=cadastraUsuario nome="Nazare Tedesco" email="naza_foguete@hotmail.com" senha="belzinha" dataNasc="17/09/1962" imagem="resources/fatima.jpg"
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+criaPost mensagem="Eu nao sou preconceituosa, mais aqui esta cheio de anta nordestina. #anta #separa" data="01/08/2015 12:00:00"
+criaPost mensagem="Esse frio esta mim deixando doida. #alucicrazy #CGDaDepressao" data="01/08/2015 21:35:00"
+criaPost mensagem="Nao sei porque tanto recalque, o que eh bonito eh pra se mostrar. <audio>musicas/poderosas.mp3</audio> #soulinda #naza" data="03/08/2015 08:21:00"
+logout
+
+login email="fafa_bernardes@email.com.br" senha="fafa_S2"
+
+criaPost mensagem="O Encontro de amanha estara otimo. Vamos falar sobre os problemas do preconceito na escola. <imagem>imagens/encontro_vinheta.jpg</imagem> <imagem>imagens/encontro_preview.jpg</imagem> #encontro #SemPreconceito" data="01/08/2015 20:12:00"
+expectError "Nao eh possivel criar o post. O limite maximo da mensagem sao 200 caracteres." criaPost mensagem="Hoje o sol me acordou. Foi muito cansativo sair da cama pois ainda estava com muito sono. Gostaria ter mais tempo para dormir. Ainda bem que tinha tapioca e cuscuz no cafe da manha para dar a energia. #cafe #acorda" data="02/08/2015 09:30:00"
+
+criaPost mensagem="Hoje o sol me acordou. Foi muito cansativo sair da cama pois ainda estava com muito sono. Gostaria ter mais tempo para dormir. Ainda bem que tinha tapioca e cuscuz no cafe da manha para dar energia. #cafe #acorda" data="02/08/2015 09:30:00"
+
+expectError "Nao eh possivel criar o post. As hashtags devem comecar com '#'. Erro na hashtag: 'almoco'." criaPost mensagem="Depois do programa vou almocar com a familia. #familia almoco #paz" data="02/08/2015 11:48:00"
+
+#Os posts sao indexaveis por: 0, 1, 2,...,n
+expect "Hoje o sol me acordou. Foi muito cansativo sair da cama pois ainda estava com muito sono. Gostaria ter mais tempo para dormir. Ainda bem que tinha tapioca e cuscuz no cafe da manha para dar energia. #cafe #acorda (2015-08-02 09:30:00)" getPost post=1
+
+expect "Hoje o sol me acordou. Foi muito cansativo sair da cama pois ainda estava com muito sono. Gostaria ter mais tempo para dormir. Ainda bem que tinha tapioca e cuscuz no cafe da manha para dar energia." getPost atributo="Conteudo" post=1
+expect "2015-08-02 09:30:00" getPost atributo="Data" post=1
+expect "#cafe,#acorda" getPost atributo="Hashtags" post=1
+
+expect "O Encontro de amanha estara otimo. Vamos falar sobre os problemas do preconceito na escola. <imagem>imagens/encontro_vinheta.jpg</imagem> <imagem>imagens/encontro_preview.jpg</imagem>" getPost atributo="Conteudo" post=0
+expect "O Encontro de amanha estara otimo. Vamos falar sobre os problemas do preconceito na escola." getConteudoPost indice=0 post=0
+expect "$arquivo_imagem:imagens/encontro_vinheta.jpg" getConteudoPost indice=1 post=0
+expect "$arquivo_imagem:imagens/encontro_preview.jpg" getConteudoPost indice=2 post=0
+expectError "Item #3 nao existe nesse post, ele possui apenas 3 itens distintos." getConteudoPost indice=3 post=0
+expectError "Requisicao invalida. O indice deve ser maior ou igual a zero." getConteudoPost indice=-1 post=0
+
+logout
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+expect "Nao sei porque tanto recalque, o que eh bonito eh pra se mostrar. <audio>musicas/poderosas.mp3</audio> #soulinda #naza (2015-08-03 08:21:00)" getPost post=2
+expect "Nao sei porque tanto recalque, o que eh bonito eh pra se mostrar. <audio>musicas/poderosas.mp3</audio>" getPost atributo="Conteudo" post=2
+expect "#soulinda,#naza" getPost atributo="Hashtags" post=1
+expect "2015-08-03 08:21:00" getPost atributo="Data" post=1
+
+expect "Nao sei porque tanto recalque, o que eh bonito eh pra se mostrar." getConteudoPost indice=0 post=2
+expect "$arquivo_audio:musicas/poderosas.mp3" getConteudoPost indice=1 post=1
+
+logout
+fechaSistema

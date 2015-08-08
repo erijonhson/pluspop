@@ -1,0 +1,55 @@
+inciaSistema
+login email="naza_foguete@hotmail.com" senha="belzinha"
+adicionaAmigo usuario="fafa_bernardes@email.com.br"
+
+logout
+
+login email="fafa_bernardes@email.com.br" senha="fafa_S2"
+expect 1 getNotificacoes
+expect "Nazare Tedesco quer sua amizade." getNextNotificacao
+expectError "Nao ha mais notificacoes." getNextNotificacao
+
+rejeitaAmizade usuario="naza_foguete@hotmail.com"
+expectError "Madonna nao lhe enviou solicitacoes de amizade." rejeitaAmizade usuario="madonna@email.com"
+expectError "O usuario zeninguem@email.com.br nao esta cadastrado no +pop." rejeitaAmizade usuario="zeninguem@email.com.br"
+adicionaAmigo usuario="madonna@email.com"
+
+logout
+
+login email="madonna@email.com" senha="iamawesome"
+expect 0 getQtdAmigos
+expect 1 getNotificacoes
+expect "Fatima Bernades Bonner quer sua amizade." getNextNotificacao
+aceitaAmizade usuario="fafa_bernardes@email.com.br"
+
+expect 1 getQtdAmigos
+curtirPost amigo="fafa_bernardes@email.com.br" post=1
+logout
+
+login email="fafa_bernardes@email.com.br" senha="fafa_S2"
+expect 2 getNotificacoes
+expect "Madonna aceitou sua amizade." getNextNotificacao
+expect "Madonna curtiu seu post de 2015-08-02 09:30:00." getNextNotificacao
+
+expect 1 getQtdAmigos
+logout
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+expect 1 getNotificacoes
+expect "Fatima Bernades Bonner rejeitou sua amizade." getNextNotificacao
+criaPost mensagem="Tem gente que se acha! #SouMaisEu" data="07/08/2015 16:10:00"
+logout
+
+login email"madonna@email.com" senha="iamawesome"
+removeAmigo usuario="fafa_bernardes@email.com.br"
+expect 0 getQtdAmigos
+logout
+
+login email="fafa_bernardes@email.com.br" senha="fafa_S2"
+expect 1 getNotificacoes
+expect "Madonna removeu a sua amizade." getNextNotificacao
+
+expect 0 getQtdAmigos
+logout
+
+fechaSistema
