@@ -22,6 +22,12 @@ public class ConversorDeData {
 
 	private static ConversorDeData instance;
 
+	/**
+	 * Devolve o conversor de data do sistema. <br>
+	 * Sobre métodos sincronizados: https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html
+	 * 
+	 * @return Conversor de Data único.
+	 */
 	public static synchronized ConversorDeData getInstance() {
 		if (instance == null)
 			instance = new ConversorDeData();
