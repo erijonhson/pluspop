@@ -16,7 +16,7 @@ expectError "Erro no cadastro de Usuarios. Nome dx usuarix nao pode ser vazio." 
 expectError "Erro no cadastro de Usuarios. Nome dx usuarix nao pode ser vazio."  cadastraUsuario nome="  " email="alguem@email.com.br" senha="senha_besta" dataNasc="10/10/2010"
 expectError "Erro no cadastro de Usuarios. Formato de e-mail esta invalido."  cadastraUsuario nome="Fulaninho" email="alguem@email" senha="senha_besta" dataNasc="10/10/2010"
 expectError "Erro no cadastro de Usuarios. Formato de data esta invalida."  cadastraUsuario nome="Fulaninho" email="alguem@email.com" senha="senha_besta" dataNasc="1510/10/2010"
-expectError "Erro no cadastro de Usuarios. Data nao existe."  cadastraUsuario nome="Fulaninho" email="alguem@email" senha="senha_besta" dataNasc="32/10/2010"
+expectError "Erro no cadastro de Usuarios. Data nao existe."  cadastraUsuario nome="Fulaninho" email="alguem@email.com" senha="senha_besta" dataNasc="32/10/2010"
 
 expect "Fatima Bernardes" getInfoUsuario atributo="Nome" usuario=${id1}
 expect "1962-09-17" getInfoUsuario atributo="Data de Nascimento" usuario=${id1}
