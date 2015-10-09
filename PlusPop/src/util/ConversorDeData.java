@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import exception.ConversaoDeDataException;
+import exception.FormatoDeDataException;
 
 /**
  * Conversor de data a partir de string do tipo dd/MM/yyyy. <br>
@@ -40,14 +41,15 @@ public class ConversorDeData {
 
 	public Date converterData(String dataNasc) throws ConversaoDeDataException {
 		try {
+			if (!formatoDataValido(dataNasc))
+				throw new FormatoDeDataException();
 			return formatadorDeData.parse(dataNasc);
 		} catch (ParseException pe) {
-			boolean formatoData = analisarFormatoData(dataNasc);
-			throw new ConversaoDeDataException(pe, formatoData);
+			throw new ConversaoDeDataException(pe);
 		}
 	}
 
-	private boolean analisarFormatoData(String dataNasc) {
+	private boolean formatoDataValido(final String dataNasc) {
 		Matcher matcher = pattern.matcher(dataNasc);
 		return matcher.matches();
 	}

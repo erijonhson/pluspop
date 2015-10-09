@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.ConversaoDeDataException;
 import exception.EmailInvalidoException;
@@ -91,8 +92,48 @@ public class Controller {
 	}
 
 	public void fechaSistema() throws FechaSistemaException {
-		if (usuarioDaSessao != null)
+		if (temUsuarioLogado())
 			throw new FechaSistemaException();
+	}
+
+	public void atualizaPerfil(String atributo, String valor) 
+			throws AtualizaPerfilException {
+		try {
+			if (!temUsuarioLogado())
+				throw new UsuarioNaoLogadoException();
+			switch (atributo.toUpperCase()) {
+				case "NOME":
+					usuarioDaSessao.setNome(valor);
+					break;
+				case "DATA DE NASCIMENTO":
+					usuarioDaSessao.setDataNasc(valor);
+					break;
+				case "E-MAIL":
+					usuarioDaSessao.setEmail(valor);
+					break;
+				case "FOTO":
+					usuarioDaSessao.setImagem(valor);
+					break;
+			}
+		} catch (UsuarioNaoLogadoException | NomeUsuarioException | 
+				  ConversaoDeDataException | EmailInvalidoException e) {
+			throw new AtualizaPerfilException(e);
+		}
+	}
+
+	public void atualizaPerfil(String atributo, String senha, String velhaSenha) 
+			throws AtualizaPerfilException {
+		try {
+			if (!temUsuarioLogado())
+				throw new UsuarioNaoLogadoException();
+			if (atributo.equalsIgnoreCase("SENHA")) {
+				if (!senhaCorreta(velhaSenha))
+					throw new SenhaInvalidaException();
+				usuarioDaSessao.setSenha(senha);
+			}
+		} catch(UsuarioNaoLogadoException | SenhaInvalidaException e) {
+			throw new AtualizaPerfilException(e);
+		}
 	}
 
 	/*

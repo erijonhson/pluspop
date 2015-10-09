@@ -3,6 +3,7 @@ package core;
 import java.util.Date;
 
 import easyaccept.EasyAccept;
+import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.FechaSistemaException;
 import exception.LoginException;
@@ -22,7 +23,7 @@ public class Facade {
 	public static void main(String[] args) {
 		args = new String[] { "core.Facade",
 				"resources/Scripts de Teste/usecase_1.txt",
-		// "resources/Scripts de Teste/usecase_2.txt",
+				"resources/Scripts de Teste/usecase_2.txt",
 		// "resources/Scripts de Teste/usecase_3.txt",
 		// "resources/Scripts de Teste/usecase_4.txt",
 		};
@@ -33,8 +34,8 @@ public class Facade {
 
 	}
 
-	public String cadastraUsuario(String nome, String email, String senha, String dataNasc, 
-			String imagem) throws CadastraUsuarioException {
+	public String cadastraUsuario(String nome, String email, String senha, String dataNasc, String imagem) 
+			throws CadastraUsuarioException {
 		return popController.cadastraUsuario(nome, email, senha, dataNasc, imagem);
 	}
 
@@ -53,7 +54,8 @@ public class Facade {
 		return popController.getInfoUsuario(atributo);
 	}
 
-	public void login(String email, String senha) throws LoginException {
+	public void login(String email, String senha) 
+			throws LoginException {
 		popController.login(email, senha);
 	}
 
@@ -61,20 +63,24 @@ public class Facade {
 		popController.logout();
 	}
 
-	public void removeUsuario(String usuario) throws UsuarioNaoExisteException {
+	public void removeUsuario(String usuario) 
+			throws UsuarioNaoExisteException {
 		popController.removeUsuario(usuario);
 	}
 
-	public void fechaSistema() throws FechaSistemaException {
+	public void fechaSistema() 
+			throws FechaSistemaException {
 		popController.fechaSistema();
 	}
 
-	public void atualizaPerfil(String atributo, String valor) {
-
+	public void atualizaPerfil(String atributo, String valor) 
+			throws AtualizaPerfilException {
+		popController.atualizaPerfil(atributo, valor);
 	}
 
-	public void atualizaPerfil(String atributo, String valor, String velhaSenha) {
-
+	public void atualizaPerfil(String atributo, String valor, String velhaSenha) 
+			throws AtualizaPerfilException {
+		popController.atualizaPerfil(atributo, valor, velhaSenha);
 	}
 
 	public void criaPost(String mensagem, Date data) {

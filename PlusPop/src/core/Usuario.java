@@ -30,25 +30,20 @@ public class Usuario implements Serializable {
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
 			ConversaoDeDataException {
-		if (nomeVazio(nome))
-			throw new NomeUsuarioException();
-		if (emailInvalido(email))
-			throw new EmailInvalidoException();
-		this.nome = nome;
-		this.email = email;
-		this.senha = senha;
-		this.dataNasc = ConversorDeData.getInstance().converterData(dataNasc);
-		if (nomeVazio(imagem))
-			this.imagem = imagemDefault;
-		else
-			this.imagem = imagem;
+		setNome(nome);
+		setEmail(email);
+		setSenha(senha);
+		setDataNasc(dataNasc);
+		setImagem(imagem);
 	}
 
 	public String getNome() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	public void setNome(String nome) throws NomeUsuarioException {
+		if (stringVazia(nome))
+			throw new NomeUsuarioException();
 		this.nome = nome;
 	}
 
@@ -56,7 +51,9 @@ public class Usuario implements Serializable {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws EmailInvalidoException {
+		if (emailInvalido(email))
+			throw new EmailInvalidoException();
 		this.email = email;
 	}
 
@@ -85,6 +82,10 @@ public class Usuario implements Serializable {
 		return formatadorDeData.format(dataNasc);
 	}
 
+	public void setDataNasc(String dataNasc) throws ConversaoDeDataException {
+		this.dataNasc = ConversorDeData.getInstance().converterData(dataNasc);
+	}
+
 	public void setDataNasc(Date dataNasc) {
 		this.dataNasc = dataNasc;
 	}
@@ -94,7 +95,12 @@ public class Usuario implements Serializable {
 	}
 
 	public void setImagem(String imagem) {
-		this.imagem = imagem;
+		if (stringVazia(imagem)) {
+			if (stringVazia(this.imagem))
+				this.imagem = imagemDefault;
+		}
+		else
+			this.imagem = imagem;
 	}
 
 	@Override
@@ -135,7 +141,7 @@ public class Usuario implements Serializable {
 		return !EmailValidator.getInstance().validateEmail(email);
 	}
 
-	private boolean nomeVazio(String nome) {
-		return nome == null || nome.trim().equals("");
+	private boolean stringVazia(String s) {
+		return s == null || s.trim().equals("");
 	}
 }

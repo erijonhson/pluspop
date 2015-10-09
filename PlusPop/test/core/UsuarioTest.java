@@ -37,6 +37,12 @@ public class UsuarioTest {
 			assertEquals("Formato de data esta invalida.", e.getMessage());
 		}
 		try {
+			new Usuario("Usuario", "usuario@exemplo.com", "abc", "01/04/199s", "/opt/images");
+			fail("Formato de data esta invalida era esperado.");
+		} catch (NomeUsuarioException | EmailInvalidoException | ConversaoDeDataException e) {
+			assertEquals("Formato de data esta invalida.", e.getMessage());
+		}
+		try {
 			new Usuario("Usuario", "usuario@exemplo.com", "abc", "32/10/2010", "/opt/images");
 			fail("Data nao existe era esperado.");
 		} catch (NomeUsuarioException | EmailInvalidoException | ConversaoDeDataException e) {
