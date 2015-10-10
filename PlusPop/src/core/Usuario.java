@@ -3,6 +3,7 @@ package core;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import util.ConversorDeData;
@@ -20,12 +21,13 @@ public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = -8892086465318181235L;
 	private static final String imagemDefault = "resources/default.jpg";
-
+	
 	private String nome;
 	private String email;
 	private String senha;
 	private Date dataNasc;
 	private String imagem;
+	private ArrayList<Post> mural;
 
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
@@ -35,6 +37,11 @@ public class Usuario implements Serializable {
 		setSenha(senha);
 		setDataNasc(dataNasc);
 		setImagem(imagem);
+		this.mural = new ArrayList();
+	}
+	
+	public void addPost(Post post){
+		mural.add(post);
 	}
 
 	public String getNome() {
@@ -101,6 +108,10 @@ public class Usuario implements Serializable {
 		}
 		else
 			this.imagem = imagem;
+	}
+	
+	public ArrayList<Post> getMural() {
+		return mural;
 	}
 
 	@Override

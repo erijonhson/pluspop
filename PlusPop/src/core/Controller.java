@@ -1,12 +1,15 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import util.FabricaDePost;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.ConversaoDeDataException;
+import exception.CriaPostException;
 import exception.EmailInvalidoException;
 import exception.FechaSistemaException;
 import exception.LoginException;
@@ -18,6 +21,8 @@ import exception.UsuarioJaExisteException;
 import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
+import exception.ConteudoPostNegativoException;
+import exception.PostInexistenteException;
 
 public class Controller {
 
@@ -134,6 +139,37 @@ public class Controller {
 		} catch(UsuarioNaoLogadoException | SenhaInvalidaException e) {
 			throw new AtualizaPerfilException(e);
 		}
+	}
+	
+	public void criaPost(String mensagem, Date data) 
+			throws CriaPostException {
+		FabricaDePost fabrica = new FabricaDePost();
+		Post post = fabrica.construirPost(mensagem, data);
+		usuarioDaSessao.addPost(post);
+	}
+	
+	public String getPost(int post) {
+		return usuarioDaSessao.getMural().get(post).toString();
+	}
+	
+	public String getPost(String atributo, int post) {		
+		switch (atributo.toUpperCase()) {
+		case "MENSAGEM":
+			return usuarioDaSessao.getMural().get(post).getConteudo();
+		case "HASHTAGS":
+			return usuarioDaSessao.getMural().get(post).getHashtags();
+		default:// "DATA":
+			return usuarioDaSessao.getMural().get(post).getMomento();
+		}
+	}
+	
+	public String getConteudoPost(int indice, int post) 
+			throws Exception {
+		if (indice < 0)
+			throw new ConteudoPostNegativoException(null);
+		if (indice >= usuarioDaSessao.getMural().get(post).getConteudoSize())
+			throw new PostInexistenteException(indice + " " + usuarioDaSessao.getMural().get(post).getConteudoSize());
+		return usuarioDaSessao.getMural().get(post).getConteudoPost(indice);
 	}
 
 	/*

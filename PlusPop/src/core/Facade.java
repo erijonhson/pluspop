@@ -5,12 +5,14 @@ import java.util.Date;
 import easyaccept.EasyAccept;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
+import exception.CriaPostException;
 import exception.FechaSistemaException;
 import exception.LoginException;
 import exception.LogoutException;
 import exception.SenhaProtegidaException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
+import exception.ConteudoPostNegativoException;
 
 public class Facade {
 
@@ -24,7 +26,7 @@ public class Facade {
 		args = new String[] { "core.Facade",
 				"resources/Scripts de Teste/usecase_1.txt",
 				"resources/Scripts de Teste/usecase_2.txt",
-		// "resources/Scripts de Teste/usecase_3.txt",
+				"resources/Scripts de Teste/usecase_3.txt",
 		// "resources/Scripts de Teste/usecase_4.txt",
 		};
 		EasyAccept.main(args);
@@ -83,20 +85,24 @@ public class Facade {
 		popController.atualizaPerfil(atributo, valor, velhaSenha);
 	}
 
-	public void criaPost(String mensagem, Date data) {
-
+	public void criaPost(String mensagem, Date data) 
+			throws CriaPostException {
+		popController.criaPost(mensagem, data);
 	}
 
-	public String getPost(String atributo, int post) {
-		return null;
+	public String getPost(String atributo, int post) 
+			throws SenhaProtegidaException, UsuarioNaoExisteException, UsuarioNaoLogadoException{
+		return popController.getPost(atributo, post);
 	}
 
-	public String getPost(int post) {
-		return null;
+	public String getPost(int post) 
+			throws SenhaProtegidaException, UsuarioNaoExisteException, UsuarioNaoLogadoException{
+		return popController.getPost(post);
 	}
 
-	public String getConteudoPost(int indice, int post) {
-		return null;
+	public String getConteudoPost(int indice, int post) 
+			throws Exception{
+		return popController.getConteudoPost(indice, post);
 	}
 
 	public void adicionaAmigo(String usuario) {

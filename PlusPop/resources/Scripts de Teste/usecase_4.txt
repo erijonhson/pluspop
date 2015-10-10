@@ -1,4 +1,4 @@
-inciaSistema
+iniciaSistema
 login email="naza_foguete@hotmail.com" senha="belzinha"
 adicionaAmigo usuario="fafa_bernardes@email.com.br"
 
@@ -11,7 +11,7 @@ expectError "Nao ha mais notificacoes." getNextNotificacao
 
 rejeitaAmizade usuario="naza_foguete@hotmail.com"
 expectError "Madonna nao lhe enviou solicitacoes de amizade." rejeitaAmizade usuario="madonna@email.com"
-expectError "O usuario zeninguem@email.com.br nao esta cadastrado no +pop." rejeitaAmizade usuario="zeninguem@email.com.br"
+expectError "Um usuarix com email zeninguem@email.com.br nao esta cadastradx." rejeitaAmizade usuario="zeninguem@email.com.br"
 adicionaAmigo usuario="madonna@email.com"
 
 logout
