@@ -24,6 +24,13 @@ import exception.UsuarioNaoLogadoException;
 import exception.ConteudoPostNegativoException;
 import exception.PostInexistenteException;
 
+/**
+ * Controller único do +Pop.
+ * 
+ * @author Eri Jonhson
+ * @author Laybson Plismen
+ * @author Ordan Santos
+ */
 public class Controller {
 
 	private List<Usuario> usuariosDoSistema;
@@ -66,23 +73,19 @@ public class Controller {
 
 	public void login(String email, String senha) throws LoginException {
 		try {
-			if (temUsuarioLogado())
-				throw new UsuarioJaLogadoException(usuarioDaSessao.getNome());
-			usuarioDaSessao = recuperarUsuario(email);
-			if (!senhaCorreta(senha)) {
+			setUsuarioDaSessao(recuperarUsuario(email));
+			if (!getUsuarioDaSessao().autenticarSenha(senha)) {
 				retirarUsuarioDaSessao();
 				throw new SenhaInvalidaException();
 			}
-		} catch (UsuarioNaoExisteException | SenhaInvalidaException | UsuarioJaLogadoException e) {
+		} catch (UsuarioNaoExisteException | SenhaInvalidaException | UsuarioJaLogadoException | UsuarioNaoLogadoException e) {
 			throw new LoginException(e);
 		}
 	}
 
 	public String getInfoUsuario(String atributo) 
 			throws SenhaProtegidaException, UsuarioNaoExisteException, UsuarioNaoLogadoException {
-		if (!temUsuarioLogado())
-			throw new UsuarioNaoLogadoException();
-		return getInfoUsuario(atributo, usuarioDaSessao.getEmail());
+		return getInfoUsuario(atributo, getUsuarioDaSessao().getEmail());
 	}
 
 	public void logout() throws LogoutException {
@@ -91,8 +94,8 @@ public class Controller {
 		retirarUsuarioDaSessao();
 	}
 
-	public void removeUsuario(String emailUsuario) throws UsuarioNaoExisteException {
-		Usuario usuario = recuperarUsuario(emailUsuario);
+	public void removeUsuario(String email) throws UsuarioNaoExisteException {
+		Usuario usuario = recuperarUsuario(email);
 		usuariosDoSistema.remove(usuario);
 	}
 
@@ -104,20 +107,18 @@ public class Controller {
 	public void atualizaPerfil(String atributo, String valor) 
 			throws AtualizaPerfilException {
 		try {
-			if (!temUsuarioLogado())
-				throw new UsuarioNaoLogadoException();
 			switch (atributo.toUpperCase()) {
 				case "NOME":
-					usuarioDaSessao.setNome(valor);
+					getUsuarioDaSessao().setNome(valor);
 					break;
 				case "DATA DE NASCIMENTO":
-					usuarioDaSessao.setDataNasc(valor);
+					getUsuarioDaSessao().setDataNasc(valor);
 					break;
 				case "E-MAIL":
-					usuarioDaSessao.setEmail(valor);
+					getUsuarioDaSessao().setEmail(valor);
 					break;
 				case "FOTO":
-					usuarioDaSessao.setImagem(valor);
+					getUsuarioDaSessao().setImagem(valor);
 					break;
 			}
 		} catch (UsuarioNaoLogadoException | NomeUsuarioException | 
@@ -129,52 +130,64 @@ public class Controller {
 	public void atualizaPerfil(String atributo, String senha, String velhaSenha) 
 			throws AtualizaPerfilException {
 		try {
-			if (!temUsuarioLogado())
-				throw new UsuarioNaoLogadoException();
 			if (atributo.equalsIgnoreCase("SENHA")) {
-				if (!senhaCorreta(velhaSenha))
+				if (getUsuarioDaSessao().autenticarSenha(velhaSenha))
 					throw new SenhaInvalidaException();
-				usuarioDaSessao.setSenha(senha);
+				getUsuarioDaSessao().setSenha(senha);
 			}
 		} catch(UsuarioNaoLogadoException | SenhaInvalidaException e) {
 			throw new AtualizaPerfilException(e);
 		}
 	}
-	
+
 	public void criaPost(String mensagem, Date data) 
-			throws CriaPostException {
+			throws CriaPostException, UsuarioNaoLogadoException {
 		FabricaDePost fabrica = new FabricaDePost();
 		Post post = fabrica.construirPost(mensagem, data);
-		usuarioDaSessao.addPost(post);
+		getUsuarioDaSessao().addPost(post);
 	}
-	
-	public String getPost(int post) {
-		return usuarioDaSessao.getMural().get(post).toString();
+
+	public String getPost(int post) 
+			throws UsuarioNaoLogadoException {
+		return getUsuarioDaSessao().getMural().get(post).toString();
 	}
-	
-	public String getPost(String atributo, int post) {		
+
+	public String getPost(String atributo, int post) 
+			throws UsuarioNaoLogadoException {		
 		switch (atributo.toUpperCase()) {
 		case "MENSAGEM":
-			return usuarioDaSessao.getMural().get(post).getConteudo();
+			return getUsuarioDaSessao().getMural().get(post).getConteudo();
 		case "HASHTAGS":
-			return usuarioDaSessao.getMural().get(post).getHashtags();
+			return getUsuarioDaSessao().getMural().get(post).getHashtags();
 		default:// "DATA":
-			return usuarioDaSessao.getMural().get(post).getMomento();
+			return getUsuarioDaSessao().getMural().get(post).getMomento();
 		}
 	}
-	
+
 	public String getConteudoPost(int indice, int post) 
 			throws Exception {
 		if (indice < 0)
 			throw new ConteudoPostNegativoException(null);
-		if (indice >= usuarioDaSessao.getMural().get(post).getConteudoSize())
-			throw new PostInexistenteException(indice + " " + usuarioDaSessao.getMural().get(post).getConteudoSize());
-		return usuarioDaSessao.getMural().get(post).getConteudoPost(indice);
+		if (indice >= getUsuarioDaSessao().getMural().get(post).getConteudoSize())
+			throw new PostInexistenteException(indice + " " + getUsuarioDaSessao().getMural().get(post).getConteudoSize());
+		return getUsuarioDaSessao().getMural().get(post).getConteudoPost(indice);
 	}
 
 	/*
 	 * Métodos internos
 	 */
+
+	private Usuario getUsuarioDaSessao() throws UsuarioNaoLogadoException {
+		if (!temUsuarioLogado())
+			throw new UsuarioNaoLogadoException();
+		return usuarioDaSessao;
+	}
+
+	private void setUsuarioDaSessao(Usuario usuario) throws UsuarioJaLogadoException {
+		if (temUsuarioLogado())
+			throw new UsuarioJaLogadoException(usuarioDaSessao.getNome());
+		usuarioDaSessao = usuario;
+	}
 
 	private void verificarSeUsuarioExiste(String email) throws UsuarioJaExisteException {
 		try {
@@ -196,10 +209,6 @@ public class Controller {
 
 	private boolean temUsuarioLogado() {
 		return usuarioDaSessao != null;
-	}
-
-	private boolean senhaCorreta(String senha) {
-		return usuarioDaSessao.getSenha().equals(senha);
 	}
 
 	private Usuario retirarUsuarioDaSessao() {

@@ -13,9 +13,11 @@ import exception.EmailInvalidoException;
 import exception.NomeUsuarioException;
 
 /**
- * Usuario comum do PlusPop.
+ * Usuário comum do +Pop.
  * 
  * @author Eri Jonhson
+ * @author Laybson Plismen
+ * @author Ordan Santos
  */
 public class Usuario implements Serializable {
 
@@ -39,7 +41,7 @@ public class Usuario implements Serializable {
 		setImagem(imagem);
 		this.mural = new ArrayList();
 	}
-	
+
 	public void addPost(Post post){
 		mural.add(post);
 	}
@@ -64,8 +66,13 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
+	/**
+	 * Verificar autenticidade da senha do {@link Usuario}.
+	 * @param senha
+	 * @return <tt>true</tt> se senha correta.
+	 */
+	public boolean autenticarSenha(String senha) {
+		return this.senha.equals(senha);
 	}
 
 	public void setSenha(String senha) {

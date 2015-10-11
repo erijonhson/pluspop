@@ -14,6 +14,13 @@ import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
 import exception.ConteudoPostNegativoException;
 
+/**
+ * Facade do +Pop.
+ * 
+ * @author Eri Jonhson
+ * @author Laybson Plismen
+ * @author Ordan Santos
+ */
 public class Facade {
 
 	private Controller popController;
@@ -86,17 +93,17 @@ public class Facade {
 	}
 
 	public void criaPost(String mensagem, Date data) 
-			throws CriaPostException {
+			throws CriaPostException, UsuarioNaoLogadoException {
 		popController.criaPost(mensagem, data);
 	}
 
 	public String getPost(String atributo, int post) 
-			throws SenhaProtegidaException, UsuarioNaoExisteException, UsuarioNaoLogadoException{
+			throws SenhaProtegidaException, UsuarioNaoExisteException, UsuarioNaoLogadoException {
 		return popController.getPost(atributo, post);
 	}
 
 	public String getPost(int post) 
-			throws SenhaProtegidaException, UsuarioNaoExisteException, UsuarioNaoLogadoException{
+			throws SenhaProtegidaException, UsuarioNaoExisteException, UsuarioNaoLogadoException {
 		return popController.getPost(post);
 	}
 
