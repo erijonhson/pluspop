@@ -131,7 +131,7 @@ public class Controller {
 			throws AtualizaPerfilException {
 		try {
 			if (atributo.equalsIgnoreCase("SENHA")) {
-				if (getUsuarioDaSessao().autenticarSenha(velhaSenha))
+				if (!getUsuarioDaSessao().autenticarSenha(velhaSenha))
 					throw new SenhaInvalidaException();
 				getUsuarioDaSessao().setSenha(senha);
 			}
