@@ -19,7 +19,7 @@ logout
 login email="madonna@email.com" senha="iamawesome"
 expect 0 getQtdAmigos
 expect 1 getNotificacoes
-expect "Fatima Bernades Bonner quer sua amizade." getNextNotificacao
+expect "Fatima Bernardes Bonner quer sua amizade." getNextNotificacao
 aceitaAmizade usuario="fafa_bernardes@email.com.br"
 
 expect 1 getQtdAmigos
@@ -36,11 +36,11 @@ logout
 
 login email="naza_foguete@hotmail.com" senha="belzinha"
 expect 1 getNotificacoes
-expect "Fatima Bernades Bonner rejeitou sua amizade." getNextNotificacao
+expect "Fatima Bernardes Bonner rejeitou sua amizade." getNextNotificacao
 criaPost mensagem="Tem gente que se acha! #SouMaisEu" data="07/08/2015 16:10:00"
 logout
 
-login email"madonna@email.com" senha="iamawesome"
+login email="madonna@email.com" senha="iamawesome"
 removeAmigo usuario="fafa_bernardes@email.com.br"
 expect 0 getQtdAmigos
 logout

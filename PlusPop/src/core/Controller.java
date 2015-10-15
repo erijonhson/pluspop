@@ -15,8 +15,10 @@ import exception.FechaSistemaException;
 import exception.LoginException;
 import exception.LogoutException;
 import exception.NomeUsuarioException;
+import exception.SemNotificacaoException;
 import exception.SenhaInvalidaException;
 import exception.SenhaProtegidaException;
+import exception.SolicitacaoNaoEnviadaException;
 import exception.UsuarioJaExisteException;
 import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
@@ -139,9 +141,61 @@ public class Controller {
 			throw new AtualizaPerfilException(e);
 		}
 	}
+	
+	public void adicionaAmigo(String amigoEmail) 
+			throws UsuarioNaoLogadoException, UsuarioNaoExisteException{
+		
+		Usuario amigo = this.recuperarUsuario(amigoEmail);
+		amigo.addSolicitacaoAmizade(this.getUsuarioDaSessao());
+	}
+	
+	public void rejeitaAmizade(String amigoEmail) 
+			throws UsuarioNaoExisteException, SolicitacaoNaoEnviadaException, UsuarioNaoLogadoException{
+		
+		Usuario amigo = this.recuperarUsuario(amigoEmail);
+		this.getUsuarioDaSessao().rejeitaAmizade(amigo);
+	}
+	
+	public void aceitaAmizade(String amigoEmail) 
+			throws UsuarioNaoExisteException, SolicitacaoNaoEnviadaException, UsuarioNaoLogadoException{
+		
+		Usuario amigo = this.recuperarUsuario(amigoEmail);
+		this.getUsuarioDaSessao().aceitaAmizade(amigo);
+	}
+	
+	public void removeAmigo(String amigoEmail) 
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException{
+		
+		Usuario amigo = this.recuperarUsuario(amigoEmail);
+		this.getUsuarioDaSessao().cancelarAmizade(amigo);
+		
+	}
+	
+	public int getQtdAmigos() 
+			throws UsuarioNaoLogadoException{
+		
+		return this.getUsuarioDaSessao().getQtdAmigos();
+	}
+	
+	public void curtirPost(String amigoEmail, int post) 
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException{
+		
+		Usuario amigo = this.recuperarUsuario(amigoEmail);
+		amigo.postCurtido(this.getUsuarioDaSessao(), post);
+	}
+	
+	public int getNotificacoes() throws UsuarioNaoLogadoException{
+		return this.getUsuarioDaSessao().getQtdNotificacoes();
+	}
+	
+	public String getNextNotificacao() 
+			throws UsuarioNaoLogadoException, SemNotificacaoException{
+		return this.getUsuarioDaSessao().getNextNotificacao();
+	}
 
 	public void criaPost(String mensagem, Date data) 
 			throws CriaPostException, UsuarioNaoLogadoException {
+		
 		FabricaDePost fabrica = new FabricaDePost();
 		Post post = fabrica.construirPost(mensagem, data);
 		getUsuarioDaSessao().addPost(post);
@@ -214,4 +268,5 @@ public class Controller {
 	private Usuario retirarUsuarioDaSessao() {
 		return usuarioDaSessao = null;
 	}
+	
 }

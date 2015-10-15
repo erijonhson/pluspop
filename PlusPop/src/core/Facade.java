@@ -9,7 +9,9 @@ import exception.CriaPostException;
 import exception.FechaSistemaException;
 import exception.LoginException;
 import exception.LogoutException;
+import exception.SemNotificacaoException;
 import exception.SenhaProtegidaException;
+import exception.SolicitacaoNaoEnviadaException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
 import exception.ConteudoPostNegativoException;
@@ -34,7 +36,7 @@ public class Facade {
 				"resources/Scripts de Teste/usecase_1.txt",
 				"resources/Scripts de Teste/usecase_2.txt",
 				"resources/Scripts de Teste/usecase_3.txt",
-		// "resources/Scripts de Teste/usecase_4.txt",
+		 "resources/Scripts de Teste/usecase_4.txt",
 		};
 		EasyAccept.main(args);
 	}
@@ -112,36 +114,46 @@ public class Facade {
 		return popController.getConteudoPost(indice, post);
 	}
 
-	public void adicionaAmigo(String usuario) {
-
+	public void adicionaAmigo(String amigoEmail) 
+			throws UsuarioNaoLogadoException, UsuarioNaoExisteException {
+		this.popController.adicionaAmigo(amigoEmail);
 	}
 
-	public int getNotificacoes() {
-		return 0;
+	public int getNotificacoes() 
+			throws UsuarioNaoLogadoException {
+		return this.popController.getNotificacoes();
 	}
 
-	public String getNextNotificacao() {
-		return null;
+	public String getNextNotificacao() 
+			throws UsuarioNaoLogadoException, SemNotificacaoException {
+		return this.popController.getNextNotificacao();
 	}
 
-	public void rejeitaAmizade(String usuario) {
-
+	public void rejeitaAmizade(String usuario) 
+			throws UsuarioNaoExisteException, SolicitacaoNaoEnviadaException, UsuarioNaoLogadoException {
+		popController.rejeitaAmizade(usuario);
 	}
 
-	public int getQtdAmigos() {
-		return 0;
+	public int getQtdAmigos() 
+			throws UsuarioNaoLogadoException {
+		return popController.getQtdAmigos();
 	}
 
-	public void aceitaAmizade(String usuario) {
-
+	public void aceitaAmizade(String usuario) 
+			throws UsuarioNaoExisteException, SolicitacaoNaoEnviadaException, UsuarioNaoLogadoException {
+		
+		popController.aceitaAmizade(usuario);
 	}
 
-	public void curtirPost(String amigo, int post) {
-
+	public void curtirPost(String amigo, int post) 
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException {
+		popController.curtirPost(amigo, post);
 	}
 
-	public void removeAmigo(String usuario) {
-
+	public void removeAmigo(String usuario) 
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException {
+		
+		popController.removeAmigo(usuario);
 	}
 
 }

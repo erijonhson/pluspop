@@ -5,12 +5,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 
 import util.ConversorDeData;
 import util.EmailValidator;
 import exception.ConversaoDeDataException;
 import exception.EmailInvalidoException;
 import exception.NomeUsuarioException;
+import exception.SemNotificacaoException;
+import exception.SolicitacaoNaoEnviadaException;
 
 /**
  * Usuário comum do +Pop.
@@ -30,7 +33,10 @@ public class Usuario implements Serializable {
 	private Date dataNasc;
 	private String imagem;
 	private ArrayList<Post> mural;
-
+	private ArrayList<String> notificacoes;
+	private HashSet<Usuario> amigos;
+	private HashSet<Usuario> solicitacoesDeAmizade;
+	
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
 			ConversaoDeDataException {
@@ -40,6 +46,9 @@ public class Usuario implements Serializable {
 		setDataNasc(dataNasc);
 		setImagem(imagem);
 		this.mural = new ArrayList();
+		this.notificacoes = new ArrayList<String>();
+		this.amigos = new HashSet<>();
+		this.solicitacoesDeAmizade = new HashSet<Usuario>();
 	}
 
 	public void addPost(Post post){
@@ -150,11 +159,89 @@ public class Usuario implements Serializable {
 	public String toString() {
 		return email;
 	}
-
+	
+	public void addSolicitacaoAmizade(Usuario amigo){
+		String notificacao = amigo.getNome() + " quer sua amizade.";
+		addNotificacao(notificacao);
+		this.solicitacoesDeAmizade.add(amigo);
+	}
+	
+	public void rejeitaAmizade(Usuario amigo) 
+			throws SolicitacaoNaoEnviadaException{
+		
+		if (!this.solicitacoesDeAmizade.contains(amigo)) 
+			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
+		
+		this.solicitacoesDeAmizade.remove(amigo);
+		
+		String notificacao = this.getNome() + " rejeitou sua amizade.";
+		amigo.addNotificacao(notificacao);
+	}
+	
+	public void aceitaAmizade(Usuario amigo) 
+			throws SolicitacaoNaoEnviadaException{
+		
+		if (!this.solicitacoesDeAmizade.contains(amigo))
+			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
+		
+		amigo.addAmigo(this);
+		String notificacao = this.getNome() + " aceitou sua amizade.";
+		amigo.addNotificacao(notificacao);
+		
+		this.addAmigo(amigo);
+		this.solicitacoesDeAmizade.remove(amigo);
+	}
+	
+	public void cancelarAmizade(Usuario amigo){
+		
+		this.removeAmigo(amigo);
+		
+		amigo.removeAmigo(this);
+		String notificacao = this.getNome() + " removeu a sua amizade.";
+		amigo.addNotificacao(notificacao);
+	}
+	
+	public void removeAmigo(Usuario amigo){
+		this.amigos.remove(amigo);
+	}
+	
+	public void postCurtido(Usuario amigo, int post){
+		String momento = this.getPostByIndex(post).getMomento();
+		String notificacao = amigo.getNome() + " curtiu seu post de " + momento + ".";
+		this.addNotificacao(notificacao);
+	}
+	
+	public void addAmigo(Usuario amigo){
+		this.amigos.add(amigo);
+	}
+	
+	public int getQtdAmigos(){
+		return this.amigos.size();
+	}
+	
+	public void addNotificacao(String notificacao){
+		this.notificacoes.add(notificacao);
+	}
+	
+	public int getQtdNotificacoes(){
+		return this.notificacoes.size();
+	}
+	
+	public String getNextNotificacao() throws SemNotificacaoException{
+		if (this.notificacoes.size() == 0) throw new SemNotificacaoException();
+		String notificacao = this.notificacoes.get(0);
+		this.notificacoes.remove(0);
+		return notificacao;
+	}
+	
+	public Post getPostByIndex(int index){
+		return mural.get(index);
+	}
+	
 	/*
 	 * Métodos internos.
 	 */
-
+	
 	private boolean emailInvalido(String email) throws EmailInvalidoException {
 		return !EmailValidator.getInstance().validateEmail(email);
 	}
