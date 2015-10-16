@@ -34,8 +34,8 @@ public class Usuario implements Serializable {
 	private String imagem;
 	private ArrayList<Post> mural;
 	private ArrayList<String> notificacoes;
-	private HashSet<Usuario> amigos;
-	private HashSet<Usuario> solicitacoesDeAmizade;
+	private HashSet<String> amigos;
+	private HashSet<String> solicitacoesDeAmizade;
 	
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
@@ -48,7 +48,7 @@ public class Usuario implements Serializable {
 		this.mural = new ArrayList();
 		this.notificacoes = new ArrayList<String>();
 		this.amigos = new HashSet<>();
-		this.solicitacoesDeAmizade = new HashSet<Usuario>();
+		this.solicitacoesDeAmizade = new HashSet<String>();
 	}
 
 	public void addPost(Post post){
@@ -161,30 +161,34 @@ public class Usuario implements Serializable {
 	}
 	
 	public void addSolicitacaoAmizade(Usuario amigo){
-		this.solicitacoesDeAmizade.add(amigo);
+		this.solicitacoesDeAmizade.add(amigo.getEmail());
 	}
 	
 	public void rejeitaAmizade(Usuario amigo) 
 			throws SolicitacaoNaoEnviadaException{
 		
-		if (!this.solicitacoesDeAmizade.contains(amigo)) 
+		if (!this.solicitacoesDeAmizade.contains(amigo.getEmail())) 
 			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
 		
-		this.solicitacoesDeAmizade.remove(amigo);
+		this.solicitacoesDeAmizade.remove(amigo.getEmail());
 	}
 	
 	public void aceitaAmizade(Usuario amigo) 
 			throws SolicitacaoNaoEnviadaException{
 		
-		if (!this.solicitacoesDeAmizade.contains(amigo))
+		if (!this.solicitacoesDeAmizade.contains(amigo.getEmail()))
 			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
 		
 		this.addAmigo(amigo);
-		this.solicitacoesDeAmizade.remove(amigo);
+		this.solicitacoesDeAmizade.remove(amigo.getEmail());
 	}
 	
 	public void removeAmigo(Usuario amigo){
-		this.amigos.remove(amigo);
+		this.amigos.remove(amigo.getEmail());
+	}
+	
+	public void addAmigo(Usuario amigo){
+		this.amigos.add(amigo.getEmail());
 	}
 	
 	public void postCurtido(Usuario amigo, int post){
@@ -193,9 +197,6 @@ public class Usuario implements Serializable {
 		this.addNotificacao(notificacao);
 	}
 	
-	public void addAmigo(Usuario amigo){
-		this.amigos.add(amigo);
-	}
 	
 	public int getQtdAmigos(){
 		return this.amigos.size();
