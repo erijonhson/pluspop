@@ -146,28 +146,52 @@ public class Controller {
 			throws UsuarioNaoLogadoException, UsuarioNaoExisteException{
 		
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
-		amigo.addSolicitacaoAmizade(this.getUsuarioDaSessao());
+		Usuario usuario = this.getUsuarioDaSessao();
+		
+		String notificacao = usuario.getNome() + " quer sua amizade.";
+		
+		amigo.addSolicitacaoAmizade(usuario);
+		amigo.addNotificacao(notificacao);
 	}
 	
 	public void rejeitaAmizade(String amigoEmail) 
 			throws UsuarioNaoExisteException, SolicitacaoNaoEnviadaException, UsuarioNaoLogadoException{
 		
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
-		this.getUsuarioDaSessao().rejeitaAmizade(amigo);
+		Usuario usuario = this.getUsuarioDaSessao();
+		
+		String notificacao = usuario.getNome() + " rejeitou sua amizade.";
+		
+		usuario.rejeitaAmizade(amigo);
+		amigo.addNotificacao(notificacao);
 	}
 	
 	public void aceitaAmizade(String amigoEmail) 
 			throws UsuarioNaoExisteException, SolicitacaoNaoEnviadaException, UsuarioNaoLogadoException{
 		
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
-		this.getUsuarioDaSessao().aceitaAmizade(amigo);
+		Usuario usuario = this.getUsuarioDaSessao();
+		
+		String notificacao = usuario.getNome() + " aceitou sua amizade.";
+		
+		usuario.aceitaAmizade(amigo);
+		amigo.addAmigo(usuario);
+		
+		amigo.addNotificacao(notificacao);
 	}
 	
 	public void removeAmigo(String amigoEmail) 
 			throws UsuarioNaoExisteException, UsuarioNaoLogadoException{
 		
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
-		this.getUsuarioDaSessao().cancelarAmizade(amigo);
+		Usuario usuario = this.getUsuarioDaSessao();
+		
+		String notificacao = usuario.getNome() + " removeu a sua amizade.";
+		
+		usuario.removeAmigo(amigo);
+		amigo.removeAmigo(usuario);
+		
+		amigo.addNotificacao(notificacao);
 		
 	}
 	

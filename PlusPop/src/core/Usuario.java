@@ -161,8 +161,6 @@ public class Usuario implements Serializable {
 	}
 	
 	public void addSolicitacaoAmizade(Usuario amigo){
-		String notificacao = amigo.getNome() + " quer sua amizade.";
-		addNotificacao(notificacao);
 		this.solicitacoesDeAmizade.add(amigo);
 	}
 	
@@ -173,9 +171,6 @@ public class Usuario implements Serializable {
 			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
 		
 		this.solicitacoesDeAmizade.remove(amigo);
-		
-		String notificacao = this.getNome() + " rejeitou sua amizade.";
-		amigo.addNotificacao(notificacao);
 	}
 	
 	public void aceitaAmizade(Usuario amigo) 
@@ -184,21 +179,8 @@ public class Usuario implements Serializable {
 		if (!this.solicitacoesDeAmizade.contains(amigo))
 			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
 		
-		amigo.addAmigo(this);
-		String notificacao = this.getNome() + " aceitou sua amizade.";
-		amigo.addNotificacao(notificacao);
-		
 		this.addAmigo(amigo);
 		this.solicitacoesDeAmizade.remove(amigo);
-	}
-	
-	public void cancelarAmizade(Usuario amigo){
-		
-		this.removeAmigo(amigo);
-		
-		amigo.removeAmigo(this);
-		String notificacao = this.getNome() + " removeu a sua amizade.";
-		amigo.addNotificacao(notificacao);
 	}
 	
 	public void removeAmigo(Usuario amigo){
