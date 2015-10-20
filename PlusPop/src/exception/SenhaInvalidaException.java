@@ -7,4 +7,8 @@ public class SenhaInvalidaException extends Exception {
 	public SenhaInvalidaException() {
 		super("Senha invalida.");
 	}
+	
+	public SenhaInvalidaException(String mensagem) {
+		super(mensagem);
+	}
 }

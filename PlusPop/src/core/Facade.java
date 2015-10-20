@@ -20,7 +20,7 @@ import exception.ConteudoPostNegativoException;
  * Facade do +Pop.
  * 
  * @author Eri Jonhson
- * @author Laybson Plismen
+ * @author Laybson Plismenn
  * @author Ordan Santos
  */
 public class Facade {
@@ -36,7 +36,7 @@ public class Facade {
 				"resources/Scripts de Teste/usecase_1.txt",
 				"resources/Scripts de Teste/usecase_2.txt",
 				"resources/Scripts de Teste/usecase_3.txt",
-		 "resources/Scripts de Teste/usecase_4.txt",
+				"resources/Scripts de Teste/usecase_4.txt",
 		};
 		EasyAccept.main(args);
 	}

@@ -30,7 +30,7 @@ import exception.PostInexistenteException;
  * Controller único do +Pop.
  * 
  * @author Eri Jonhson
- * @author Laybson Plismen
+ * @author Laybson Plismenn
  * @author Ordan Santos
  */
 public class Controller {
@@ -134,7 +134,7 @@ public class Controller {
 		try {
 			if (atributo.equalsIgnoreCase("SENHA")) {
 				if (!getUsuarioDaSessao().autenticarSenha(velhaSenha))
-					throw new SenhaInvalidaException();
+					throw new SenhaInvalidaException("A senha fornecida esta incorreta.");
 				getUsuarioDaSessao().setSenha(senha);
 			}
 		} catch(UsuarioNaoLogadoException | SenhaInvalidaException e) {

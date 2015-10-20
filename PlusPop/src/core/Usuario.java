@@ -19,7 +19,7 @@ import exception.SolicitacaoNaoEnviadaException;
  * Usuário comum do +Pop.
  * 
  * @author Eri Jonhson
- * @author Laybson Plismen
+ * @author Laybson Plismenn
  * @author Ordan Santos
  */
 public class Usuario implements Serializable {
