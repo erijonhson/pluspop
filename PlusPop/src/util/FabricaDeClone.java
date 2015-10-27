@@ -24,6 +24,9 @@ public class FabricaDeClone {
 		return instance;
 	}
 
+	private FabricaDeClone() {
+	}
+
 	/**
 	 * Clonar um objeto serializável.
 	 * 

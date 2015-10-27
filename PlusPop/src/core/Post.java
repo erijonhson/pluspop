@@ -27,39 +27,47 @@ public class Post {
 	}
 		
 	public String getConteudo() {
-		String conteudo = this.conteudo.get(0).trim();
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.conteudo.get(0).trim());
 		for (int i = 1; this.conteudo.size() > i; i++){
-			conteudo = conteudo + " " + this.conteudo.get(i);
+			sb.append(" ");
+			sb.append(this.conteudo.get(i));
 		}
-		return conteudo.trim();
+		return sb.toString().trim();
 	}
-	
+
 	public String getHashtags() {
-		String hashtags = this.hashtags.get(0);
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.hashtags.get(0));
 		for (int i = 1; this.hashtags.size() > i; i++){
-			hashtags = hashtags + "," + this.hashtags.get(i);
+			sb.append(",");
+			sb.append(this.hashtags.get(i));
 		}
-		return hashtags.trim();
+		return sb.toString().trim();
 	}
-	
+
 	public String getMomento() {
-		DateFormat formatadorDeData = new SimpleDateFormat("yyyy-dd-MM");
-		return formatadorDeData.format(this.momento) + " " + this.momento.toString().substring(11, 19);
+		DateFormat formatadorDeData = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
+		return formatadorDeData.format(this.momento);
 	}
-	
+
 	public int getPopularidade() {
 		return popularidade;
 	}
-	
+
 	public String toString() {
-		String post = getConteudo();		
-		for (int i = 0; this.hashtags.size() > i; i++){
-			post = post + " " + this.hashtags.get(i).trim();
+		StringBuilder sb = new StringBuilder();
+		sb.append(getConteudo());
+		for (int i = 0; this.hashtags.size() > i; i++) {
+			sb.append(" ");
+			sb.append(this.hashtags.get(i).trim());
 		}
-		post = post + " (" + getMomento() + ")";
-		return post;
+		sb.append(" (");
+		sb.append(getMomento());
+		sb.append(")");
+		return sb.toString();
 	}
-	
+
 	public int getConteudoSize() {
 		return this.conteudo.size();
 	}

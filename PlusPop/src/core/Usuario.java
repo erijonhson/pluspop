@@ -6,9 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import util.ConversorDeData;
 import util.EmailValidator;
+import exception.ConteudoPostInexistenteException;
+import exception.ConteudoPostNegativoException;
 import exception.ConversaoDeDataException;
 import exception.EmailInvalidoException;
 import exception.NomeUsuarioException;
@@ -32,10 +36,10 @@ public class Usuario implements Serializable {
 	private String senha;
 	private Date dataNasc;
 	private String imagem;
-	private ArrayList<Post> mural;
-	private ArrayList<String> notificacoes;
-	private HashSet<String> amigos;
-	private HashSet<String> solicitacoesDeAmizade;
+	private List<Post> mural;
+	private List<String> notificacoes;
+	private Set<String> amigos;
+	private Set<String> solicitacoesDeAmizade;
 	
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
@@ -126,7 +130,7 @@ public class Usuario implements Serializable {
 			this.imagem = imagem;
 	}
 	
-	public ArrayList<Post> getMural() {
+	public List<Post> getMural() {
 		return mural;
 	}
 
@@ -159,7 +163,57 @@ public class Usuario implements Serializable {
 	public String toString() {
 		return email;
 	}
-	
+
+	/**
+	 * Recuperar informações de um {@link Post}.
+	 * 
+	 * @param post
+	 *            número do post.
+	 * @return string representativa do {@link Post}
+	 */
+	public String getPost(int post) {
+		return this.mural.get(post).toString();
+	}
+
+	/**
+	 * Recuperar informação de algum atributo de um {@link Post}.
+	 * 
+	 * @param atributo
+	 *            a recuperar
+	 * @param post
+	 *            número do post
+	 * @return atributo específico
+	 */
+	public String getPost(String atributo, int post) {
+		switch (atributo.toUpperCase()) {
+		case "MENSAGEM":
+			return this.mural.get(post).getConteudo();
+		case "HASHTAGS":
+			return this.mural.get(post).getHashtags();
+		default:// "DATA":
+			return this.mural.get(post).getMomento();
+		}
+	}
+
+	/**
+	 * Recuperar informação de algum atributo de um {@link Post}.
+	 * 
+	 * @param indice
+	 *            do atributo a recuperar
+	 * @param numeroDoPost
+	 * @return atributo específico
+	 */
+	public String getConteudoPost(int indice, int numeroDoPost)
+			throws ConteudoPostNegativoException,
+			ConteudoPostInexistenteException {
+		Post post = this.mural.get(numeroDoPost);
+		if (indice < 0)
+			throw new ConteudoPostNegativoException();
+		if (indice >= post.getConteudoSize())
+			throw new ConteudoPostInexistenteException(indice, post.getConteudoSize());
+		return post.getConteudoPost(indice);
+	}
+
 	public void addSolicitacaoAmizade(Usuario amigo){
 		this.solicitacoesDeAmizade.add(amigo.getEmail());
 	}

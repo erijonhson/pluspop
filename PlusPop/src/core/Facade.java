@@ -14,7 +14,6 @@ import exception.SenhaProtegidaException;
 import exception.SolicitacaoNaoEnviadaException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
-import exception.ConteudoPostNegativoException;
 
 /**
  * Facade do +Pop.

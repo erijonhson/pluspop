@@ -39,7 +39,7 @@ public class ConversorDeData {
 
 	private static final String DATE_PATTERN = "\\d{2}/{1}\\d{2}/{1}\\d{4}";
 
-	public ConversorDeData() {
+	private ConversorDeData() {
 		formatadorDeData = new SimpleDateFormat("dd/MM/yyyy");
 		formatadorDeData.setLenient(false);
 		pattern = Pattern.compile(DATE_PATTERN);

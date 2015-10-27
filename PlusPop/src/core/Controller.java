@@ -23,8 +23,6 @@ import exception.UsuarioJaExisteException;
 import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
-import exception.ConteudoPostNegativoException;
-import exception.PostInexistenteException;
 
 /**
  * Controller único do +Pop.
@@ -76,11 +74,11 @@ public class Controller {
 	public void login(String email, String senha) throws LoginException {
 		try {
 			setUsuarioDaSessao(recuperarUsuario(email));
-			if (!getUsuarioDaSessao().autenticarSenha(senha)) {
+			if (!usuarioDaSessao.autenticarSenha(senha)) {
 				retirarUsuarioDaSessao();
 				throw new SenhaInvalidaException();
 			}
-		} catch (UsuarioNaoExisteException | SenhaInvalidaException | UsuarioJaLogadoException | UsuarioNaoLogadoException e) {
+		} catch (UsuarioNaoExisteException | SenhaInvalidaException | UsuarioJaLogadoException e) {
 			throw new LoginException(e);
 		}
 	}
@@ -109,18 +107,19 @@ public class Controller {
 	public void atualizaPerfil(String atributo, String valor) 
 			throws AtualizaPerfilException {
 		try {
+			Usuario usuario = getUsuarioDaSessao();
 			switch (atributo.toUpperCase()) {
 				case "NOME":
-					getUsuarioDaSessao().setNome(valor);
+					usuario.setNome(valor);
 					break;
 				case "DATA DE NASCIMENTO":
-					getUsuarioDaSessao().setDataNasc(valor);
+					usuario.setDataNasc(valor);
 					break;
 				case "E-MAIL":
-					getUsuarioDaSessao().setEmail(valor);
+					usuario.setEmail(valor);
 					break;
 				case "FOTO":
-					getUsuarioDaSessao().setImagem(valor);
+					usuario.setImagem(valor);
 					break;
 			}
 		} catch (UsuarioNaoLogadoException | NomeUsuarioException | 
@@ -132,10 +131,11 @@ public class Controller {
 	public void atualizaPerfil(String atributo, String senha, String velhaSenha) 
 			throws AtualizaPerfilException {
 		try {
+			Usuario usuarioDaSessao = getUsuarioDaSessao();
 			if (atributo.equalsIgnoreCase("SENHA")) {
-				if (!getUsuarioDaSessao().autenticarSenha(velhaSenha))
+				if (!usuarioDaSessao.autenticarSenha(velhaSenha))
 					throw new SenhaInvalidaException("A senha fornecida esta incorreta.");
-				getUsuarioDaSessao().setSenha(senha);
+				usuarioDaSessao.setSenha(senha);
 			}
 		} catch(UsuarioNaoLogadoException | SenhaInvalidaException e) {
 			throw new AtualizaPerfilException(e);
@@ -159,10 +159,10 @@ public class Controller {
 		
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
 		Usuario usuario = this.getUsuarioDaSessao();
-		
-		String notificacao = usuario.getNome() + " rejeitou sua amizade.";
-		
+
 		usuario.rejeitaAmizade(amigo);
+		String notificacao = usuario.getNome() + " rejeitou sua amizade.";
+
 		amigo.addNotificacao(notificacao);
 	}
 	
@@ -219,36 +219,23 @@ public class Controller {
 
 	public void criaPost(String mensagem, Date data) 
 			throws CriaPostException, UsuarioNaoLogadoException {
-		
-		FabricaDePost fabrica = new FabricaDePost();
-		Post post = fabrica.construirPost(mensagem, data);
+		Post post = FabricaDePost.getInstance().construirPost(mensagem, data);
 		getUsuarioDaSessao().addPost(post);
 	}
 
 	public String getPost(int post) 
 			throws UsuarioNaoLogadoException {
-		return getUsuarioDaSessao().getMural().get(post).toString();
+		return getUsuarioDaSessao().getPost(post);
 	}
 
 	public String getPost(String atributo, int post) 
 			throws UsuarioNaoLogadoException {		
-		switch (atributo.toUpperCase()) {
-		case "MENSAGEM":
-			return getUsuarioDaSessao().getMural().get(post).getConteudo();
-		case "HASHTAGS":
-			return getUsuarioDaSessao().getMural().get(post).getHashtags();
-		default:// "DATA":
-			return getUsuarioDaSessao().getMural().get(post).getMomento();
-		}
+		return getUsuarioDaSessao().getPost(atributo, post);
 	}
 
 	public String getConteudoPost(int indice, int post) 
 			throws Exception {
-		if (indice < 0)
-			throw new ConteudoPostNegativoException(null);
-		if (indice >= getUsuarioDaSessao().getMural().get(post).getConteudoSize())
-			throw new PostInexistenteException(indice + " " + getUsuarioDaSessao().getMural().get(post).getConteudoSize());
-		return getUsuarioDaSessao().getMural().get(post).getConteudoPost(indice);
+		return getUsuarioDaSessao().getConteudoPost(indice, post);
 	}
 
 	/*
