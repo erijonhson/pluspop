@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -97,5 +98,14 @@ public class Post {
 	
 	public void removePopularidade (int popularidade){
 		this.popularidade -= popularidade;
+	}
+	
+	public boolean recente(){
+		LocalDate hoje = LocalDate.now();
+		return data.compareTo(hoje) == 0;
+	}
+	
+	public void addHashTag(String hashtag){
+		this.hashtags.add(hashtag);
 	}
 }
