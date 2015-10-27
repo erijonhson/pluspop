@@ -1,5 +1,9 @@
 package util;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -34,17 +38,29 @@ public class FabricaDePost {
 	private FabricaDePost() {
 	}
 
-	public Post construirPost(String mensagem, Date data) 
+	public Post construirPost(String mensagem, String dataHora) 
 			throws CriaPostException {
 		try {
 			this.indiceHashtag = encontrarIndiceHashtag(mensagem);
 			String texto = recuperarTextoValido(mensagem);
 			String[] midias = recuperarMidias(mensagem);
 			String[] hashTags = recuperarHashtagsValidas(mensagem);
-			return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), data);
+			return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
 		} catch (TamanhoMensagemException | HashTagException e) {
 			throw new CriaPostException(e);
 		}		
+	}
+	
+	public LocalDate buildDate(String dataHora){
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate data = LocalDate.parse(dataHora.substring(0, 10), formatter);
+		return data;
+	}
+	
+	public LocalTime buildTime(String dataHora){
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		LocalTime time = LocalTime.parse (dataHora.substring(11, 19), formatter);
+		return time;
 	}
 
 	/*

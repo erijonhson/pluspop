@@ -2,8 +2,14 @@ package core;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.List;
+
+import com.sun.media.sound.MidiUtils.TempoCache;
 
 /**
  * Representa um post de um usuario do PlusPop.
@@ -15,13 +21,15 @@ public class Post {
 	private List<String> conteudo;
 	private List<String> hashtags;
 	private int popularidade;
-	private Date momento;
+	private LocalDate data;
+	private LocalTime hora;
 
-	public Post(List<String> conteudo, List<String> hashtags, Date momento) {		
+	public Post(List<String> conteudo, List<String> hashtags, LocalDate data, LocalTime time) {		
 		
 		this.conteudo = conteudo;
 		this.hashtags = hashtags;
-		this.momento = momento;
+		this.data = data;
+		this.hora = time;
 		this.popularidade = 0;
 		
 	}
@@ -47,8 +55,8 @@ public class Post {
 	}
 
 	public String getMomento() {
-		DateFormat formatadorDeData = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss");
-		return formatadorDeData.format(this.momento);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		return data + " " + hora.format(formatter);
 	}
 
 	public int getPopularidade() {
@@ -81,5 +89,13 @@ public class Post {
 		} else {
 			return conteudo;
 		}
+	}
+	
+	public void addPopularidade (int popularidade){
+		this.popularidade += popularidade;
+	}
+	
+	public void removePopularidade (int popularidade){
+		this.popularidade -= popularidade;
 	}
 }

@@ -93,9 +93,9 @@ public class Facade {
 		popController.atualizaPerfil(atributo, valor, velhaSenha);
 	}
 
-	public void criaPost(String mensagem, Date data) 
+	public void criaPost(String mensagem, String dataHora) 
 			throws CriaPostException, UsuarioNaoLogadoException {
-		popController.criaPost(mensagem, data);
+		popController.criaPost(mensagem, dataHora);
 	}
 
 	public String getPost(String atributo, int post) 

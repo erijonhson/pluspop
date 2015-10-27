@@ -73,11 +73,10 @@ public class Controller {
 
 	public void login(String email, String senha) throws LoginException {
 		try {
-			setUsuarioDaSessao(recuperarUsuario(email));
-			if (!usuarioDaSessao.autenticarSenha(senha)) {
-				retirarUsuarioDaSessao();
+			Usuario usuario = recuperarUsuario(email);
+			if (!usuario.autenticarSenha(senha)) 
 				throw new SenhaInvalidaException();
-			}
+			setUsuarioDaSessao(usuario);
 		} catch (UsuarioNaoExisteException | SenhaInvalidaException | UsuarioJaLogadoException e) {
 			throw new LoginException(e);
 		}
@@ -217,9 +216,9 @@ public class Controller {
 		return this.getUsuarioDaSessao().getNextNotificacao();
 	}
 
-	public void criaPost(String mensagem, Date data) 
+	public void criaPost(String mensagem, String dataHora) 
 			throws CriaPostException, UsuarioNaoLogadoException {
-		Post post = FabricaDePost.getInstance().construirPost(mensagem, data);
+		Post post = FabricaDePost.getInstance().construirPost(mensagem, dataHora);
 		getUsuarioDaSessao().addPost(post);
 	}
 

@@ -49,7 +49,7 @@ public class Usuario implements Serializable {
 		setSenha(senha);
 		setDataNasc(dataNasc);
 		setImagem(imagem);
-		this.mural = new ArrayList();
+		this.mural = new ArrayList<Post>();
 		this.notificacoes = new ArrayList<String>();
 		this.amigos = new HashSet<>();
 		this.solicitacoesDeAmizade = new HashSet<String>();
