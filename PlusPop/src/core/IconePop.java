@@ -1,6 +1,6 @@
 package core;
 
-public class IconePop implements Popularidade{
+public class IconePop implements Avaliador{
 	
 	private static final int DELTA = 50;
 	private static final String EPICWIN = "#epicwin";

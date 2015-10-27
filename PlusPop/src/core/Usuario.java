@@ -40,6 +40,8 @@ public class Usuario implements Serializable {
 	private List<String> notificacoes;
 	private Set<String> amigos;
 	private Set<String> solicitacoesDeAmizade;
+	private Avaliador avaliador;
+	int popularidade;
 	
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
@@ -49,10 +51,12 @@ public class Usuario implements Serializable {
 		setSenha(senha);
 		setDataNasc(dataNasc);
 		setImagem(imagem);
+		setAvaliadorNormal();
 		this.mural = new ArrayList<Post>();
 		this.notificacoes = new ArrayList<String>();
 		this.amigos = new HashSet<>();
 		this.solicitacoesDeAmizade = new HashSet<String>();
+		this.popularidade = 0;
 	}
 
 	public void addPost(Post post){
@@ -245,12 +249,21 @@ public class Usuario implements Serializable {
 		this.amigos.add(amigo.getEmail());
 	}
 	
-	public void postCurtido(Usuario amigo, int post){
-		String momento = this.getPostByIndex(post).getMomento();
-		String notificacao = amigo.getNome() + " curtiu seu post de " + momento + ".";
-		this.addNotificacao(notificacao);
+	public void curtir(Post post){
+		avaliador.curtir(post);
 	}
 	
+	public void postCurtido(Usuario amigo, int idxPost){
+		
+		Post post = this.getPostByIndex(idxPost);
+		
+		this.changePopularidade(post.getPopularidade() * -1);
+		amigo.curtir(post);
+		this.changePopularidade(post.getPopularidade());
+		
+		String notificacao = amigo.getNome() + " curtiu seu post de " + post.getMomento() + ".";
+		this.addNotificacao(notificacao);
+	}
 	
 	public int getQtdAmigos(){
 		return this.amigos.size();
@@ -286,4 +299,28 @@ public class Usuario implements Serializable {
 	private boolean stringVazia(String s) {
 		return s == null || s.trim().equals("");
 	}
+	
+	public void setAvaliadorNormal(){
+		this.avaliador = new Normal();
+	}
+	
+	public void setAvaliadorCelebridadePop(){
+		this.avaliador = new CelebridadePop();
+	}
+	
+	public void setAvaliadorIconePop(){
+		this.avaliador = new IconePop();
+	}
+	
+	public void changePopularidade(int delta){
+		this.popularidade += delta;
+		if (this.popularidade < 500)
+			setAvaliadorNormal();
+		else
+			if (this.popularidade <= 1000)
+				setAvaliadorCelebridadePop();
+			else
+				setAvaliadorIconePop();
+	}
+	
 }

@@ -1,6 +1,6 @@
 package core;
 
-public class Normal implements Popularidade{
+public class Normal implements Avaliador{
 	
 	private static final int DELTA = 10;
 	

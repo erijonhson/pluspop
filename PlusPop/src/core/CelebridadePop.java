@@ -1,7 +1,7 @@
 package core;
 
 
-public class CelebridadePop implements Popularidade{
+public class CelebridadePop implements Avaliador{
 	
 	private static final int DELTA = 25;
 	private static final int BONUS = 10;

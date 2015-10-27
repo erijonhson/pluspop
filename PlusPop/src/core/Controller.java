@@ -204,7 +204,14 @@ public class Controller {
 			throws UsuarioNaoExisteException, UsuarioNaoLogadoException{
 		
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
-		amigo.postCurtido(this.getUsuarioDaSessao(), post);
+		Post postAmigo = amigo.getPostByIndex(post);
+		Usuario usuario = getUsuarioDaSessao();
+		
+		usuario.curtir(postAmigo);
+		
+		String momento = postAmigo.getMomento();
+		String notificacao = usuario.getNome() + " curtiu seu post de " + momento + ".";
+		amigo.addNotificacao(notificacao);
 	}
 	
 	public int getNotificacoes() throws UsuarioNaoLogadoException{
