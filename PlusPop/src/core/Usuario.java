@@ -253,18 +253,6 @@ public class Usuario implements Serializable {
 		avaliador.curtir(post);
 	}
 	
-	public void postCurtido(Usuario amigo, int idxPost){
-		
-		Post post = this.getPostByIndex(idxPost);
-		
-		this.changePopularidade(post.getPopularidade() * -1);
-		amigo.curtir(post);
-		this.changePopularidade(post.getPopularidade());
-		
-		String notificacao = amigo.getNome() + " curtiu seu post de " + post.getMomento() + ".";
-		this.addNotificacao(notificacao);
-	}
-	
 	public int getQtdAmigos(){
 		return this.amigos.size();
 	}

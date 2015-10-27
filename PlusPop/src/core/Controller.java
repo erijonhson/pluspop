@@ -207,10 +207,13 @@ public class Controller {
 		Post postAmigo = amigo.getPostByIndex(post);
 		Usuario usuario = getUsuarioDaSessao();
 		
+		int oldPop = postAmigo.getPopularidade();
+		
 		usuario.curtir(postAmigo);
 		
-		String momento = postAmigo.getMomento();
-		String notificacao = usuario.getNome() + " curtiu seu post de " + momento + ".";
+		amigo.changePopularidade(postAmigo.getPopularidade() - oldPop);	
+		
+		String notificacao = usuario.getNome() + " curtiu seu post de " + postAmigo.getMomento() + ".";
 		amigo.addNotificacao(notificacao);
 	}
 	
