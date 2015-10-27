@@ -1,11 +1,11 @@
 package core;
 
-public class IconePop implements Avaliador{
-	
+public class IconePop implements Avaliador {
+
 	private static final int DELTA = 50;
 	private static final String EPICWIN = "#epicwin";
 	private static final String EPICFAIL = "#epicfail";
-	
+
 	@Override
 	public void curtir(Post post) {
 		post.addPopularidade(DELTA);
@@ -16,7 +16,7 @@ public class IconePop implements Avaliador{
 	public void rejeitar(Post post) {
 		post.removePopularidade(DELTA);
 		post.addHashTag(EPICFAIL);
-		
+
 	}
-	
+
 }

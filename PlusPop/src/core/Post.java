@@ -1,16 +1,9 @@
 package core;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-
-import com.sun.media.sound.MidiUtils.TempoCache;
 
 /**
  * Representa um post de um usuario do PlusPop.
@@ -98,6 +91,8 @@ public class Post {
 	
 	public void removePopularidade (int popularidade){
 		this.popularidade -= popularidade;
+		if (this.popularidade < 0)
+			this.popularidade = 0;
 	}
 	
 	public boolean recente(){

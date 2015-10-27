@@ -41,7 +41,7 @@ public class Usuario implements Serializable {
 	private Set<String> amigos;
 	private Set<String> solicitacoesDeAmizade;
 	private Avaliador avaliador;
-	int popularidade;
+	private int popularidade;
 	
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
