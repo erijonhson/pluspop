@@ -1,8 +1,5 @@
 package core;
 
-import java.util.Date;
-
-import util.FabricaDePost;
 import easyaccept.EasyAccept;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;

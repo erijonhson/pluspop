@@ -3,10 +3,8 @@ package util;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import core.Post;
@@ -48,7 +46,7 @@ public class FabricaDePost {
 			return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
 		} catch (TamanhoMensagemException | HashTagException e) {
 			throw new CriaPostException(e);
-		}		
+		}
 	}
 	
 	public LocalDate buildDate(String dataHora){
@@ -90,7 +88,7 @@ public class FabricaDePost {
 			throws HashTagException {
 		String[] hashTags = mensagem.substring(this.indiceHashtag).split(" ");
 		for (String hashTag : hashTags)
-			if (hashTag.trim().equals("") || hashTag.charAt(0) != '#')
+			if (hashTag.trim().equals("") || !hashTag.startsWith("#"))
 				throw new HashTagException(hashTag);
 		return hashTags;
 	}

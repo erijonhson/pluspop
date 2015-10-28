@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import core.popularidade.CelebridadePop;
+import core.popularidade.ComportamentoSocial;
+import core.popularidade.IconePop;
+import core.popularidade.Normal;
 import util.ConversorDeData;
 import util.EmailValidator;
 import exception.ConteudoPostInexistenteException;
@@ -232,7 +236,7 @@ public class Usuario implements Serializable {
 		
 		this.solicitacoesDeAmizade.remove(amigo);
 	}
-	
+
 	public void aceitaAmizade(Usuario amigo) 
 			throws SolicitacaoNaoEnviadaException{
 		
@@ -242,66 +246,54 @@ public class Usuario implements Serializable {
 		this.addAmigo(amigo);
 		this.solicitacoesDeAmizade.remove(amigo);
 	}
-	
+
 	public void removeAmigo(Usuario amigo){
 		this.amigos.remove(amigo);
 	}
-	
+
 	public void addAmigo(Usuario amigo){
 		this.amigos.add(amigo);
 	}
-	
+
 	public void curtir(Post post){
 		comportamentoSocial.curtir(post);
 	}
-	
+
 	public int getQtdAmigos(){
 		return this.amigos.size();
 	}
-	
+
 	public void addNotificacao(String notificacao){
 		this.notificacoes.add(notificacao);
 	}
-	
+
 	public int getQtdNotificacoes(){
 		return this.notificacoes.size();
 	}
-	
+
 	public String getNextNotificacao() throws SemNotificacaoException{
 		if (this.notificacoes.size() == 0) throw new SemNotificacaoException();
 		String notificacao = this.notificacoes.get(0);
 		this.notificacoes.remove(0);
 		return notificacao;
 	}
-	
+
 	public Post getPostByIndex(int index){
 		return mural.get(index);
 	}
-	
-	/*
-	 * Métodos internos.
-	 */
-	
-	private boolean emailInvalido(String email) throws EmailInvalidoException {
-		return !EmailValidator.getInstance().validateEmail(email);
-	}
 
-	private boolean stringVazia(String s) {
-		return s == null || s.trim().equals("");
-	}
-	
 	public void setAvaliadorNormal(){
 		this.comportamentoSocial = new Normal();
 	}
-	
+
 	public void setAvaliadorCelebridadePop(){
 		this.comportamentoSocial = new CelebridadePop();
 	}
-	
+
 	public void setAvaliadorIconePop(){
 		this.comportamentoSocial = new IconePop();
 	}
-	
+
 	public void changePopularidade(int delta){
 		this.popularidade += delta;
 		if (this.popularidade < 500)
@@ -312,27 +304,27 @@ public class Usuario implements Serializable {
 			else
 				setAvaliadorIconePop();
 	}
-	
+
 	public int getPopularidade(){
 		return this.popularidade;
 	}
-	
+
 	public List<Post> getPosts(){
 		return this.mural;
 	}
-	
+
 	public List<Post> compartilhar(){
 		return comportamentoSocial.compartilhar(this.mural);
 	}
-	
+
 	public List<Post> getFeed(){
 		return this.feed.getFeed();
 	}
-	
+
 	public void updateFeed(){
 		this.feed.update(this.amigos);
 	}
-	
+
 	public void setFeedPorTempo(){
 		this.feed.setComparatorPorTempo();
 	}
@@ -340,4 +332,17 @@ public class Usuario implements Serializable {
 	public void setFeedPorPopularidade(){
 		this.feed.setComparatorPorPopularidade();
 	}
+
+	/*
+	 * Métodos internos.
+	 */
+
+	private boolean emailInvalido(String email) throws EmailInvalidoException {
+		return !EmailValidator.getInstance().validateEmail(email);
+	}
+
+	private boolean stringVazia(String s) {
+		return s == null || s.trim().equals("");
+	}
+
 }

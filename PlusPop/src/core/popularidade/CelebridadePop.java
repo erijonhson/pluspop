@@ -1,27 +1,30 @@
-package core;
+package core.popularidade;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class IconePop implements ComportamentoSocial {
+import core.Post;
 
-	private static final int DELTA = 50;
-	private static final String EPICWIN = "#epicwin";
-	private static final String EPICFAIL = "#epicfail";
-	private static final int QTDPOSTSTOSHARE = 6;
 
+public class CelebridadePop implements ComportamentoSocial{
+	
+	private static final int DELTA = 25;
+	private static final int BONUS = 10;
+	private static final int QTDPOSTSTOSHARE = 4;
+	
 	@Override
 	public void curtir(Post post) {
 		post.addPopularidade(DELTA);
-		post.addHashTag(EPICWIN);
+		if (post.recente())
+			post.addPopularidade(BONUS);
 	}
 
 	@Override
 	public void rejeitar(Post post) {
 		post.removePopularidade(DELTA);
-		post.addHashTag(EPICFAIL);
-
+		if (post.recente())
+			post.addPopularidade(BONUS);
 	}
 	
 	public List<Post> compartilhar(List<Post> posts){

@@ -1,7 +1,6 @@
 package core;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -202,18 +201,19 @@ public class Controller {
 	
 	public void curtirPost(String amigoEmail, int post) 
 			throws UsuarioNaoExisteException, UsuarioNaoLogadoException{
-		
+
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
 		Post postAmigo = amigo.getPostByIndex(post);
 		Usuario usuario = getUsuarioDaSessao();
-		
+
 		int oldPop = postAmigo.getPopularidade();
-		
+
 		usuario.curtir(postAmigo);
-		
-		amigo.changePopularidade(postAmigo.getPopularidade() - oldPop);	
-		
-		String notificacao = usuario.getNome() + " curtiu seu post de " + postAmigo.getMomento() + ".";
+
+		amigo.changePopularidade(postAmigo.getPopularidade() - oldPop);
+
+		String notificacao = usuario.getNome() + " curtiu seu post de "
+				+ postAmigo.getMomento() + ".";
 		amigo.addNotificacao(notificacao);
 	}
 	

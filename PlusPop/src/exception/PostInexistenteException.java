@@ -1,9 +1,13 @@
 package exception;
 
 public class PostInexistenteException extends Exception {
-	
-	public PostInexistenteException(String e) {
-		super("Item #" + e.split(" ")[0] + " nao existe nesse post, ele possui apenas " + e.split(" ")[1] + " itens distintos.");
+
+	private static final long serialVersionUID = -6070917069595703592L;
+
+	public PostInexistenteException(String message) {
+		super("Item #" + message.split(" ")[0]
+				+ " nao existe nesse post, ele possui apenas "
+				+ message.split(" ")[1] + " itens distintos.");
 	}
 
 }

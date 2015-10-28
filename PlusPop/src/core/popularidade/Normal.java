@@ -1,30 +1,26 @@
-package core;
+package core.popularidade;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import core.Post;
 
-public class CelebridadePop implements ComportamentoSocial{
-	
-	private static final int DELTA = 25;
-	private static final int BONUS = 10;
-	private static final int QTDPOSTSTOSHARE = 4;
-	
+public class Normal implements ComportamentoSocial {
+
+	private static final int DELTA = 10;
+	private static final int QTDPOSTSTOSHARE = 2;
+
 	@Override
 	public void curtir(Post post) {
 		post.addPopularidade(DELTA);
-		if (post.recente())
-			post.addPopularidade(BONUS);
 	}
 
 	@Override
 	public void rejeitar(Post post) {
 		post.removePopularidade(DELTA);
-		if (post.recente())
-			post.addPopularidade(BONUS);
 	}
-	
+
 	public List<Post> compartilhar(List<Post> posts){
 		List<Post> recentes = new ArrayList<Post>();
 		for (Post post : posts){
@@ -40,5 +36,4 @@ public class CelebridadePop implements ComportamentoSocial{
 		}
 		return recentes;
 	}
-
 }
