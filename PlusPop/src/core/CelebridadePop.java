@@ -1,10 +1,15 @@
 package core;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class CelebridadePop implements Avaliador{
+
+public class CelebridadePop implements ComportamentoSocial{
 	
 	private static final int DELTA = 25;
 	private static final int BONUS = 10;
+	private static final int QTDPOSTSTOSHARE = 4;
 	
 	@Override
 	public void curtir(Post post) {
@@ -18,6 +23,22 @@ public class CelebridadePop implements Avaliador{
 		post.removePopularidade(DELTA);
 		if (post.recente())
 			post.addPopularidade(BONUS);
+	}
+	
+	public List<Post> compartilhar(List<Post> posts){
+		List<Post> recentes = new ArrayList<Post>();
+		for (Post post : posts){
+			if (recentes.size() < QTDPOSTSTOSHARE){
+				recentes.add(post);
+			} else{
+				if (recentes.get(QTDPOSTSTOSHARE - 1).compareTempo(post) > 0){
+					recentes.remove(QTDPOSTSTOSHARE - 1);
+					recentes.add(post);
+				}
+			}
+			Collections.sort(recentes, (pa, pb) -> pa.compareTempo(pb));
+		}
+		return recentes;
 	}
 
 }

@@ -38,10 +38,11 @@ public class Usuario implements Serializable {
 	private String imagem;
 	private List<Post> mural;
 	private List<String> notificacoes;
-	private Set<String> amigos;
-	private Set<String> solicitacoesDeAmizade;
-	private Avaliador avaliador;
+	private Set<Usuario> amigos;
+	private Set<Usuario> solicitacoesDeAmizade;
+	private ComportamentoSocial comportamentoSocial;
 	private int popularidade;
+	private Feed feed;
 	
 	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
 			throws NomeUsuarioException, EmailInvalidoException,
@@ -54,9 +55,10 @@ public class Usuario implements Serializable {
 		setAvaliadorNormal();
 		this.mural = new ArrayList<Post>();
 		this.notificacoes = new ArrayList<String>();
-		this.amigos = new HashSet<>();
-		this.solicitacoesDeAmizade = new HashSet<String>();
+		this.amigos = new HashSet<Usuario>();
+		this.solicitacoesDeAmizade = new HashSet<Usuario>();
 		this.popularidade = 0;
+		this.feed = new Feed();
 	}
 
 	public void addPost(Post post){
@@ -219,38 +221,38 @@ public class Usuario implements Serializable {
 	}
 
 	public void addSolicitacaoAmizade(Usuario amigo){
-		this.solicitacoesDeAmizade.add(amigo.getEmail());
+		this.solicitacoesDeAmizade.add(amigo);
 	}
 	
 	public void rejeitaAmizade(Usuario amigo) 
 			throws SolicitacaoNaoEnviadaException{
 		
-		if (!this.solicitacoesDeAmizade.contains(amigo.getEmail())) 
+		if (!this.solicitacoesDeAmizade.contains(amigo)) 
 			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
 		
-		this.solicitacoesDeAmizade.remove(amigo.getEmail());
+		this.solicitacoesDeAmizade.remove(amigo);
 	}
 	
 	public void aceitaAmizade(Usuario amigo) 
 			throws SolicitacaoNaoEnviadaException{
 		
-		if (!this.solicitacoesDeAmizade.contains(amigo.getEmail()))
+		if (!this.solicitacoesDeAmizade.contains(amigo))
 			throw new SolicitacaoNaoEnviadaException(amigo.getNome());
 		
 		this.addAmigo(amigo);
-		this.solicitacoesDeAmizade.remove(amigo.getEmail());
+		this.solicitacoesDeAmizade.remove(amigo);
 	}
 	
 	public void removeAmigo(Usuario amigo){
-		this.amigos.remove(amigo.getEmail());
+		this.amigos.remove(amigo);
 	}
 	
 	public void addAmigo(Usuario amigo){
-		this.amigos.add(amigo.getEmail());
+		this.amigos.add(amigo);
 	}
 	
 	public void curtir(Post post){
-		avaliador.curtir(post);
+		comportamentoSocial.curtir(post);
 	}
 	
 	public int getQtdAmigos(){
@@ -289,15 +291,15 @@ public class Usuario implements Serializable {
 	}
 	
 	public void setAvaliadorNormal(){
-		this.avaliador = new Normal();
+		this.comportamentoSocial = new Normal();
 	}
 	
 	public void setAvaliadorCelebridadePop(){
-		this.avaliador = new CelebridadePop();
+		this.comportamentoSocial = new CelebridadePop();
 	}
 	
 	public void setAvaliadorIconePop(){
-		this.avaliador = new IconePop();
+		this.comportamentoSocial = new IconePop();
 	}
 	
 	public void changePopularidade(int delta){
@@ -319,4 +321,23 @@ public class Usuario implements Serializable {
 		return this.mural;
 	}
 	
+	public List<Post> compartilhar(){
+		return comportamentoSocial.compartilhar(this.mural);
+	}
+	
+	public List<Post> getFeed(){
+		return this.feed.getFeed();
+	}
+	
+	public void updateFeed(){
+		this.feed.update(this.amigos);
+	}
+	
+	public void setFeedPorTempo(){
+		this.feed.setComparatorPorTempo();
+	}
+
+	public void setFeedPorPopularidade(){
+		this.feed.setComparatorPorPopularidade();
+	}
 }

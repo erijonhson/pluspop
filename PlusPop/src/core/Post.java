@@ -107,4 +107,19 @@ public class Post {
 	public void addHashTag(String hashtag){
 		this.hashtags.add(hashtag);
 	}
+	
+	public LocalDate getData(){
+		return data;
+	}
+	
+	public LocalTime getHora(){
+		return hora;
+	}
+	
+	public int compareTempo(Post other) {
+		if (data.compareTo(other.getData()) != 0)
+			return -data.compareTo(other.getData());
+		return -hora.compareTo(other.getHora());
+	}
+		
 }

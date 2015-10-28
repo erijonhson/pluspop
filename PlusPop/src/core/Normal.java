@@ -1,8 +1,13 @@
 package core;
 
-public class Normal implements Avaliador {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Normal implements ComportamentoSocial {
 
 	private static final int DELTA = 10;
+	private static final int QTDPOSTSTOSHARE = 2;
 
 	@Override
 	public void curtir(Post post) {
@@ -14,4 +19,19 @@ public class Normal implements Avaliador {
 		post.removePopularidade(DELTA);
 	}
 
+	public List<Post> compartilhar(List<Post> posts){
+		List<Post> recentes = new ArrayList<Post>();
+		for (Post post : posts){
+			if (recentes.size() < QTDPOSTSTOSHARE){
+				recentes.add(post);
+			} else{
+				if (recentes.get(QTDPOSTSTOSHARE - 1).compareTempo(post) > 0){
+					recentes.remove(QTDPOSTSTOSHARE - 1);
+					recentes.add(post);
+				}
+			}
+			Collections.sort(recentes, (pa, pb) -> pa.compareTempo(pb));
+		}
+		return recentes;
+	}
 }
