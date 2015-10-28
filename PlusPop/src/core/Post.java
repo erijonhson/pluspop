@@ -38,7 +38,7 @@ public class Post {
 		return sb.toString().trim();
 	}
 
-	public String getHashtags() {
+	public String getStringOfHashtags() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.hashtags.get(0));
 		for (int i = 1; this.hashtags.size() > i; i++){
@@ -46,6 +46,10 @@ public class Post {
 			sb.append(this.hashtags.get(i));
 		}
 		return sb.toString().trim();
+	}
+	
+	public List<String> getHashtags(){
+		return this.hashtags;
 	}
 
 	public String getMomento() {

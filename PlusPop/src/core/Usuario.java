@@ -193,7 +193,7 @@ public class Usuario implements Serializable {
 		case "MENSAGEM":
 			return this.mural.get(post).getConteudo();
 		case "HASHTAGS":
-			return this.mural.get(post).getHashtags();
+			return this.mural.get(post).getStringOfHashtags();
 		default:// "DATA":
 			return this.mural.get(post).getMomento();
 		}
@@ -309,6 +309,14 @@ public class Usuario implements Serializable {
 				setAvaliadorCelebridadePop();
 			else
 				setAvaliadorIconePop();
+	}
+	
+	public int getPopularidade(){
+		return this.popularidade;
+	}
+	
+	public List<Post> getPosts(){
+		return this.mural;
 	}
 	
 }
