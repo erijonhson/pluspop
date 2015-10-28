@@ -5,6 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Classe que fornece o ranking dos usuários e das hashtags
+ * @author ordan
+ *
+ */
 public class Ranking {
 	
 	private List<Usuario> usuarios;
