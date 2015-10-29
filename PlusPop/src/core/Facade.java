@@ -1,5 +1,10 @@
 package core;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+
+import util.FabricaDePost;
 import easyaccept.EasyAccept;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
@@ -28,7 +33,17 @@ public class Facade {
 		popController = new Controller();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CriaPostException {
+		List<Post> posts = new ArrayList<Post>();
+		posts.add(FabricaDePost.getInstance().construirPost("teste#gfgf", "11/11/1111 11:11:11"));
+		posts.add(FabricaDePost.getInstance().construirPost("teste#gfga", "11/11/1111 11:11:11"));
+		
+		try {
+			ManipuladorDeArquivo.save(posts);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		args = new String[] { "core.Facade",
 				"resources/Scripts de Teste/usecase_1.txt",
 				"resources/Scripts de Teste/usecase_2.txt",

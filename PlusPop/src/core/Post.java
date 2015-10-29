@@ -12,15 +12,15 @@ import java.util.List;
  */
 public class Post {
 	
-	private List<String> conteudo;
+	private List<String> conteudos;
 	private List<String> hashtags;
 	private int popularidade;
 	private LocalDate data;
 	private LocalTime hora;
-
+	
 	public Post(List<String> conteudo, List<String> hashtags, LocalDate data, LocalTime time) {		
 		
-		this.conteudo = conteudo;
+		this.conteudos = conteudo;
 		this.hashtags = hashtags;
 		this.data = data;
 		this.hora = time;
@@ -30,10 +30,10 @@ public class Post {
 		
 	public String getConteudo() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.conteudo.get(0).trim());
-		for (int i = 1; this.conteudo.size() > i; i++){
+		sb.append(this.conteudos.get(0).trim());
+		for (int i = 1; this.conteudos.size() > i; i++){
 			sb.append(" ");
-			sb.append(this.conteudo.get(i));
+			sb.append(this.conteudos.get(i));
 		}
 		return sb.toString().trim();
 	}
@@ -75,11 +75,31 @@ public class Post {
 	}
 
 	public int getConteudoSize() {
-		return this.conteudo.size();
+		return this.conteudos.size();
 	}
-
+	
+	public String getAudios(){
+		String audios = "";
+		for (String conteudo : conteudos){
+			if (conteudo.contains("<audio>")) {
+				audios += conteudo.substring(7, conteudo.indexOf("</audio>"));
+			} 
+		}
+		return audios;
+	}
+	
+	public String getImagens(){
+		String imagens = "";
+		for (String conteudo : conteudos){
+			if (conteudo.contains("<imagem>")) {
+				imagens += conteudo.substring(8, conteudo.indexOf("</imagem>"));
+			} 
+		}
+		return imagens;
+	}
+	
 	public String getConteudoPost(int indice) {
-		String conteudo = this.conteudo.get(indice).trim();
+		String conteudo = this.conteudos.get(indice).trim();
 		if (conteudo.contains("<audio>")) {
 			return "$arquivo_audio:" + conteudo.substring(7, conteudo.indexOf("</audio>"));
 		} else if (conteudo.contains("<imagem>")){
@@ -120,6 +140,17 @@ public class Post {
 		if (data.compareTo(other.getData()) != 0)
 			return -data.compareTo(other.getData());
 		return -hora.compareTo(other.getHora());
+	}
+	
+	public String toFileFormat(){
+		String out = "";
+		String endl = System.getProperty("line.separator");
+		out += "Conteúdo:" + endl + getConteudo() + endl + getImagens() + endl + getAudios() + endl;
+		for (String hashtag : hashtags){
+			out += hashtag + " ";
+		}
+		out += "+Pop: " + getPopularidade() + endl;
+		return out;
 	}
 		
 }
