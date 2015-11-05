@@ -14,6 +14,7 @@ import exception.FechaSistemaException;
 import exception.LoginException;
 import exception.LogoutException;
 import exception.NomeUsuarioException;
+import exception.PostOutOfRangeException;
 import exception.SemNotificacaoException;
 import exception.SenhaInvalidaException;
 import exception.SenhaProtegidaException;
@@ -34,9 +35,11 @@ public class Controller {
 
 	private List<Usuario> usuariosDoSistema;
 	private Usuario usuarioDaSessao;
+	private Ranking ranking;
 
 	public Controller() {
 		usuariosDoSistema = new ArrayList<Usuario>();
+		ranking = new Ranking();
 		retirarUsuarioDaSessao();
 	}
 
@@ -200,7 +203,7 @@ public class Controller {
 	}
 	
 	public void curtirPost(String amigoEmail, int post) 
-			throws UsuarioNaoExisteException, UsuarioNaoLogadoException{
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException{
 
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
 		Post postAmigo = amigo.getPostByIndex(post);
@@ -213,6 +216,24 @@ public class Controller {
 		amigo.changePopularidade(postAmigo.getPopularidade() - oldPop);
 
 		String notificacao = usuario.getNome() + " curtiu seu post de "
+				+ postAmigo.getMomento() + ".";
+		amigo.addNotificacao(notificacao);
+	}
+	
+	public void rejeitarPost(String amigoEmail, int post) 
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException {
+
+		Usuario amigo = this.recuperarUsuario(amigoEmail);
+		Post postAmigo = amigo.getPostByIndex(post);
+		Usuario usuario = getUsuarioDaSessao();
+
+		int oldPop = postAmigo.getPopularidade();
+
+		usuario.rejeitar(postAmigo);
+
+		amigo.changePopularidade(postAmigo.getPopularidade() - oldPop);
+
+		String notificacao = usuario.getNome() + " rejeitou seu post de "
 				+ postAmigo.getMomento() + ".";
 		amigo.addNotificacao(notificacao);
 	}
@@ -245,6 +266,51 @@ public class Controller {
 	public String getConteudoPost(int indice, int post) 
 			throws Exception {
 		return getUsuarioDaSessao().getConteudoPost(indice, post);
+	}
+	
+	public void adicionaPops(int pops) 
+			throws Exception {
+		getUsuarioDaSessao().changePopularidade(pops);
+	}
+	
+	public String getPopularidade() 
+			throws Exception{
+		return getUsuarioDaSessao().getComportamentoSocial();		
+	}
+	
+	public int getPopsPost(int post) 
+			throws PostOutOfRangeException {
+		return usuarioDaSessao.getPostByIndex(post).getPopularidade();
+	}
+	
+	public int qtdCurtidasDePost(int post) 
+			throws PostOutOfRangeException {
+		return usuarioDaSessao.getPostByIndex(post).getCurtidas();
+	}
+	
+	public int qtdRejeicoesDePost(int post) 
+			throws PostOutOfRangeException {
+		return usuarioDaSessao.getPostByIndex(post).getRejeicoes();
+	}
+	
+	public int getPopsUsuario(String usuario) 
+			throws UsuarioNaoExisteException {
+		return this.recuperarUsuario(usuario).getPopularidade();//popController.getPopsUsuario();
+	}
+	
+	public int getPopsUsuario() 
+			throws UsuarioNaoLogadoException {
+		return usuarioDaSessao.getPopularidade();
+	}
+	
+	public String atualizaRanking() {
+		this.ranking.atualizaRank(this.usuariosDoSistema);
+		return this.ranking.getRankUsuario();
+	}
+	
+	public String atualizaTrendingTopics() {
+		this.ranking.atualizaRank(this.usuariosDoSistema);
+		return this.ranking.getRankHashtag();
 	}
 
 	/*

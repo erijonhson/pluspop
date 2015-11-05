@@ -69,20 +69,24 @@ public class Ranking {
 	}
 	
 	public String getRankUsuario(){
-		String rank = "";
-		for (Usuario usuario : this.usuarios){
-			if (rank.length() != 0) rank += ", ";
-			rank += usuario.getNome();
+		String rank = "Mais Populares: ";
+		for (int i = 0; i < this.usuarios.size(); i++){
+			if (i != 0) rank += "; ";
+			rank += "("+(i+1)+") ";
+			rank += this.usuarios.get(i).getNome()+" "+this.usuarios.get(i).getPopularidade();
 		}
+		rank += "; | Menos Populares: ";
 		return rank;
 	}
 	
 	public String getRankHashtag(){
 		String rank = "";
-		for (String hashtag : this.hashtags){
-			if (rank.length() != 0) rank += ", ";
-			rank += hashtag;
+		for (int i = 0; i < this.hashtags.size(); i++){			
+			if (i != 0) rank += "; ";
+			rank += "("+(i+1)+") ";
+			rank += this.hashtags.get(i)+": "+frequenciaHashtag.get(this.hashtags.get(i));
 		}
+		rank += ";";
 		return rank;
 	}
 }

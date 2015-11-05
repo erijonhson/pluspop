@@ -16,15 +16,17 @@ public class CelebridadePop implements ComportamentoSocial{
 	@Override
 	public void curtir(Post post) {
 		post.addPopularidade(DELTA);
+		post.setCurtidas(post.getCurtidas()+1);
 		if (post.recente())
-			post.addPopularidade(BONUS);
+			post.addPopularidade(BONUS);		
 	}
 
 	@Override
 	public void rejeitar(Post post) {
 		post.removePopularidade(DELTA);
+		post.setRejeicoes(post.getRejeicoes()+1);
 		if (post.recente())
-			post.addPopularidade(BONUS);
+			post.removePopularidade(BONUS);		
 	}
 	
 	public List<Post> compartilhar(List<Post> posts){
@@ -41,6 +43,11 @@ public class CelebridadePop implements ComportamentoSocial{
 			Collections.sort(recentes, (pa, pb) -> pa.compareTempo(pb));
 		}
 		return recentes;
+	}
+	
+	@Override
+	public String toString() {
+		return "Celebridade Pop";
 	}
 
 }

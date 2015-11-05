@@ -12,6 +12,7 @@ import exception.CriaPostException;
 import exception.FechaSistemaException;
 import exception.LoginException;
 import exception.LogoutException;
+import exception.PostOutOfRangeException;
 import exception.SemNotificacaoException;
 import exception.SenhaProtegidaException;
 import exception.SolicitacaoNaoEnviadaException;
@@ -49,6 +50,10 @@ public class Facade {
 				"resources/Scripts de Teste/usecase_2.txt",
 				"resources/Scripts de Teste/usecase_3.txt",
 				"resources/Scripts de Teste/usecase_4.txt",
+				"resources/Scripts de Teste/usecase_5.txt",
+				"resources/Scripts de Teste/usecase_6.txt",
+				"resources/Scripts de Teste/usecase_7.txt",
+				
 		};
 		EasyAccept.main(args);
 	}
@@ -129,7 +134,7 @@ public class Facade {
 	public void adicionaAmigo(String amigoEmail) 
 			throws UsuarioNaoLogadoException, UsuarioNaoExisteException {
 		this.popController.adicionaAmigo(amigoEmail);
-	}
+	}	
 
 	public int getNotificacoes() 
 			throws UsuarioNaoLogadoException {
@@ -158,7 +163,7 @@ public class Facade {
 	}
 
 	public void curtirPost(String amigo, int post) 
-			throws UsuarioNaoExisteException, UsuarioNaoLogadoException {
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException {
 		popController.curtirPost(amigo, post);
 	}
 
@@ -167,5 +172,55 @@ public class Facade {
 		
 		popController.removeAmigo(usuario);
 	}
+	
+	public void adicionaPops(int pops)
+			throws Exception {
+		popController.adicionaPops(pops);
+	}
+	
+	public String getPopularidade() 
+			throws Exception {
+		return popController.getPopularidade();		
+	}
+	
+	public void rejeitarPost(String amigoEmail, int post) 
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException {
+		popController.rejeitarPost(amigoEmail, post);
+	}
+	
+	public int getPopsPost(int post) 
+			throws PostOutOfRangeException {
+		return popController.getPopsPost(post);
+	}
+	
+	public int qtdCurtidasDePost(int post) 
+			throws PostOutOfRangeException {
+		return popController.qtdCurtidasDePost(post);
+	}
+	
+	public int qtdRejeicoesDePost(int post) 
+			throws PostOutOfRangeException {
+		return popController.qtdRejeicoesDePost(post);
+	}
+	
+	public int getPopsUsuario(String usuario) 
+			throws UsuarioNaoExisteException {
+		return popController.getPopsUsuario(usuario);
+	}
+	
+	public int getPopsUsuario() 
+			throws UsuarioNaoLogadoException {
+		return popController.getPopsUsuario();
+	}
+	
+	public String atualizaRanking() {
+		return popController.atualizaRanking();
+	}
+	
+	public String atualizaTrendingTopics() {
+		return popController.atualizaTrendingTopics();
+	}
+	
+	
 
 }

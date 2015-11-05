@@ -16,14 +16,19 @@ public class IconePop implements ComportamentoSocial {
 	@Override
 	public void curtir(Post post) {
 		post.addPopularidade(DELTA);
-		post.addHashTag(EPICWIN);
+		if (!post.getHashtags().contains("#epicwin")) {
+			post.addHashTag(EPICWIN);
+		}		
+		post.setCurtidas(post.getCurtidas()+1);
 	}
 
 	@Override
 	public void rejeitar(Post post) {
 		post.removePopularidade(DELTA);
-		post.addHashTag(EPICFAIL);
-
+		if (!post.getHashtags().contains("#epicfail")) {
+			post.addHashTag(EPICFAIL);
+		}
+		post.setRejeicoes(post.getRejeicoes()+1);
 	}
 	
 	public List<Post> compartilhar(List<Post> posts){
@@ -40,6 +45,11 @@ public class IconePop implements ComportamentoSocial {
 			Collections.sort(recentes, (pa, pb) -> pa.compareTempo(pb));
 		}
 		return recentes;
+	}
+	
+	@Override
+	public String toString() {
+		return "Icone Pop";
 	}
 
 }

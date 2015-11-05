@@ -14,11 +14,13 @@ public class Normal implements ComportamentoSocial {
 	@Override
 	public void curtir(Post post) {
 		post.addPopularidade(DELTA);
+		post.setCurtidas(post.getCurtidas()+1);
 	}
 
 	@Override
 	public void rejeitar(Post post) {
 		post.removePopularidade(DELTA);
+		post.setRejeicoes(post.getRejeicoes()+1);
 	}
 
 	public List<Post> compartilhar(List<Post> posts){
@@ -35,5 +37,10 @@ public class Normal implements ComportamentoSocial {
 			Collections.sort(recentes, (pa, pb) -> pa.compareTempo(pb));
 		}
 		return recentes;
+	}
+	
+	@Override
+	public String toString() {
+		return "Normal Pop";
 	}
 }

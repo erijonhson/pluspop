@@ -1,0 +1,118 @@
+######################
+# CASOS DE USO 5 E 6 #
+######################
+
+iniciaSistema
+cadastraUsuario nome="Dilma Rousseff" email="dilma_bolada@brasil.com" senha="rainha" dataNasc="14/12/1947" imagem="resources/dilma.jpg"
+
+login email="dilma_bolada@brasil.com" senha="rainha"
+criaPost mensagem="Mamae tambem esta no snap! Podem me seguir la: DILMABOLADA.Brasil, patria conectada. #DivaDoMaisPlus #rainhaDaNacao" data="27/08/2015 11:04:00"
+adicionaAmigo usuario="naza_foguete@hotmail.com"
+
+#Para facilitar o teste, vamos permitir o 'set' dos Pops dos usuarios.
+adicionaPops pops=501
+expect "Celebridade Pop" getPopularidade
+logout
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+criaPost mensagem="Odeio andar de elevador. #amoescadas" data="27/08/2015 09:30:00"
+
+aceitaAmizade usuario="dilma_bolada@brasil.com"
+adicionaAmigo usuario="fafa_bernardes@email.com.br"
+adicionaAmigo usuario="madonna@email.com"
+
+expect "Normal Pop" getPopularidade
+logout
+
+login email="madonna@email.com" senha="iamawesome"
+adicionaPops pops=1001
+expect "Icone Pop" getPopularidade
+
+aceitaAmizade usuario="naza_foguete@hotmail.com"
+adicionaAmigo usuario="fafa_bernardes@email.com.br"
+criaPost mensagem="Very happy with my new friends. #divas" data="27/08/2015 10:30:00"
+criaPost mensagem="Download my new single I'm Cantora for free. <audio>musicas/im_cantora.mp3</audio>" data="27/08/2015 10:40:00"
+
+#naza perde 50 e fica epicfail
+rejeitarPost amigo="naza_foguete@hotmail.com" post=0
+
+logout
+
+login email="fafa_bernardes@email.com.br" senha="fafa_S2"
+aceitaAmizade usuario="madonna@email.com"
+aceitaAmizade usuario="naza_foguete@hotmail.com"
+adicionaPops pops=501
+expect "Celebridade Pop" getPopularidade
+
+#Comecar a curtir posts e verificar os pops. Ateh agora:
+# Fatima --> {Madonna, Nazare}. Celebridade Pops = 501; 2 Posts.
+# Madonna --> {Fatima, Nazare}. Icone Pops = 1001; 2 Posts.
+# Nazare --> {Dilma, Fatima, Madonna}. Normal Pops = 0; 5 Posts.
+# Dilma --> {Nazare}. Celebridade Pops = 501; 1 Posts.
+
+#naza ganha 25
+curtirPost amigo="naza_foguete@hotmail.com" post=0
+#naza ganha 25
+curtirPost amigo="naza_foguete@hotmail.com" post=4
+#madonna ganha 25
+curtirPost amigo="madonna@email.com" post=0
+#madonna ganha 25
+curtirPost amigo="madonna@email.com" post=1
+logout
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+#ver as questao da insercao da nova hastags 
+expect "#anta,#separa,#epicfail" getPost atributo="Hashtags" post=0
+
+#fafa ganha 10
+curtirPost amigo="fafa_bernardes@email.com.br" post=0
+#madonna ganhou 10
+curtirPost amigo="madonna@email.com" post=0
+#madonna ganhou 10
+curtirPost amigo="madonna@email.com" post=1
+
+#pode ter pops negativos?
+expect -25 getPopsPost post=0
+expect 25 getPopsPost post=4
+expect 1 qtdCurtidasDePost post=0
+expect 1 qtdRejeicoesDePost post=0
+
+#Imoprtante: Consulta de Pops de um usuario especifico.
+#So pode ser feito depois de um logout. Outro usuario logado nao pode ver os Pops dos OUTROS USUARIOS.
+expectError "Erro na consulta de Pops. Um usuarix ainda esta logadx." getPopsUsuario usuario="dilma_bolada@brasil.com"
+logout
+
+#Nazare: -50 +25 + 25 = 0 --> 2 curtidas de celebridade (Fatima) e uma rejeitada de Icone Pops (Madonna).
+#Dilma: 0 + 501 = 501 --> Ninguem curtiu um post de Dilma
+#Fatima: 10 + 10 = 20 + 501 = 521 --> 2 curtidas de usuarios normais (As duas de Nazare)
+#Madonna: 25 + 25 + 10 + 10 = 70 + 1001 = 1071 --> 2 curtidas de Nazare (10 cada) e 2 curtidas de Fatima (25 cada)
+expect 0 getPopsUsuario usuario="naza_foguete@hotmail.com"
+expect 501 getPopsUsuario usuario="dilma_bolada@brasil.com"
+expect 521 getPopsUsuario usuario="fafa_bernardes@email.com.br" 
+expect 1071 getPopsUsuario usuario="madonna@email.com"
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+expectError "Post #7 nao existe. Usuarix possui apenas 5 post(s)." qtdCurtidasDePost post=7
+
+criaPost mensagem="Nao aguento pessoas falsianes. #falsianeemtodolugar" data="27/08/2015 11:19:00"
+
+logout
+
+login email="madonna@email.com" senha="iamawesome"
+expect "Icone Pop" getPopularidade
+curtirPost amigo="fafa_bernardes@email.com.br" post=0
+curtirPost amigo="naza_foguete@hotmail.com" post=2
+logout
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+expect "#soulinda,#naza,#epicwin" getPost atributo="Hashtags" post=2
+logout
+
+login email="fafa_bernardes@email.com.br" senha="fafa_S2"
+expect "#encontro,#SemPreconceito,#epicwin" getPost atributo="Hashtags" post=0
+logout
+
+expect 50 getPopsUsuario usuario="naza_foguete@hotmail.com"
+expect 571 getPopsUsuario usuario="fafa_bernardes@email.com.br" 
+
+fechaSistema

@@ -20,6 +20,7 @@ import exception.ConteudoPostNegativoException;
 import exception.ConversaoDeDataException;
 import exception.EmailInvalidoException;
 import exception.NomeUsuarioException;
+import exception.PostOutOfRangeException;
 import exception.SemNotificacaoException;
 import exception.SolicitacaoNaoEnviadaException;
 
@@ -258,6 +259,10 @@ public class Usuario implements Serializable {
 	public void curtir(Post post){
 		comportamentoSocial.curtir(post);
 	}
+	
+	public void rejeitar(Post post){
+		comportamentoSocial.rejeitar(post);
+	}
 
 	public int getQtdAmigos(){
 		return this.amigos.size();
@@ -278,7 +283,9 @@ public class Usuario implements Serializable {
 		return notificacao;
 	}
 
-	public Post getPostByIndex(int index){
+	public Post getPostByIndex(int index) 
+			throws PostOutOfRangeException{
+		if (index >= mural.size()) throw new PostOutOfRangeException(index+" "+mural.size());
 		return mural.get(index);
 	}
 
@@ -331,6 +338,10 @@ public class Usuario implements Serializable {
 
 	public void setFeedPorPopularidade(){
 		this.feed.setComparatorPorPopularidade();
+	}
+	
+	public String getComportamentoSocial() {
+		return comportamentoSocial.toString();
 	}
 
 	/*

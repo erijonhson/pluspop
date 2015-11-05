@@ -1,0 +1,138 @@
+###############
+#Caso de uso 6#
+###############
+
+# Os POPs de um usuario dependem exclusivamente da popularidade de seus postes,
+# O metodo adicionaPops esta sendo usado para verificar a mudança dinamica do tipo de usuario
+
+iniciaSistema
+
+id1=cadastraUsuario nome="Jesse Pinkman" email="jesse@email.com.br" senha="cristal" dataNasc="17/09/1989" imagem="resources/jesse.jpg"
+id2=cadastraUsuario nome="Walter White" email="walt@email.com.br" senha="Heisenberg" dataNasc="10/01/1959" imagem="resources/walt.jpg"
+id3=cadastraUsuario nome="Skyler White" email="skyler@email.com.br" senha="waltjr" dataNasc="22/05/1968" imagem="resources/skyler.jpg"
+id4=cadastraUsuario nome="Gustavo Finger" email="gus@email.com" senha="polloshermanos" dataNasc="01/12/1955" imagem="recources/gus.jpg"
+
+login email="jesse@email.com.br" senha="cristal"
+adicionaAmigo usuario="walt@email.com.br"
+criaPost  mensagem="Ou voce foge das coisas ou as enfrenta. Toda a questao eh aceitar, realmente, o que voce eh. #souQuemSou" data="10/08/2015 22:00:01"
+criaPost mensagem="Qual e a vantagem de ser um fora da lei quando se tem responsabilidades? #foraDaLei #souQuemSou" data="11/08/2015 02:40:21"
+expect 0 getPopsUsuario
+expect "Normal Pop" getPopularidade
+
+logout
+
+login email="walt@email.com.br" senha="Heisenberg"
+expect 1 getNotificacoes 
+expect "Jesse Pinkman quer sua amizade." getNextNotificacao
+aceitaAmizade usuario="jesse@email.com.br"
+expect 0 getPopsUsuario
+expect "Normal Pop" getPopularidade
+curtirPost amigo="jesse@email.com.br" post=0
+curtirPost amigo="jesse@email.com.br" post=1
+adicionaPops pop=950
+expect 950 getPopsUsuario
+expect "Celebridade Pop" getPopularidade
+criaPost  mensagem="Voce precisa parar de pensar na escuridao que o precede. O que passou, passou. #passado" data="05/06/2015 21:50:55"
+criaPost  mensagem="Eu nao estou em perigo, eu sou o perigo. #heisenberg" data="06/06/2015 01:30:02"
+
+logout
+
+login email="jesse@email.com.br" senha="cristal"
+expect 20 getPopsUsuario
+adicionaPops pop=510
+expect "Celebridade Pop" getPopularidade
+criaPost  mensagem="Eu sou o cara mau. <imagem>imagens/bad.jpg</imagem> #pinkman" data="23/06/2015 01:30:02"
+curtirPost amigo="walt@email.com.br" post=0
+curtirPost amigo="walt@email.com.br" post=1
+adicionaAmigo usuario="skyler@email.com.br"
+
+logout
+
+login email="skyler@email.com.br" senha="waltjr"
+rejeitaAmizade usuario="jesse@email.com.br"
+adicionaAmigo usuario="walt@email.com.br"
+adicionaAmigo usuario="gus@email.com"
+criaPost mensagem="A unica coisa que posso fazer e esperar. So isso. Essa eh a unica opcao boa. Esperar, aguardar a minha hora, e esperar. #esperar" data="01/09/2015 16:45:21"
+criaPost mensagem="Alguem tem que proteger essa familia do homem que protege essa familia. #preocupada" data="01/09/2015 22:05:20"
+
+logout
+
+login email="walt@email.com.br" senha="Heisenberg"
+aceitaAmizade usuario="skyler@email.com.br"
+#Walter fica Icone Pop pois ja possui 950 + 310 = 1260
+adicionaPops pop=310
+expect "Icone Pop" getPopularidade
+criaPost  mensagem="Seu produto eh um refrigerante sabor cola, generico e mal feito. O meu eh Coca-Cola. Quer mesmo viver num mundo sem Coca-Cola? #cristal #Omelhor" data="30/09/2015 12:30:21"
+curtirPost amigo="jesse@email.com.br" post=2
+rejeitarPost amigo="skyler@email.com.br" post=1
+
+logout
+
+login email="gus@email.com" senha="polloshermanos"
+aceitaAmizade usuario="skyler@email.com.br"
+criaPost mensagem="Nunca cometa duas vezes o mesmo erro" data="01/09/2015 20:34:43"
+adicionaAmigo usuario="walt@email.com.br"
+adicionaAmigo usuario="jesse@email.com.br"
+expect "Normal Pop" getPopularidade
+
+logout
+
+login email="jesse@email.com.br" senha="cristal"
+aceitaAmizade usuario="gus@email.com"
+
+logout
+
+login email="gus@email.com" senha="polloshermanos"
+adicionaPops pop=1001
+curtirPost amigo="jesse@email.com.br" post=1
+rejeitarPost amigo="skyler@email.com.br" post=1
+
+logout
+
+login email="jesse@email.com.br" senha="cristal"
+adicionaAmigo usuario="madonna@email.com"
+
+expect "#pinkman,#epicwin" getPost atributo="Hashtags" post=2
+expect "Eu sou o cara mau. <imagem>imagens/bad.jpg</imagem> #pinkman #epicwin (2015-06-23 01:30:02)" getPost post=2
+expect "#pinkman,#epicwin" getPost atributo="Hashtags" post=2
+logout
+
+login email="skyler@email.com.br" senha="waltjr"
+adicionaAmigo usuario="madonna@email.com"
+expect "#preocupada,#epicfail" getPost atributo="Hashtags" post=1
+
+logout
+
+login email="naza_foguete@hotmail.com" senha="belzinha"
+criaPost  mensagem="Cade a animacao dessa rede? sou mais eu! #naza" data="11/08/2015 02:40:21"
+criaPost  mensagem="#soulinda #festa #naza" data="11/08/2015 02:40:21"
+expect 50 getPopsUsuario
+logout
+
+
+
+login email="madonna@email.com" senha="iamawesome"
+aceitaAmizade usuario="skyler@email.com.br"
+aceitaAmizade usuario="jesse@email.com.br"
+criaPost  mensagem="Assistindo! :D #encontro" data="10/11/2015 08:30:12"
+curtirPost amigo="jesse@email.com.br" post=2
+curtirPost amigo="skyler@email.com.br" post=1
+
+expect 1071 getPopsUsuario
+logout
+
+login email="jesse@email.com.br" senha="cristal"
+expect "#pinkman,#epicwin" getPost atributo="Hashtags" post=2
+expect 680 getPopsUsuario
+logout
+
+login email="skyler@email.com.br" senha="waltjr"
+expect "#preocupada,#epicfail,#epicwin" getPost atributo="Hashtags" post=1
+expect 2 qtdRejeicoesDePost post=1
+expect 1 qtdCurtidasDePost post=1
+expect -50 getPopsUsuario
+logout
+
+atualizaRanking
+
+fechaSistema

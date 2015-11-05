@@ -42,8 +42,14 @@ public class FabricaDePost {
 			this.indiceHashtag = encontrarIndiceHashtag(mensagem);
 			String texto = recuperarTextoValido(mensagem);
 			String[] midias = recuperarMidias(mensagem);
-			String[] hashTags = recuperarHashtagsValidas(mensagem);
-			return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
+			if (mensagem.contains("#")) {
+				String[] hashTags = recuperarHashtagsValidas(mensagem);
+				return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
+			}else{
+				String[] hashTags = new String[0];
+				return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
+			}
+			
 		} catch (TamanhoMensagemException | HashTagException e) {
 			throw new CriaPostException(e);
 		}

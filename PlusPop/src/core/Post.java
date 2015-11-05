@@ -17,6 +17,8 @@ public class Post {
 	private int popularidade;
 	private LocalDate data;
 	private LocalTime hora;
+	private int curtidas;
+	private int rejeicoes;
 	
 	public Post(List<String> conteudo, List<String> hashtags, LocalDate data, LocalTime time) {		
 		
@@ -25,6 +27,8 @@ public class Post {
 		this.data = data;
 		this.hora = time;
 		this.popularidade = 0;
+		this.curtidas = 0;
+		this.rejeicoes = 0;
 		
 	}
 		
@@ -113,10 +117,24 @@ public class Post {
 		this.popularidade += popularidade;
 	}
 	
+	public int getCurtidas() {
+		return curtidas;
+	}
+	
+	public int getRejeicoes() {
+		return rejeicoes;
+	}
+	
+	public void setCurtidas(int curtidas) {
+		this.curtidas = curtidas;
+	}
+	
+	public void setRejeicoes(int rejeicoes) {
+		this.rejeicoes = rejeicoes;
+	}
+	
 	public void removePopularidade (int popularidade){
 		this.popularidade -= popularidade;
-		if (this.popularidade < 0)
-			this.popularidade = 0;
 	}
 	
 	public boolean recente(){
