@@ -27,8 +27,13 @@ expectError "Erro na atualizacao de perfil. A senha fornecida esta incorreta." a
 
 logout
 
-expectError "Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="Nome" valor=""
-expectError "Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="E-mail" valor="algumemailatemail.com"
+# Versao antiga: modificada para padronizar as mensagens de erro na atualizacao.
+#expectError "Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="Nome" valor=""
+#expectError "Nao eh possivel atualizar um perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="E-mail" valor="algumemailatemail.com"
+
+expectError "Erro na atualizacao de perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="Nome" valor=""
+expectError "Erro na atualizacao de perfil. Nenhum usuarix esta logadx no +pop." atualizaPerfil atributo="E-mail" valor="algumemailatemail.com"
+
 
 expectError "Nao foi possivel realizar login. Senha invalida." login email="fafa_bernardes@email.com.br" senha="will_S2"
 login email="fafa_bernardes@email.com.br" senha="fafa_S2"

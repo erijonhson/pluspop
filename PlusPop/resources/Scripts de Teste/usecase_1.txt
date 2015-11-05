@@ -1,5 +1,5 @@
 #################
-# Caso de Uso 2 #
+# Caso de Uso 1 #
 #################
 
 #iniciaSistema e fechaSistema serao usados para carregar/armazenar os dados do sistema nos arquivos de dados.

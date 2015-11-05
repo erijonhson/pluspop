@@ -11,7 +11,7 @@ logout
 login email="fafa_bernardes@email.com.br" senha="fafa_S2"
 
 criaPost mensagem="O Encontro de amanha estara otimo. Vamos falar sobre os problemas do preconceito na escola. <imagem>imagens/encontro_vinheta.jpg</imagem> <imagem>imagens/encontro_preview.jpg</imagem> #encontro #SemPreconceito" data="01/08/2015 20:12:00"
-expectError "Nao eh possivel criar o post. O limite maximo da mensagem sao 200 caracteres." criaPost mensagem="Hoje o sol me acordou. Foi muito cansativo sair da cama pois ainda estava com muito sono. Gostaria ter mais tempo para dormir. Ainda bem que tinha tapioca e cuscuz no cafe da manha para dar a energia. #cafe #acorda" data="02/08/2015 09:30:00"
+expectError "Nao eh possivel criar o post. O limite maximo da mensagem sao 200 caracteres." criaPost mensagem="Hoje o sol me acordou. Foi muito cansativo sair da cama pois ainda estava com muito sono. Gostaria ter mais tempo para dormir. Ainda bem que tinha tapioca e cuscuz no cafe da manha para dar muita energia. #cafe #acorda" data="02/08/2015 09:30:00"
 
 criaPost mensagem="Hoje o sol me acordou. Foi muito cansativo sair da cama pois ainda estava com muito sono. Gostaria ter mais tempo para dormir. Ainda bem que tinha tapioca e cuscuz no cafe da manha para dar energia. #cafe #acorda" data="02/08/2015 09:30:00"
 
