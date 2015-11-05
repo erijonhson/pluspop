@@ -50,15 +50,18 @@ public class Ranking {
 	}
 	
 	private void atualizaHashtag(String hashtag){
+		
 		if (!frequenciaHashtag.containsKey(hashtag))
-			frequenciaHashtag.put(hashtag, new Integer(0));
+			frequenciaHashtag.put(hashtag, new Integer(1));
 		else
 			frequenciaHashtag.put(hashtag, new Integer (frequenciaHashtag.get(hashtag).intValue() + 1));
+		
 		if (!hashtags.contains(hashtag)){
 			if (hashtags.size() < 3){
 				hashtags.add(hashtag);
 			} else{
-				if (frequenciaHashtag.get(hashtag) > frequenciaHashtag.get(hashtags.get(2))){
+				if (compareHashTag(hashtag, hashtags.get(2)) < 0){
+					System.out.println(hashtag + " " + hashtags.get(2) + ":" + compareHashTag(hashtag, hashtags.get(2)));
 					hashtags.remove(2);
 					hashtags.add(hashtag);
 				}
@@ -66,6 +69,16 @@ public class Ranking {
 		}
 		
 		Collections.sort(hashtags, (h1, h2) -> -(frequenciaHashtag.get(h1) - frequenciaHashtag.get(h2)));
+	}
+	
+	private int compareHashTag(String o1, String o2){
+		
+		if (frequenciaHashtag.get(o1).equals(frequenciaHashtag.get(o2)) ){
+			
+			return -(o1.compareTo(o2));
+		} else{
+			return -(frequenciaHashtag.get(o1) - frequenciaHashtag.get(o2));
+		}
 	}
 	
 	public String getRankUsuario(){
