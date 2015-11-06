@@ -12,12 +12,14 @@ import java.util.List;
  */
 public class Ranking {
 	
-	private List<Usuario> usuarios;
+	private List<Usuario> usuariosMaisPopulares;
+	private List<Usuario> usuariosMenosPopulares;
 	private List<String> hashtags;
 	private HashMap<String, Integer> frequenciaHashtag;
 	
 	public Ranking (){
-		usuarios = new ArrayList<Usuario>();
+		usuariosMaisPopulares = new ArrayList<Usuario>();
+		usuariosMenosPopulares = new ArrayList<Usuario>();
 		hashtags = new ArrayList<String>();
 		frequenciaHashtag = new HashMap<String, Integer>();
 	}
@@ -25,9 +27,11 @@ public class Ranking {
 	public void atualizaRank(List<Usuario> usuarios){
 		this.frequenciaHashtag.clear();
 		this.hashtags.clear();
-		this.usuarios.clear();
+		this.usuariosMaisPopulares.clear();
+		this.usuariosMenosPopulares.clear();
 		for (Usuario usuario : usuarios){
-			atualizaRankUsuario(usuario);
+			atualizaRankUsuarioMaisPopulares(usuario);
+			atualizaRankUsuarioMenosPopulares(usuario);
 			for (Post post : usuario.getPosts()){
 				for (String hashtag : post.getHashtags()){
 					atualizaHashtag(hashtag);
@@ -37,17 +41,30 @@ public class Ranking {
 		
 	}
 	
-	private void atualizaRankUsuario(Usuario usuario){
-		if (usuarios.size() < 3){
-			usuarios.add(usuario);
+	private void atualizaRankUsuarioMaisPopulares(Usuario usuario){
+		if (usuariosMaisPopulares.size() < 3){
+			usuariosMaisPopulares.add(usuario);
 		} else{
-			if (usuario.getPopularidade() > usuarios.get(2).getPopularidade()){
-				usuarios.remove(2);
-				usuarios.add(usuario);
+			if (usuario.compareTo(usuariosMaisPopulares.get(2)) < 0){
+				usuariosMaisPopulares.remove(2);
+				usuariosMaisPopulares.add(usuario);
 			}
 		}
-		Collections.sort(usuarios, (u1, u2) -> -(u1.getPopularidade() - u2.getPopularidade()));
+		Collections.sort(usuariosMaisPopulares);
 	}
+	
+	private void atualizaRankUsuarioMenosPopulares(Usuario usuario){
+		if (usuariosMenosPopulares.size() < 3){
+			usuariosMenosPopulares.add(usuario);
+		} else{
+			if (usuario.compareTo(usuariosMenosPopulares.get(2)) > 0){
+				usuariosMenosPopulares.remove(2);
+				usuariosMenosPopulares.add(usuario);
+			}
+		}
+		Collections.sort(usuariosMenosPopulares, Collections.reverseOrder());
+	}
+	
 	
 	private void atualizaHashtag(String hashtag){
 		
@@ -61,14 +78,13 @@ public class Ranking {
 				hashtags.add(hashtag);
 			} else{
 				if (compareHashTag(hashtag, hashtags.get(2)) < 0){
-					System.out.println(hashtag + " " + hashtags.get(2) + ":" + compareHashTag(hashtag, hashtags.get(2)));
 					hashtags.remove(2);
 					hashtags.add(hashtag);
 				}
 			}
 		}
 		
-		Collections.sort(hashtags, (h1, h2) -> -(frequenciaHashtag.get(h1) - frequenciaHashtag.get(h2)));
+		Collections.sort(hashtags, (h1, h2) -> compareHashTag(h1, h2));
 	}
 	
 	private int compareHashTag(String o1, String o2){
@@ -83,17 +99,23 @@ public class Ranking {
 	
 	public String getRankUsuario(){
 		String rank = "Mais Populares: ";
-		for (int i = 0; i < this.usuarios.size(); i++){
+		for (int i = 0; i < this.usuariosMaisPopulares.size(); i++){
 			if (i != 0) rank += "; ";
 			rank += "("+(i+1)+") ";
-			rank += this.usuarios.get(i).getNome()+" "+this.usuarios.get(i).getPopularidade();
+			rank += this.usuariosMaisPopulares.get(i).getNome()+" "+this.usuariosMaisPopulares.get(i).getPopularidade();
 		}
 		rank += "; | Menos Populares: ";
+		for (int i = 0; i < this.usuariosMenosPopulares.size(); i++){
+			if (i != 0) rank += "; ";
+			rank += "("+(i+1)+") ";
+			rank += this.usuariosMenosPopulares.get(i).getNome()+" "+this.usuariosMenosPopulares.get(i).getPopularidade();
+		}
+		rank += ";";
 		return rank;
 	}
 	
 	public String getRankHashtag(){
-		String rank = "";
+		String rank = "Trending Topics:  ";
 		for (int i = 0; i < this.hashtags.size(); i++){			
 			if (i != 0) rank += "; ";
 			rank += "("+(i+1)+") ";

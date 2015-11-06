@@ -10,6 +10,7 @@ import exception.CadastraUsuarioException;
 import exception.ConversaoDeDataException;
 import exception.CriaPostException;
 import exception.EmailInvalidoException;
+import exception.ErroNaConsultaDePopsException;
 import exception.FechaSistemaException;
 import exception.LoginException;
 import exception.LogoutException;
@@ -19,6 +20,7 @@ import exception.SemNotificacaoException;
 import exception.SenhaInvalidaException;
 import exception.SenhaProtegidaException;
 import exception.SolicitacaoNaoEnviadaException;
+import exception.UsuarioAindaEstaLogado;
 import exception.UsuarioJaExisteException;
 import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
@@ -294,7 +296,11 @@ public class Controller {
 	}
 	
 	public int getPopsUsuario(String usuario) 
-			throws UsuarioNaoExisteException {
+			throws UsuarioNaoExisteException, ErroNaConsultaDePopsException {
+		
+		if (this.temUsuarioLogado())
+			throw new ErroNaConsultaDePopsException(new UsuarioAindaEstaLogado());
+	
 		return this.recuperarUsuario(usuario).getPopularidade();//popController.getPopsUsuario();
 	}
 	

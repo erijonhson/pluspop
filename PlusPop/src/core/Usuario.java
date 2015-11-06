@@ -31,7 +31,7 @@ import exception.SolicitacaoNaoEnviadaException;
  * @author Laybson Plismenn
  * @author Ordan Santos
  */
-public class Usuario implements Serializable {
+public class Usuario implements Serializable, Comparable<Usuario>{
 
 	private static final long serialVersionUID = -8892086465318181235L;
 	private static final String imagemDefault = "resources/default.jpg";
@@ -354,6 +354,13 @@ public class Usuario implements Serializable {
 
 	private boolean stringVazia(String s) {
 		return s == null || s.trim().equals("");
+	}
+
+	public int compareTo(Usuario o) {
+		if (this.getPopularidade() == o.getPopularidade())
+			return -this.getEmail().compareTo(o.getEmail());
+		else
+			return -(this.getPopularidade() - o.getPopularidade());
 	}
 
 }

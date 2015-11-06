@@ -9,6 +9,7 @@ import easyaccept.EasyAccept;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.CriaPostException;
+import exception.ErroNaConsultaDePopsException;
 import exception.FechaSistemaException;
 import exception.LoginException;
 import exception.LogoutException;
@@ -35,7 +36,7 @@ public class Facade {
 	}
 
 	public static void main(String[] args) throws CriaPostException {
-		List<Post> posts = new ArrayList<Post>();
+		/*List<Post> posts = new ArrayList<Post>();
 		posts.add(FabricaDePost.getInstance().construirPost("teste#gfgf", "11/11/1111 11:11:11"));
 		posts.add(FabricaDePost.getInstance().construirPost("teste#gfga", "11/11/1111 11:11:11"));
 		
@@ -44,7 +45,7 @@ public class Facade {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} */
 		args = new String[] { "core.Facade",
 				"resources/Scripts de Teste/usecase_1.txt",
 				"resources/Scripts de Teste/usecase_2.txt",
@@ -204,7 +205,7 @@ public class Facade {
 	}
 	
 	public int getPopsUsuario(String usuario) 
-			throws UsuarioNaoExisteException {
+			throws UsuarioNaoExisteException, ErroNaConsultaDePopsException {
 		return popController.getPopsUsuario(usuario);
 	}
 	
