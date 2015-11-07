@@ -91,7 +91,7 @@ public class Ranking {
 		
 		if (frequenciaHashtag.get(o1).equals(frequenciaHashtag.get(o2)) ){
 			
-			return -(o1.compareTo(o2));
+			return -(o1.compareToIgnoreCase(o2));
 		} else{
 			return -(frequenciaHashtag.get(o1) - frequenciaHashtag.get(o2));
 		}

@@ -14,7 +14,7 @@
 
 iniciaSistema
 
-expect "Trending Topics:  (1) #epicwin: 5; (2) #naza: 3; (3) #soulinda: 2;" atualizaTrendingTopics
+expect "Trending Topics:  (1) #epicwin: 5; (2) #naza: 3; (3) #souQuemSou: 2;" atualizaTrendingTopics
 
 id2=cadastraUsuario nome="Marilene" email="marilene@gmail.com.br" senha="vinho123" dataNasc="05/02/1980" imagem="resources/marilene.jpg"
 id3=cadastraUsuario nome="Maiza" email="maiza@gmail.com.br" senha="adoromusica" dataNasc="15/06/2000" imagem="resources/maiza.jpg"
