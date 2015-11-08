@@ -9,15 +9,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import util.EmailValidator;
 import core.popularidade.CelebridadePop;
 import core.popularidade.ComportamentoSocial;
 import core.popularidade.IconePop;
 import core.popularidade.Normal;
-import util.ConversorDeData;
-import util.EmailValidator;
 import exception.ConteudoPostInexistenteException;
 import exception.ConteudoPostNegativoException;
-import exception.ConversaoDeDataException;
 import exception.EmailInvalidoException;
 import exception.NomeUsuarioException;
 import exception.PostOutOfRangeException;
@@ -49,14 +47,12 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private int popularidade;
 	private Feed feed;
 	
-	public Usuario(String nome, String email, String senha, String dataNasc, String imagem)
-			throws NomeUsuarioException, EmailInvalidoException,
-			ConversaoDeDataException {
-		setNome(nome);
-		setEmail(email);
-		setSenha(senha);
-		setDataNasc(dataNasc);
-		setImagem(imagem);
+	public Usuario(String nome, String email, String senha, Date dataNasc, String imagem) {
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.dataNasc = dataNasc;
+		this.imagem = imagem;
 		setAvaliadorNormal();
 		this.mural = new ArrayList<Post>();
 		this.notificacoes = new ArrayList<String>();
@@ -118,10 +114,6 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	public String getDataNascFormatada() {
 		DateFormat formatadorDeData = new SimpleDateFormat("yyyy-MM-dd");
 		return formatadorDeData.format(dataNasc);
-	}
-
-	public void setDataNasc(String dataNasc) throws ConversaoDeDataException {
-		this.dataNasc = ConversorDeData.getInstance().converterData(dataNasc);
 	}
 
 	public void setDataNasc(Date dataNasc) {
@@ -285,7 +277,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 
 	public Post getPostByIndex(int index) 
 			throws PostOutOfRangeException{
-		if (index >= mural.size()) throw new PostOutOfRangeException(index+" "+mural.size());
+		if (index >= mural.size()) throw new PostOutOfRangeException(index, mural.size());
 		return mural.get(index);
 	}
 
@@ -348,7 +340,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	 * Métodos internos.
 	 */
 
-	private boolean emailInvalido(String email) throws EmailInvalidoException {
+	private boolean emailInvalido(String email) {
 		return !EmailValidator.getInstance().validateEmail(email);
 	}
 

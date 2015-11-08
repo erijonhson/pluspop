@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import util.FabricaDePost;
+import util.FabricaDeUsuario;
 import exception.ConversaoDeDataException;
 import exception.CriaPostException;
 import exception.EmailInvalidoException;
@@ -20,11 +21,16 @@ public class RankingTest {
 	public void UsuarioRankTest(){
 
 		try {
-			Usuario A = new Usuario("A", "a@a.com", "aaaaa", "11/11/1111", "1.jpg");
-			Usuario B = new Usuario("B", "b@b.com", "aaaaa", "11/11/1111", "1.jpg");
-			Usuario C = new Usuario("C", "c@c.com", "aaaaa", "11/11/1111", "1.jpg");
-			Usuario D = new Usuario("D", "d@d.com", "aaaaa", "11/11/1111", "1.jpg");
-			Usuario E = new Usuario("E", "e@e.com", "aaaaa", "11/11/1111", "1.jpg");
+			Usuario A = FabricaDeUsuario.getInstance().
+					construirUsuario("A", "a@a.com", "aaaaa", "11/11/1111", "1.jpg");
+			Usuario B = FabricaDeUsuario.getInstance().
+					construirUsuario("B", "b@b.com", "aaaaa", "11/11/1111", "1.jpg");
+			Usuario C = FabricaDeUsuario.getInstance().
+					construirUsuario("C", "c@c.com", "aaaaa", "11/11/1111", "1.jpg");
+			Usuario D = FabricaDeUsuario.getInstance().
+					construirUsuario("D", "d@d.com", "aaaaa", "11/11/1111", "1.jpg");
+			Usuario E = FabricaDeUsuario.getInstance().
+					construirUsuario("E", "e@e.com", "aaaaa", "11/11/1111", "1.jpg");
 			
 			Ranking ranking = new Ranking();
 			
@@ -42,32 +48,45 @@ public class RankingTest {
 			
 			ranking.atualizaRank(usuarios);
 
-			assertEquals("A, B, C", ranking.getRankUsuario());
+			assertEquals(
+					"Mais Populares: (1) A 1000; (2) B 500; (3) C 100; | "
+					+ "Menos Populares: (1) D 0; (2) E 0; (3) C 100;", 
+					ranking.getRankUsuario());
 			
 			C.changePopularidade(1000);
 			ranking.atualizaRank(usuarios);
 
-			assertEquals("C, A, B", ranking.getRankUsuario());
+			assertEquals("Mais Populares: (1) C 1100; (2) A 1000; (3) B 500; | "
+					+ "Menos Populares: (1) D 0; (2) E 0; (3) B 500;", 
+					ranking.getRankUsuario());
 			
 			A.changePopularidade(1000);
 			ranking.atualizaRank(usuarios);
 			
-			assertEquals("A, C, B", ranking.getRankUsuario());
+			assertEquals("Mais Populares: (1) A 2000; (2) C 1100; (3) B 500; | "
+					+ "Menos Populares: (1) D 0; (2) E 0; (3) B 500;", 
+					ranking.getRankUsuario());
 			
 			D.changePopularidade(2002);
 			ranking.atualizaRank(usuarios);
 			
-			assertEquals("D, A, C", ranking.getRankUsuario());
+			assertEquals("Mais Populares: (1) D 2002; (2) A 2000; (3) C 1100; | "
+					+ "Menos Populares: (1) E 0; (2) B 500; (3) C 1100;", 
+					ranking.getRankUsuario());
 			
 			E.changePopularidade(1500);
 			ranking.atualizaRank(usuarios);
 			
-			assertEquals("D, A, E", ranking.getRankUsuario());
+			assertEquals("Mais Populares: (1) D 2002; (2) A 2000; (3) E 1500; | "
+					+ "Menos Populares: (1) B 500; (2) C 1100; (3) E 1500;", 
+					ranking.getRankUsuario());
 			
 			E.changePopularidade(501);
 			ranking.atualizaRank(usuarios);
 			
-			assertEquals("D, E, A", ranking.getRankUsuario());
+			assertEquals("Mais Populares: (1) D 2002; (2) E 2001; (3) A 2000; | "
+					+ "Menos Populares: (1) B 500; (2) C 1100; (3) A 2000;", 
+					ranking.getRankUsuario());
 			
 		} catch (ConversaoDeDataException | NomeUsuarioException
 				| EmailInvalidoException e) {
@@ -82,8 +101,10 @@ public class RankingTest {
 			
 			List<Usuario> usuarios = new ArrayList<Usuario>();
 			
-			Usuario A = new Usuario("A", "a@a.com", "aaaaa", "11/11/1111", "1.jpg");
-			Usuario B = new Usuario("B", "b@b.com", "aaaaa", "11/11/1111", "1.jpg");
+			Usuario A = FabricaDeUsuario.getInstance().
+					construirUsuario("A", "a@a.com", "aaaaa", "11/11/1111", "1.jpg");
+			Usuario B = FabricaDeUsuario.getInstance().
+					construirUsuario("B", "b@b.com", "aaaaa", "11/11/1111", "1.jpg");
 			
 			usuarios.add(A);
 			usuarios.add(B);
@@ -99,13 +120,17 @@ public class RankingTest {
 			
 			ranking.atualizaRank(usuarios);
 			
-			assertEquals(ranking.getRankHashtag(), "#java, #cpp, #php");
+			assertEquals(
+					"Trending Topics:  (1) #java: 3; (2) #cpp: 2; (3) #php: 1;", 
+					ranking.getRankHashtag());
 			
 			A.addPost(FabricaDePost.getInstance().construirPost("teste #cpp", "11/12/1212 12:12:12"));
 			B.addPost(FabricaDePost.getInstance().construirPost("teste #cpp", "11/12/1212 12:12:12"));
 			ranking.atualizaRank(usuarios);
 
-			assertEquals(ranking.getRankHashtag(), "#cpp, #java, #php");
+			assertEquals(
+					"Trending Topics:  (1) #cpp: 4; (2) #java: 3; (3) #php: 1;", 
+					ranking.getRankHashtag());
 			
 			B.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
 			A.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
@@ -114,7 +139,9 @@ public class RankingTest {
 
 			ranking.atualizaRank(usuarios);
 			
-			assertEquals(ranking.getRankHashtag(), "#php, #cpp, #java");
+			assertEquals(
+					"Trending Topics:  (1) #php: 5; (2) #cpp: 4; (3) #java: 3;",
+					ranking.getRankHashtag());
 			
 			B.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
 			A.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
@@ -126,7 +153,9 @@ public class RankingTest {
 			B.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
 			ranking.atualizaRank(usuarios);
 			
-			assertEquals(ranking.getRankHashtag(), "#js, #php, #cpp");
+			assertEquals(
+					"Trending Topics:  (1) #js: 7; (2) #php: 6; (3) #cpp: 4;",
+					ranking.getRankHashtag());
 		} catch (ConversaoDeDataException | NomeUsuarioException
 				| EmailInvalidoException | CriaPostException e) {
 			fail();

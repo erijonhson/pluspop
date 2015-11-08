@@ -1,10 +1,13 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import util.ConversorDeData;
 import util.FabricaDePost;
+import util.FabricaDeUsuario;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.ConversaoDeDataException;
@@ -49,7 +52,8 @@ public class Controller {
 			String dataNasc, String imagem) throws CadastraUsuarioException {
 		try {
 			verificarSeUsuarioExiste(email);
-			Usuario novoUsuario = new Usuario(nome, email, senha, dataNasc, imagem);
+			Usuario novoUsuario = FabricaDeUsuario.getInstance().
+					construirUsuario(nome, email, senha, dataNasc, imagem);
 			usuariosDoSistema.add(novoUsuario);
 			return novoUsuario.getEmail();
 		} catch (ConversaoDeDataException | UsuarioJaExisteException | 
@@ -116,7 +120,8 @@ public class Controller {
 					usuario.setNome(valor);
 					break;
 				case "DATA DE NASCIMENTO":
-					usuario.setDataNasc(valor);
+					Date dataNasc = ConversorDeData.getInstance().converterData(valor, "dd/MM/yyyy");
+					usuario.setDataNasc(dataNasc);
 					break;
 				case "E-MAIL":
 					usuario.setEmail(valor);

@@ -7,9 +7,5 @@ public class UsuarioNaoLogadoException extends Exception {
 	public UsuarioNaoLogadoException() {
 		super("Nenhum usuarix esta logadx no +pop.");
 	}
-	
-	//public UsuarioNaoLogadoException(String mensagem) {
-		//super(mensagem);
-	//}
 
 }

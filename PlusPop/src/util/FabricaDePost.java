@@ -14,8 +14,9 @@ import exception.TamanhoMensagemException;
 
 /**
  * Construtor de Post válido. <br>
- * Faz todas as verificações necessárias e devolve objeto Post válido para usuario. <br>
+ * Faz todas as verificações necessárias e devolve objeto Post válido. <br>
  * Lança as exceçoes que, por ventura, ocorram.
+ * 
  * @author Eri Jonhson
  * @author Laybson Plismenn
  * @author Ordan Santos

@@ -11,7 +11,7 @@ public class ConversaoDeDataException extends ParseException {
 	}
 
 	private static String getMensagem(ParseException e) {
-		if (e.getClass().equals(FormatoDeDataException.class))
+		if (e instanceof FormatoDeDataException)
 			return e.getMessage();
 		else
 			return "Data nao existe.";

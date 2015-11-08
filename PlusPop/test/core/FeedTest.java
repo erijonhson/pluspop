@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import util.FabricaDePost;
+import util.FabricaDeUsuario;
 import exception.ConversaoDeDataException;
 import exception.CriaPostException;
 import exception.EmailInvalidoException;
@@ -18,11 +19,15 @@ public class FeedTest {
 	@Test
 	public void test() {
 		try {
-			Usuario u = new Usuario("u", "u@u.com", "uuuuu", "11/11/1111", "1.jpg");
-			Usuario normal = new Usuario("normal", "normal@u.com", "uuuuu", "11/11/1111", "1.jpg");
-			Usuario pop = new Usuario("u", "pop@u.com", "uuuuu", "11/11/1111", "1.jpg");
+			Usuario u = FabricaDeUsuario.getInstance().
+					construirUsuario("u", "u@u.com", "uuuuu", "11/11/1111", "1.jpg");
+			Usuario normal = FabricaDeUsuario.getInstance().
+					construirUsuario("normal", "normal@u.com", "uuuuu", "11/11/1111", "1.jpg");
+			Usuario pop = FabricaDeUsuario.getInstance().
+					construirUsuario("u", "pop@u.com", "uuuuu", "11/11/1111", "1.jpg");
 			pop.changePopularidade(500);
-			Usuario icone = new Usuario("u", "icone@u.com", "uuuuu", "11/11/1111", "1.jpg");
+			Usuario icone = FabricaDeUsuario.getInstance().
+					construirUsuario("u", "icone@u.com", "uuuuu", "11/11/1111", "1.jpg");
 			icone.changePopularidade(1001);
 			
 			u.addAmigo(normal);

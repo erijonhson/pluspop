@@ -40,13 +40,13 @@ public class ConversorDeData {
 	private static final String DATE_PATTERN = "\\d{2}/{1}\\d{2}/{1}\\d{4}";
 
 	private ConversorDeData() {
-		formatadorDeData = new SimpleDateFormat("dd/MM/yyyy");
-		formatadorDeData.setLenient(false);
 		pattern = Pattern.compile(DATE_PATTERN);
 	}
 
-	public Date converterData(String dataNasc) throws ConversaoDeDataException {
+	public Date converterData(String dataNasc, String formato) throws ConversaoDeDataException {
 		try {
+			formatadorDeData = new SimpleDateFormat(formato);
+			formatadorDeData.setLenient(false);
 			if (!formatoDataValido(dataNasc))
 				throw new FormatoDeDataException();
 			return formatadorDeData.parse(dataNasc);

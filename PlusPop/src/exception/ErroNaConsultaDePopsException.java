@@ -10,7 +10,7 @@ public class ErroNaConsultaDePopsException extends Exception{
 		super (msg);
 	}
 	
-	public ErroNaConsultaDePopsException (Exception other){
-		super (msg + " " + other.getMessage());
+	public ErroNaConsultaDePopsException (Exception e){
+		super (msg + " " + e.getMessage(), e.getCause());
 	}
 }
