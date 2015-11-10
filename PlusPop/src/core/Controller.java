@@ -1,13 +1,9 @@
 package core;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 
 import util.ConversorDeData;
 import util.FabricaDePost;
-import util.FabricaDeUsuario;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.ConversaoDeDataException;
@@ -24,7 +20,6 @@ import exception.SenhaInvalidaException;
 import exception.SenhaProtegidaException;
 import exception.SolicitacaoNaoEnviadaException;
 import exception.UsuarioAindaEstaLogado;
-import exception.UsuarioJaExisteException;
 import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
@@ -38,45 +33,22 @@ import exception.UsuarioNaoLogadoException;
  */
 public class Controller {
 
-	private List<Usuario> usuariosDoSistema;
 	private Usuario usuarioDaSessao;
-	private Ranking ranking;
+	private DepositoDeUsuarios usuariosDoSistema;
 
 	public Controller() {
-		usuariosDoSistema = new ArrayList<Usuario>();
-		ranking = new Ranking();
+		this.usuariosDoSistema = new DepositoDeUsuarios();
 		retirarUsuarioDaSessao();
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha,
-			String dataNasc, String imagem) throws CadastraUsuarioException {
-		try {
-			verificarSeUsuarioExiste(email);
-			Usuario novoUsuario = FabricaDeUsuario.getInstance().
-					construirUsuario(nome, email, senha, dataNasc, imagem);
-			usuariosDoSistema.add(novoUsuario);
-			return novoUsuario.getEmail();
-		} catch (ConversaoDeDataException | UsuarioJaExisteException | 
-				NomeUsuarioException | EmailInvalidoException e) {
-			throw new CadastraUsuarioException(e);
-		}
+			String dataNasc, String imagem) throws CadastraUsuarioException {		
+		return usuariosDoSistema.cadastraUsuario(nome, email, senha, dataNasc, imagem);
 	}
 
 	public String getInfoUsuario(String atributo, String email) 
 			throws SenhaProtegidaException, UsuarioNaoExisteException {
-		Usuario usuario = recuperarUsuario(email);
-		switch (atributo.toUpperCase()) {
-			case "NOME":
-				return usuario.getNome();
-			case "DATA DE NASCIMENTO":
-				return usuario.getDataNascFormatada();
-			case "SENHA":
-				throw new SenhaProtegidaException();
-			case "FOTO":
-				return usuario.getImagem();
-			default:
-				return "Atributo invalido.";
-		}
+		return this.usuariosDoSistema.getInfoUsuario(atributo, email);
 	}
 
 	public void login(String email, String senha) throws LoginException {
@@ -102,8 +74,7 @@ public class Controller {
 	}
 
 	public void removeUsuario(String email) throws UsuarioNaoExisteException {
-		Usuario usuario = recuperarUsuario(email);
-		usuariosDoSistema.remove(usuario);
+		this.usuariosDoSistema.removeUsuario(email);
 	}
 
 	public void fechaSistema() throws FechaSistemaException {
@@ -306,7 +277,7 @@ public class Controller {
 		if (this.temUsuarioLogado())
 			throw new ErroNaConsultaDePopsException(new UsuarioAindaEstaLogado());
 	
-		return this.recuperarUsuario(usuario).getPopularidade();//popController.getPopsUsuario();
+		return this.recuperarUsuario(usuario).getPopularidade();
 	}
 	
 	public int getPopsUsuario() 
@@ -315,13 +286,15 @@ public class Controller {
 	}
 	
 	public String atualizaRanking() {
-		this.ranking.atualizaRank(this.usuariosDoSistema);
-		return this.ranking.getRankUsuario();
+		return this.usuariosDoSistema.atualizaRanking();
 	}
 	
 	public String atualizaTrendingTopics() {
-		this.ranking.atualizaRank(this.usuariosDoSistema);
-		return this.ranking.getRankHashtag();
+		return this.usuariosDoSistema.atualizaTrendingTopics();
+	}
+	
+	public Usuario recuperarUsuario(String email) throws UsuarioNaoExisteException {
+		return this.usuariosDoSistema.recuperarUsuario(email);
 	}
 
 	/*
@@ -338,24 +311,6 @@ public class Controller {
 		if (temUsuarioLogado())
 			throw new UsuarioJaLogadoException(usuarioDaSessao.getNome());
 		usuarioDaSessao = usuario;
-	}
-
-	private void verificarSeUsuarioExiste(String email) throws UsuarioJaExisteException {
-		try {
-			recuperarUsuario(email);
-			throw new UsuarioJaExisteException();
-		} catch (UsuarioNaoExisteException unee) {
-		}
-	}
-
-	private Usuario recuperarUsuario(String email) throws UsuarioNaoExisteException {
-		Iterator<Usuario> iterador = usuariosDoSistema.iterator();
-		while (iterador.hasNext()) {
-			Usuario usuario = iterador.next();
-			if (usuario.getEmail().equalsIgnoreCase(email))
-				return usuario;
-		}
-		throw new UsuarioNaoExisteException(email);
 	}
 
 	private boolean temUsuarioLogado() {
