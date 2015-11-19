@@ -1,9 +1,5 @@
 package core.popularidade;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import core.Post;
 
 
@@ -29,25 +25,15 @@ public class CelebridadePop implements ComportamentoSocial{
 			post.removePopularidade(BONUS);		
 	}
 	
-	public List<Post> compartilhar(List<Post> posts){
-		List<Post> recentes = new ArrayList<Post>();
-		for (Post post : posts){
-			if (recentes.size() < QTDPOSTSTOSHARE){
-				recentes.add(post);
-			} else{
-				if (recentes.get(QTDPOSTSTOSHARE - 1).compareTempo(post) > 0){
-					recentes.remove(QTDPOSTSTOSHARE - 1);
-					recentes.add(post);
-				}
-			}
-			Collections.sort(recentes, (pa, pb) -> pa.compareTempo(pb));
-		}
-		return recentes;
+	@Override
+	public int qtdParaCompartilhar() {
+		return QTDPOSTSTOSHARE;
 	}
 	
 	@Override
 	public String toString() {
 		return "Celebridade Pop";
 	}
+
 
 }

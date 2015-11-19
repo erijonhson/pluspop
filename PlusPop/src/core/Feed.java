@@ -12,42 +12,28 @@ import java.util.Set;
  *
  */
 public class Feed {
-	List<Post> feed;
+	List <Post> feed;
 	Comparator<Post> comparator;
 	
-	public Feed(){
+	public Feed(Comparator<Post> comparator){
 		feed = new ArrayList<Post>();
-		setComparatorPorTempo();
+		this.comparator = comparator;
 	}
 	
+	/**
+	 * Atualiza o feed
+	 * @param amigos que compartilharão os posts
+	 */
 	public void update(Set<Usuario> amigos){
 		feed.clear();
 		for (Usuario amigo : amigos){
 			feed.addAll(amigo.compartilhar());
-
 		}
 		Collections.sort(feed, comparator);
 	}
+	
+	public Post getPost (int idx){
+		return this.feed.get(idx);
+	}
 
-	public void setComparatorPorPopularidade(){
-		comparator = new Comparator<Post>() {
-			@Override
-			public int compare(Post o1, Post o2) {
-				return -(o1.getPopularidade() - o2.getPopularidade());
-			}
-		};
-	}
-	
-	public void setComparatorPorTempo(){
-		comparator = new Comparator<Post>() {
-			@Override
-			public int compare(Post o1, Post o2) {
-				return o1.compareTempo(o2);
-			}
-		};
-	}
-	
-	public List<Post> getFeed(){
-		return this.feed;
-	}
 }

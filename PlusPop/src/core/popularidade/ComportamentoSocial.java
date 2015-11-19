@@ -15,6 +15,6 @@ public interface ComportamentoSocial {
 
 	public void rejeitar(Post post);
 	
-	public List<Post> compartilhar(List<Post> posts);	
+	public int qtdParaCompartilhar();	
 
 }

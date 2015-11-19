@@ -156,8 +156,8 @@ public class Post {
 	
 	public int compareTempo(Post other) {
 		if (data.compareTo(other.getData()) != 0)
-			return -data.compareTo(other.getData());
-		return -hora.compareTo(other.getHora());
+			return data.compareTo(other.getData());
+		return hora.compareTo(other.getHora());
 	}
 	
 	public String toFileFormat(){

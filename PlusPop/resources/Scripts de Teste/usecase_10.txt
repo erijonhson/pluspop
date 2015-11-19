@@ -1,0 +1,81 @@
+##################
+# Caso de Uso 10 #
+##################
+
+iniciaSistema
+
+id1=cadastraUsuario nome="Chico" email="chico@mus.com" senha="construcao" dataNasc="05/02/1940" imagem="resources/rita.jpg"
+id2=cadastraUsuario nome="Washington" email="ah_cumpadi@mus.com" senha="umasenhaordinaria" dataNasc="15/06/1960" imagem="resources/eu.jpg"
+
+login email="chico@mus.com" senha="construcao"
+criaPost mensagem="A Rita saiu de casa ontem. Ela levou meu violao e o cachorro. #Procurada #Info" data="15/10/2015 18:05:00"
+adicionaAmigo usuario="ah_cumpadi@mus.com"
+logout
+
+fechaSistema
+
+
+# Abrindo o sistema novamente
+# Sistema deve ter persistido informacoes dos usuarios
+iniciaSistema
+
+login email="chico@mus.com" senha="construcao"
+expect "Chico" getInfoUsuario atributo="Nome"
+expect "resources/rita.jpg" getInfoUsuario atributo="Foto"
+expect "1940-02-05" getInfoUsuario atributo="Data de Nascimento"
+expect "Normal Pop" getPopularidade
+expect 1 getTotalPosts
+expect "A Rita saiu de casa ontem. Ela levou meu violao e o cachorro. #Procurada #Info (2015-10-15 18:05:00)" getPost post=0
+expect 0 getPopsPost post=0
+expect 0 getPopsUsuario
+expect 0 getNotificacoes
+expect 0 getQtdAmigos
+logout
+
+login email="ah_cumpadi@mus.com" senha="umasenhaordinaria"
+expect "Washington" getInfoUsuario atributo="Nome"
+expect "resources/eu.jpg" getInfoUsuario atributo="Foto"
+expect "1960-06-15" getInfoUsuario atributo="Data de Nascimento"
+expect "Normal Pop" getPopularidade
+expect 0 getTotalPosts
+expect 0 getPopsUsuario
+expect 1 getNotificacoes
+expect 0 getQtdAmigos
+aceitaAmizade usuario="chico@mus.com"
+curtirPost amigo="chico@mus.com" post=0
+logout
+
+fechaSistema
+
+
+# Abrindo o sistema novamente
+iniciaSistema
+
+login email="chico@mus.com" senha="construcao"
+expect 1 getTotalPosts
+expect "A Rita saiu de casa ontem. Ela levou meu violao e o cachorro. #Procurada #Info (2015-10-15 18:05:00)" getPost post=0
+expect 10 getPopsPost post=0
+expect 10 getPopsUsuario
+expect 2 getNotificacoes
+expect 1 getQtdAmigos
+adicionaPops pops=501
+logout
+
+login email="ah_cumpadi@mus.com" senha="umasenhaordinaria"
+expect 0 getTotalPosts
+expect 0 getPopsUsuario
+expect 1 getNotificacoes
+expect 1 getQtdAmigos
+logout
+
+fechaSistema
+
+
+# Abrindo o sistema novamente
+iniciaSistema
+
+login email="chico@mus.com" senha="construcao"
+expect "Celebridade Pop" getPopularidade
+logout
+
+fechaSistema

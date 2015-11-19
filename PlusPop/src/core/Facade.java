@@ -39,6 +39,10 @@ public class Facade {
 				"resources/Scripts de Teste/usecase_5.txt",
 				"resources/Scripts de Teste/usecase_6.txt",
 				"resources/Scripts de Teste/usecase_7.txt",
+				"resources/Scripts de Teste/usecase_8.txt",
+				"resources/Scripts de Teste/usecase_9/usecase_9.txt",
+				"resources/Scripts de Teste/usecase_10.txt"
+				
 
 		};
 		EasyAccept.main(args);
@@ -201,5 +205,16 @@ public class Facade {
 	public String atualizaTrendingTopics() {
 		return popController.atualizaTrendingTopics();
 	}
-
+	
+	public void atualizaFeed() throws UsuarioNaoLogadoException{
+		popController.atualizaFeed();
+	}
+	
+	public String getPostFeedNoticiasRecentes(int idx) throws UsuarioNaoLogadoException{
+		return popController.getPostFeedNoticiasRecentes(idx);
+	}
+	
+	public String getPostFeedNoticiasMaisPopulares (int idx) throws UsuarioNaoLogadoException{
+		return popController.getPostFeedNoticiasMaisPopulares(idx);
+	}
 }

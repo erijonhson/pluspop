@@ -1,0 +1,119 @@
+#################
+# Caso de Uso 8 #
+#################
+
+iniciaSistema
+cadastraUsuario nome="Maria do Carmo" email="do_carmo@saofrancisco.com" senha="delicinha" dataNasc="14/12/1947" imagem="resources/docarmo.jpg"
+cadastraUsuario nome="Maria Claudia Tedesco" email="claudinha@copacabana.com" senha="claudinha" dataNasc="21/10/1972" imagem="resources/mctedesco.jpg"
+cadastraUsuario nome="D. Pedro II" email="pedro_ii@imperador.com" senha="imperador" dataNasc="02/12/1825" imagem="resources/pedro2.jpg"
+cadastraUsuario nome="Princesa Isabel" email="isabel@princesa.com" senha="redentora" dataNasc="29/07/1846" imagem="resources/isabel.jpg"
+
+login email="do_carmo@saofrancisco.com" senha="delicinha"
+criaPost mensagem="Me diga o que voce fez com Lindalva, diga Nazareh. #cadeLindalva" data="05/08/2004 03:54:00"
+criaPost mensagem="To eh varada de fome. #varadaDeFome #senhoraDoDestino" data="03/09/2004 11:30:00"
+criaPost mensagem="Ave Maria meu Deus. #senhoraDoDestino" data="11/10/2004 00:00:00"
+criaPost mensagem="Ha mais de 20 anos eu sonho em lhe dar o que voce merece. #surraNazareh #apanhaLadra" data="06/12/2004 03:55:00"
+criaPost mensagem="Gente eh ela, minha filha, Lindalva. #vivaLindalva" data="18/12/2004 12:15:00"
+criaPost mensagem="O nome dela eh Isabel, ainda nao me acostumei. #vivaIsabel #minhaDelicinha" data="18/12/2004 14:35:00"
+criaPost mensagem="Bom dia meus amores. #cafeDaManha #familiaReunida" data="14/01/2005 08:25:00"
+criaPost mensagem="Meu Sao Francisco, protejei minha filha e minha neta. #saoFranciso" data="02/03/2005 12:15:00"
+adicionaAmigo usuario="claudinha@copacabana.com"
+
+#Para facilitar o teste, vamos permitir o 'set' dos Pops dos usuarios.
+adicionaPops pops=1001
+expect "Icone Pop" getPopularidade
+
+logout
+
+login email="pedro_ii@imperador.com" senha="imperador"
+criaPost mensagem="Se desejo governar? Quero jah! #golpeDaMairoridade" data="11/11/1840 10:44:00"
+criaPost mensagem="Te amo minha Teresa! #casamento" data="03/09/1843 10:57:00"
+criaPost mensagem="Viva o imperio! <imagem>imagens/imperioBR.jpg</imagem> #paz #estabilidade #monarquia" data="01/01/1860 00:00:01"
+criaPost mensagem="Isabel eh feia, mas eh uma princesa! #amoMinhaFilha" data="09/07/1871 12:30:00"
+criaPost mensagem="A monarquia tropeca, mas nao cai. #baileDaIlhaFiscal" data="09/11/1889 22:54:00"
+criaPost mensagem="Depois de tudo o que eu fiz pelo Brasil? :( #proclamacaoDaRepublica" data="15/11/1889 13:00:00"
+adicionaAmigo usuario="claudinha@copacabana.com"
+
+adicionaPops pops=501
+expect "Celebridade Pop" getPopularidade
+
+logout
+
+login email="isabel@princesa.com" senha="redentora"
+criaPost mensagem="Calor insuportavel! Vamos para Petropolis!. #partiuPetropolis" data="19/12/1867 14:35:00"
+criaPost mensagem="Aprovada a lei dos sexagenarios! #rumoAbolicao #leiSaraivaCotegipe" data="28/09/1885 09:54:00"
+criaPost mensagem="Mil tronos eu tivesse, mil tronos eu daria! #abolicao #leiAurea" data="13/05/1888 13:15:00"
+criaPost mensagem="Tiraram meu trono! Voces me pagam! #partiu #exilio" data="17/11/1889 04:30:00"
+adicionaAmigo usuario="claudinha@copacabana.com"
+
+logout
+
+login email="claudinha@copacabana.com" senha="claudinha"
+
+aceitaAmizade usuario="do_carmo@saofrancisco.com"
+aceitaAmizade usuario="pedro_ii@imperador.com"
+aceitaAmizade usuario="isabel@princesa.com"
+
+expect "Normal Pop" getPopularidade
+
+#adiciona 10 pops nos posts 3, 5 e 7 do usuario Maria do Carmo
+curtirPost usuario="do_carmo@saofrancisco.com" post=7
+curtirPost usuario="do_carmo@saofrancisco.com" post=5
+curtirPost usuario="do_carmo@saofrancisco.com" post=3
+
+#adiciona 10 pops ao post 3 da Princesa Isabel
+curtirPost usuario="isabel@princesa.com" post=3
+
+adicionaPops pops=501
+expect "Celebridade Pop" getPopularidade
+
+#adiciona 25 pops nos posts 2 e 6 de Maria do Carmo
+curtirPost usuario="do_carmo@saofrancisco.com" post=6
+curtirPost usuario="do_carmo@saofrancisco.com" post=2
+
+#adiciona 25 pops nos posts 2, 3 e 5 de D. Pedro II
+curtirPost usuario="pedro_ii@imperador.com" post=2
+curtirPost usuario="pedro_ii@imperador.com" post=3
+curtirPost usuario="pedro_ii@imperador.com" post=5
+
+adicionaPops pops=1001
+expect "Icone Pop" getPopularidade
+
+#remove 50 pops do post 4 de Maria do Carmo e adiciona a hashtag '#epicfail' ao post
+rejeitarPost usuario="do_carmo@saofrancisco.com" post=4
+
+#adiciona 50 pops ao post 4 de D. Pedro II e adiciona a hashtag '#epicwin' ao post
+curtirPost usuario="pedro_ii@imperador.com" post=4
+
+#adiciona 50 pops ao post 2 da Princesa Isabel e adiciona a hashtag '#epicwin' ao post
+curtirPost usuario="isabel@princesa.com" post=2
+
+atualizaFeed
+
+#Posts mais recentes dos amigos.
+expect "Meu Sao Francisco, protejei minha filha e minha neta. #saoFranciso (2005-03-02 12:15:00)" getPostFeedNoticiasRecentes post=11
+expect "Bom dia meus amores. #cafeDaManha #familiaReunida (2005-01-14 08:25:00)" getPostFeedNoticiasRecentes post=10
+expect "O nome dela eh Isabel, ainda nao me acostumei. #vivaIsabel #minhaDelicinha (2004-12-18 14:35:00)" getPostFeedNoticiasRecentes post=9
+expect "Gente eh ela, minha filha, Lindalva. #vivaLindalva #epicfail (2004-12-18 12:15:00)" getPostFeedNoticiasRecentes post=8
+expect "Ha mais de 20 anos eu sonho em lhe dar o que voce merece. #surraNazareh #apanhaLadra (2004-12-06 03:55:00)" getPostFeedNoticiasRecentes post=7
+expect "Ave Maria meu Deus. #senhoraDoDestino (2004-10-11 00:00:00)" getPostFeedNoticiasRecentes post=6
+expect "Tiraram meu trono! Voces me pagam! #partiu #exilio (1889-11-17 04:30:00)" getPostFeedNoticiasRecentes post=5
+expect "Depois de tudo o que eu fiz pelo Brasil? :( #proclamacaoDaRepublica (1889-11-15 13:00:00)" getPostFeedNoticiasRecentes post=4
+expect "A monarquia tropeca, mas nao cai. #baileDaIlhaFiscal #epicwin (1889-11-09 22:54:00)" getPostFeedNoticiasRecentes post=3
+expect "Mil tronos eu tivesse, mil tronos eu daria! #abolicao #leiAurea #epicwin (1888-05-13 13:15:00)" getPostFeedNoticiasRecentes post=2
+expect "Isabel eh feia, mas eh uma princesa! #amoMinhaFilha (1871-07-09 12:30:00)" getPostFeedNoticiasRecentes post=1
+expect "Viva o imperio! <imagem>imagens/imperioBR.jpg</imagem> #paz #estabilidade #monarquia (1860-01-01 00:00:01)" getPostFeedNoticiasRecentes post=0
+
+#Posts mais populares.
+expect "A monarquia tropeca, mas nao cai. #baileDaIlhaFiscal #epicwin (1889-11-09 22:54:00)" getPostFeedNoticiasMaisPopulares post=11
+expect "Mil tronos eu tivesse, mil tronos eu daria! #abolicao #leiAurea #epicwin (1888-05-13 13:15:00)" getPostFeedNoticiasMaisPopulares post=10
+expect "Bom dia meus amores. #cafeDaManha #familiaReunida (2005-01-14 08:25:00)" getPostFeedNoticiasMaisPopulares post=9
+expect "Ave Maria meu Deus. #senhoraDoDestino (2004-10-11 00:00:00)" getPostFeedNoticiasMaisPopulares post=8
+expect "Depois de tudo o que eu fiz pelo Brasil? :( #proclamacaoDaRepublica (1889-11-15 13:00:00)" getPostFeedNoticiasMaisPopulares post=7
+expect "Isabel eh feia, mas eh uma princesa! #amoMinhaFilha (1871-07-09 12:30:00)" getPostFeedNoticiasMaisPopulares post=6
+expect "Viva o imperio! <imagem>imagens/imperioBR.jpg</imagem> #paz #estabilidade #monarquia (1860-01-01 00:00:01)" getPostFeedNoticiasMaisPopulares post=5
+expect "Meu Sao Francisco, protejei minha filha e minha neta. #saoFranciso (2005-03-02 12:15:00)" getPostFeedNoticiasMaisPopulares post=4
+expect "O nome dela eh Isabel, ainda nao me acostumei. #vivaIsabel #minhaDelicinha (2004-12-18 14:35:00)" getPostFeedNoticiasMaisPopulares post=3
+expect "Ha mais de 20 anos eu sonho em lhe dar o que voce merece. #surraNazareh #apanhaLadra (2004-12-06 03:55:00)" getPostFeedNoticiasMaisPopulares post=2
+expect "Tiraram meu trono! Voces me pagam! #partiu #exilio (1889-11-17 04:30:00)" getPostFeedNoticiasMaisPopulares post=1
+expect "Gente eh ela, minha filha, Lindalva. #vivaLindalva #epicfail (2004-12-18 12:15:00)" getPostFeedNoticiasMaisPopulares post=0

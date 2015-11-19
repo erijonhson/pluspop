@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +46,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private Set<Usuario> solicitacoesDeAmizade;
 	private ComportamentoSocial comportamentoSocial;
 	private int popularidade;
-	private Feed feed;
+	private Feed feedPopular, feedRecente;
 	
 	public Usuario(String nome, String email, String senha, Date dataNasc, String imagem) {
 		this.nome = nome;
@@ -53,13 +54,14 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		this.senha = senha;
 		this.dataNasc = dataNasc;
 		this.imagem = imagem;
-		setAvaliadorNormal();
+		this.comportamentoSocial = new Normal();
 		this.mural = new ArrayList<Post>();
 		this.notificacoes = new ArrayList<String>();
 		this.amigos = new HashSet<Usuario>();
 		this.solicitacoesDeAmizade = new HashSet<Usuario>();
 		this.popularidade = 0;
-		this.feed = new Feed();
+		this.feedRecente = new Feed(new ComparatorFeedRecente());
+		this.feedPopular = new Feed(new ComparatorFeedPopular());
 	}
 
 	public void addPost(Post post){
@@ -311,25 +313,35 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	public List<Post> getPosts(){
 		return this.mural;
 	}
-
+	
+	
+	/**
+	 *  
+	 * @return os posts a serem compartilhados com os amigos
+	 */
 	public List<Post> compartilhar(){
-		return comportamentoSocial.compartilhar(this.mural);
-	}
-
-	public List<Post> getFeed(){
-		return this.feed.getFeed();
+		
+		List<Post> postsRecentes = new ArrayList<Post>();
+		int qtd = comportamentoSocial.qtdParaCompartilhar();
+		
+		for (Post post : mural){
+			if (postsRecentes.size() < qtd){
+				postsRecentes.add(post);
+			} else{
+				if (postsRecentes.get(qtd - 1).compareTempo(post) < 0){
+					postsRecentes.remove(qtd - 1);
+					postsRecentes.add(post);
+				}
+			}
+			Collections.sort(postsRecentes, (pa, pb) -> -pa.compareTempo(pb));
+		}
+		
+		return postsRecentes;
 	}
 
 	public void updateFeed(){
-		this.feed.update(this.amigos);
-	}
-
-	public void setFeedPorTempo(){
-		this.feed.setComparatorPorTempo();
-	}
-
-	public void setFeedPorPopularidade(){
-		this.feed.setComparatorPorPopularidade();
+		this.feedRecente.update(this.amigos);
+		this.feedPopular.update(this.amigos);
 	}
 	
 	public String getComportamentoSocial() {
@@ -347,12 +359,39 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private boolean stringVazia(String s) {
 		return s == null || s.trim().equals("");
 	}
-
+	
+	/**
+	 * Compara um usuário pela sua popularidade
+	 */
 	public int compareTo(Usuario o) {
 		if (this.getPopularidade() == o.getPopularidade())
 			return -this.getEmail().compareTo(o.getEmail());
 		else
 			return -(this.getPopularidade() - o.getPopularidade());
 	}
-
+	
+	/**
+	 * Retorna um post com um determinado índex pela ordem dos mais recentes<br/>
+	 * <b><p>0 - menos recente </b></p>
+	 * <b><p>N - mais recente  </br></p>
+	 * @param idx índice do post
+	 * @return a String do post
+	 */
+	public String getPostFeedNoticiasRecentes(int idx){
+		Post post = feedRecente.getPost (idx);
+		return post.toString();
+	}
+	
+	/**
+	 * Retorna um post com um determinado índex pela ordem dos mais populares<br/>
+	 * <b><p>0 - menos popular </b></p>
+	 * <b><p>N - mais popular  </br></p>
+	 * @param idx índice do post
+	 * @return a String do post
+	 */
+	public String getPostFeedNoticiasMaisPopulares(int idx) {
+		Post post = feedPopular.getPost(idx);
+		return post.toString();
+	}
+	
 }

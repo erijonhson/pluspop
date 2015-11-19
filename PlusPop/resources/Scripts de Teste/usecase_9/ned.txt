@@ -1,0 +1,7 @@
+Post #1 - 16/10/2015 12:35:00
+Conteudo:
+Espero viver muitos anos para ver o espetaculo da neve junto com a familia
+<imagem>imagens/boneco_neve.jpg</imagem>
+<audio>audio/vento.mp3</audio>
+#vida
++Pop: 0

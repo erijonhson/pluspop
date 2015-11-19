@@ -320,5 +320,20 @@ public class Controller {
 	private Usuario retirarUsuarioDaSessao() {
 		return usuarioDaSessao = null;
 	}
+
+	public void atualizaFeed() throws UsuarioNaoLogadoException {
+		Usuario usuario = getUsuarioDaSessao();
+		usuario.updateFeed();
+	}
+	
+	public String getPostFeedNoticiasRecentes(int idx) throws UsuarioNaoLogadoException{
+		Usuario usuario = getUsuarioDaSessao();
+		return usuario.getPostFeedNoticiasRecentes(idx);
+	}
+
+	public String getPostFeedNoticiasMaisPopulares(int idx) throws UsuarioNaoLogadoException {
+		 Usuario usuario = getUsuarioDaSessao();
+		 return usuario.getPostFeedNoticiasMaisPopulares(idx);
+	}
 	
 }

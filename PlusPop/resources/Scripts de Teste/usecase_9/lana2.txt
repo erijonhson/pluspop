@@ -1,0 +1,27 @@
+Post #1 - 15/10/2015 18:05:00
+Conteudo:
+Boa noite, pessoal
++Pop: 10
+
+
+Post #2 - 15/10/2015 18:15:00
+Conteudo:
+A noite cai e com ela vem a solidao
+#sadness
++Pop: 0
+
+
+Post #3 - 16/10/2015 20:20:00
+Conteudo:
+Capa do meu novo album:
+<imagem>imagens/paper_wedding.jpg</imagem>
+#PaperWedding
++Pop: 0
+
+
+Post #4 - 18/10/2015 18:15:00
+Conteudo:
+Preview do meu novo single:
+<audio>audio/in_the_hills.mp3</audio>
+#PaperWedding #InTheHills
++Pop: 0

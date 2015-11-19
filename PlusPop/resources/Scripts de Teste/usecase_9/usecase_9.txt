@@ -1,0 +1,58 @@
+#################
+# Caso de Uso 9 #
+#################
+
+# Observacoes:
+# Caso ainda nao tenha criado, crie uma pasta chamada 'testes' na raiz do projeto
+# para armazenar os casos de teste
+#
+# Os arquivos auxiliares dos casos de teste devem estar dentro de uma pasta chamada 'aux'
+# que deve ser subpasta da pasta que contem os casos de teste ('testes')
+#
+# Os arquivos auxiliares sao: lana1.txt, lana2.txt, ned.txt e giovanna.txt
+#
+# Crie uma pasta chamada 'arquivos' na raiz do projeto para
+# armazenar o resultado das serializacoes e das criacoes de arquivos de texto
+
+iniciaSistema
+
+id1=cadastraUsuario nome="Lana" email="delrey@email.com" senha="sadness123" dataNasc="05/02/1980" imagem="resources/morta.jpg"
+id2=cadastraUsuario nome="Ned" email="ned@winterfell.com" senha="dwinter" dataNasc="15/06/1950" imagem="resources/wolf.jpg"
+id3=cadastraUsuario nome="Giovanna" email="eita_gio@email.com.br" senha="dancarina" dataNasc="12/12/2000" imagem="resources/giovanna.jpg"
+id4=cadastraUsuario nome="Harry" email="escolhido@hogwarts.com" senha="1grifinoria1" dataNasc="24/04/1984" imagem="resources/potter.jpg"
+
+login email="delrey@email.com" senha="sadness123"
+criaPost mensagem="Boa noite, pessoal" data="15/10/2015 18:05:00"
+criaPost mensagem="A noite cai e com ela vem a solidao #sadness" data="15/10/2015 18:15:00"
+criaPost mensagem="Capa do meu novo album: <imagem>imagens/paper_wedding.jpg</imagem> #PaperWedding" data="16/10/2015 20:20:00"
+criaPost mensagem="Preview do meu novo single: <audio>audio/in_the_hills.mp3</audio> #PaperWedding #InTheHills" data="18/10/2015 18:15:00"
+adicionaAmigo usuario="ned@winterfell.com"
+baixaPosts
+equalfiles ./testes/aux/lana1.txt ./arquivos/posts_delrey[at]emailcom.txt
+logout
+
+login email="eita_gio@email.com.br" senha="dancarina"
+criaPost mensagem="Estava brincando com a minha prima e quebrei o forno da minha mae #frita #encrencada" data="16/11/2015 09:35:00"
+baixaPosts
+equalfiles ./testes/aux/giovanna.txt ./arquivos/posts_eita_gio[at]emailcombr.txt
+logout
+
+login email="escolhido@hogwarts.com" senha="1grifinoria1"
+expectError "Erro ao baixar posts. O usuario nao possui posts." baixaPosts
+logout
+
+login email="ned@winterfell.com" senha="dwinter"
+aceitaAmizade usuario="delrey@email.com"
+curtirPost amigo="delrey@email.com" post=0
+criaPost mensagem="Espero viver muitos anos para ver o espetaculo da neve junto com a familia <imagem>imagens/boneco_neve.jpg</imagem> <audio>audio/vento.mp3</audio> #vida" data="16/10/2015 12:35:00"
+baixaPosts
+equalfiles ./testes/aux/ned.txt ./arquivos/posts_ned[at]winterfellcom.txt
+logout
+
+#Total de pops do primeiro post deve ter sido atualizado
+login email="delrey@email.com" senha="sadness123"
+baixaPosts
+equalfiles ./testes/aux/lana2.txt ./arquivos/posts_delrey[at]emailcom.txt
+logout
+
+fechaSistema
