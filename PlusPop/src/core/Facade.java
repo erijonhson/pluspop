@@ -42,8 +42,6 @@ public class Facade {
 				"resources/Scripts de Teste/usecase_8.txt",
 				"resources/Scripts de Teste/usecase_9/usecase_9.txt",
 				"resources/Scripts de Teste/usecase_10.txt"
-				
-
 		};
 		EasyAccept.main(args);
 	}

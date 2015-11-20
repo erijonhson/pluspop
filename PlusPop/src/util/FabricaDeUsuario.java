@@ -1,6 +1,6 @@
 package util;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import core.Usuario;
 import exception.ConversaoDeDataException;
@@ -36,8 +36,8 @@ public class FabricaDeUsuario {
 			EmailInvalidoException, ConversaoDeDataException {
 		verificaNome(nome);
 		verificaEmail(email);
-		Date dataNascValida = ConversorDeData.getInstance().
-				converterData(dataNasc, "dd/MM/yyy");
+		LocalDate dataNascValida = ConversorDeData.getInstance().
+				converterData(dataNasc);
 		String imagemValida = imagemValida(imagem);
 		return new Usuario(nome, email, senha, dataNascValida, imagemValida);
 	}

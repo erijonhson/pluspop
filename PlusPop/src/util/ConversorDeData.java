@@ -1,9 +1,7 @@
 package util;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,7 +12,7 @@ import exception.FormatoDeDataException;
  * Conversor de data a partir de string do tipo dd/MM/yyyy. <br>
  * Sobre validar datas: http://www.guj.com.br/657-validar-data-em-java <br>
  * Sobre construir expressões regulares: http://turing.com.br/material/regex/introducao.html <br>
- * Sobre singleton: http://www.devmedia.com.br/trabalhando-com-singleton-java/23632 <br>
+ * Sobre singleton: https://blogs.oracle.com/JavaFundamentals/entry/using_enhanced_for_loops_with <br>
  * 
  * @author Eri Jonhson
  */
@@ -34,7 +32,6 @@ public class ConversorDeData {
 		return instance;
 	}
 
-	DateFormat formatadorDeData;
 	private Pattern pattern;
 
 	private static final String DATE_PATTERN = "\\d{2}/{1}\\d{2}/{1}\\d{4}";
@@ -43,14 +40,24 @@ public class ConversorDeData {
 		pattern = Pattern.compile(DATE_PATTERN);
 	}
 
-	public Date converterData(String dataNasc, String formato) throws ConversaoDeDataException {
+	/**
+	 * Converte data no formato dd/MM/yyyy. <br>
+	 * 
+	 * @param dataNasc
+	 * @param formato
+	 * @return 
+	 * @throws ConversaoDeDataException
+	 * 
+	 * @author Eri Jonhson
+	 * @author Ítalo Héctor
+	 */
+	public LocalDate converterData(String dataNasc) throws ConversaoDeDataException {
 		try {
-			formatadorDeData = new SimpleDateFormat(formato);
-			formatadorDeData.setLenient(false);
 			if (!formatoDataValido(dataNasc))
 				throw new FormatoDeDataException();
-			return formatadorDeData.parse(dataNasc);
-		} catch (ParseException pe) {
+			String[] data = dataNasc.split("/");
+			return LocalDate.of(Integer.parseInt(data[2]), Integer.parseInt(data[1]), Integer.parseInt(data[0]));
+		} catch (RuntimeException pe) {
 			throw new ConversaoDeDataException(pe);
 		}
 	}

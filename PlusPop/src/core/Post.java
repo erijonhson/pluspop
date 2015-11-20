@@ -5,6 +5,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import core.midia.Audio;
+import core.midia.Imagem;
+import core.midia.Midia;
+
 /**
  * Representa um post de um usuario do PlusPop.
  * 
@@ -12,7 +16,7 @@ import java.util.List;
  */
 public class Post {
 	
-	private List<String> conteudos;
+	private List<Midia> conteudos;
 	private List<String> hashtags;
 	private int popularidade;
 	private LocalDate data;
@@ -20,7 +24,7 @@ public class Post {
 	private int curtidas;
 	private int rejeicoes;
 	
-	public Post(List<String> conteudo, List<String> hashtags, LocalDate data, LocalTime time) {		
+	public Post(List<Midia> conteudo, List<String> hashtags, LocalDate data, LocalTime time) {		
 		
 		this.conteudos = conteudo;
 		this.hashtags = hashtags;
@@ -31,13 +35,13 @@ public class Post {
 		this.rejeicoes = 0;
 		
 	}
-		
+
 	public String getConteudo() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.conteudos.get(0).trim());
-		for (int i = 1; this.conteudos.size() > i; i++){
+		sb.append(this.conteudos.get(0).getRepresentacaoMidia().trim());
+		for (int i = 1; this.conteudos.size() > i; i++) {
 			sb.append(" ");
-			sb.append(this.conteudos.get(i));
+			sb.append(this.conteudos.get(i).getRepresentacaoMidia());
 		}
 		return sb.toString().trim();
 	}
@@ -83,33 +87,33 @@ public class Post {
 	}
 	
 	public String getAudios(){
-		String audios = "";
-		for (String conteudo : conteudos){
-			if (conteudo.contains("<audio>")) {
-				audios += conteudo.substring(7, conteudo.indexOf("</audio>"));
-			} 
+		StringBuilder sb = new StringBuilder();
+		for (Midia conteudo : conteudos) {
+			if (conteudo instanceof Audio) {
+				sb.append(conteudo.getRepresentacaoMidia());
+			}
 		}
-		return audios;
+		return sb.toString();
 	}
-	
+
 	public String getImagens(){
-		String imagens = "";
-		for (String conteudo : conteudos){
-			if (conteudo.contains("<imagem>")) {
-				imagens += conteudo.substring(8, conteudo.indexOf("</imagem>"));
-			} 
+		StringBuilder sb = new StringBuilder();
+		for (Midia conteudo : conteudos) {
+			if (conteudo instanceof Imagem) {
+				sb.append(conteudo.getRepresentacaoMidia());
+			}
 		}
-		return imagens;
+		return sb.toString();
 	}
-	
+
 	public String getConteudoPost(int indice) {
-		String conteudo = this.conteudos.get(indice).trim();
-		if (conteudo.contains("<audio>")) {
-			return "$arquivo_audio:" + conteudo.substring(7, conteudo.indexOf("</audio>"));
-		} else if (conteudo.contains("<imagem>")){
-			return "$arquivo_imagem:" + conteudo.substring(8, conteudo.indexOf("</imagem>"));
+		Midia conteudo = this.conteudos.get(indice);
+		if (conteudo instanceof Audio) {
+			return "$arquivo_audio:" + conteudo.getInformacoesMidia();
+		} else if (conteudo instanceof Imagem) {
+			return "$arquivo_imagem:" + conteudo.getInformacoesMidia();
 		} else {
-			return conteudo;
+			return conteudo.getRepresentacaoMidia();
 		}
 	}
 	

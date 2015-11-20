@@ -1,9 +1,5 @@
 package core.popularidade;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import core.Post;
 
 public class IconePop implements ComportamentoSocial {

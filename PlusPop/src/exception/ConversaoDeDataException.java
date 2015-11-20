@@ -1,16 +1,14 @@
 package exception;
 
-import java.text.ParseException;
-
-public class ConversaoDeDataException extends ParseException {
+public class ConversaoDeDataException extends RuntimeException {
 
 	private static final long serialVersionUID = 118226197607863576L;
 
-	public ConversaoDeDataException(ParseException pe) {
-		super(getMensagem(pe), pe.getErrorOffset());
+	public ConversaoDeDataException(RuntimeException pe) {
+		super(getMensagem(pe), pe.getCause());
 	}
 
-	private static String getMensagem(ParseException e) {
+	private static String getMensagem(RuntimeException e) {
 		if (e instanceof FormatoDeDataException)
 			return e.getMessage();
 		else

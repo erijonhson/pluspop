@@ -1,11 +1,9 @@
 package core;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +36,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private String nome;
 	private String email;
 	private String senha;
-	private Date dataNasc;
+	private LocalDate dataNasc;
 	private String imagem;
 	private List<Post> mural;
 	private List<String> notificacoes;
@@ -48,7 +46,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private int popularidade;
 	private Feed feedPopular, feedRecente;
 	
-	public Usuario(String nome, String email, String senha, Date dataNasc, String imagem) {
+	public Usuario(String nome, String email, String senha, LocalDate dataNasc, String imagem) {
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
@@ -101,7 +99,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		this.senha = senha;
 	}
 
-	public Date getDataNasc() {
+	public LocalDate getDataNasc() {
 		return dataNasc;
 	}
 
@@ -114,11 +112,10 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	 * @return data no formato yyyy-MM-dd.
 	 */
 	public String getDataNascFormatada() {
-		DateFormat formatadorDeData = new SimpleDateFormat("yyyy-MM-dd");
-		return formatadorDeData.format(dataNasc);
+		return dataNasc.toString();
 	}
 
-	public void setDataNasc(Date dataNasc) {
+	public void setDataNasc(LocalDate dataNasc) {
 		this.dataNasc = dataNasc;
 	}
 
@@ -313,8 +310,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	public List<Post> getPosts(){
 		return this.mural;
 	}
-	
-	
+
 	/**
 	 *  
 	 * @return os posts a serem compartilhados com os amigos
@@ -359,7 +355,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private boolean stringVazia(String s) {
 		return s == null || s.trim().equals("");
 	}
-	
+
 	/**
 	 * Compara um usuário pela sua popularidade
 	 */
@@ -369,7 +365,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		else
 			return -(this.getPopularidade() - o.getPopularidade());
 	}
-	
+
 	/**
 	 * Retorna um post com um determinado índex pela ordem dos mais recentes<br/>
 	 * <b><p>0 - menos recente </b></p>
@@ -393,5 +389,5 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		Post post = feedPopular.getPost(idx);
 		return post.toString();
 	}
-	
+
 }

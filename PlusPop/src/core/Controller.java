@@ -1,9 +1,7 @@
 package core;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import util.ConversorDeData;
-import util.FabricaDePost;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.ConversaoDeDataException;
@@ -23,9 +21,11 @@ import exception.UsuarioAindaEstaLogado;
 import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
+import util.ConversorDeData;
+import util.FabricaDePost;
 
 /**
- * Controller único do +Pop.
+ * Controller do +Pop.
  * 
  * @author Eri Jonhson
  * @author Laybson Plismenn
@@ -42,7 +42,7 @@ public class Controller {
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha,
-			String dataNasc, String imagem) throws CadastraUsuarioException {		
+			String dataNasc, String imagem) throws CadastraUsuarioException {
 		return usuariosDoSistema.cadastraUsuario(nome, email, senha, dataNasc, imagem);
 	}
 
@@ -91,7 +91,7 @@ public class Controller {
 					usuario.setNome(valor);
 					break;
 				case "DATA DE NASCIMENTO":
-					Date dataNasc = ConversorDeData.getInstance().converterData(valor, "dd/MM/yyyy");
+					LocalDate dataNasc = ConversorDeData.getInstance().converterData(valor);
 					usuario.setDataNasc(dataNasc);
 					break;
 				case "E-MAIL":
@@ -237,7 +237,7 @@ public class Controller {
 	}
 
 	public String getPost(String atributo, int post) 
-			throws UsuarioNaoLogadoException {		
+			throws UsuarioNaoLogadoException {
 		return getUsuarioDaSessao().getPost(atributo, post);
 	}
 
@@ -297,6 +297,21 @@ public class Controller {
 		return this.usuariosDoSistema.recuperarUsuario(email);
 	}
 
+	public void atualizaFeed() throws UsuarioNaoLogadoException {
+		Usuario usuario = getUsuarioDaSessao();
+		usuario.updateFeed();
+	}
+	
+	public String getPostFeedNoticiasRecentes(int idx) throws UsuarioNaoLogadoException{
+		Usuario usuario = getUsuarioDaSessao();
+		return usuario.getPostFeedNoticiasRecentes(idx);
+	}
+
+	public String getPostFeedNoticiasMaisPopulares(int idx) throws UsuarioNaoLogadoException {
+		 Usuario usuario = getUsuarioDaSessao();
+		 return usuario.getPostFeedNoticiasMaisPopulares(idx);
+	}
+
 	/*
 	 * Métodos internos
 	 */
@@ -319,21 +334,6 @@ public class Controller {
 
 	private Usuario retirarUsuarioDaSessao() {
 		return usuarioDaSessao = null;
-	}
-
-	public void atualizaFeed() throws UsuarioNaoLogadoException {
-		Usuario usuario = getUsuarioDaSessao();
-		usuario.updateFeed();
-	}
-	
-	public String getPostFeedNoticiasRecentes(int idx) throws UsuarioNaoLogadoException{
-		Usuario usuario = getUsuarioDaSessao();
-		return usuario.getPostFeedNoticiasRecentes(idx);
-	}
-
-	public String getPostFeedNoticiasMaisPopulares(int idx) throws UsuarioNaoLogadoException {
-		 Usuario usuario = getUsuarioDaSessao();
-		 return usuario.getPostFeedNoticiasMaisPopulares(idx);
 	}
 	
 }

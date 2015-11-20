@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.List;
 
 import core.Post;
+import core.midia.Audio;
+import core.midia.Imagem;
+import core.midia.Mensagem;
+import core.midia.Midia;
 import exception.CriaPostException;
 import exception.HashTagException;
 import exception.TamanhoMensagemException;
@@ -41,14 +45,15 @@ public class FabricaDePost {
 			throws CriaPostException {
 		try {
 			this.indiceHashtag = encontrarIndiceHashtag(mensagem);
-			String texto = recuperarTextoValido(mensagem);
-			String[] midias = recuperarMidias(mensagem);
+			Mensagem texto = recuperarMensagem(mensagem);
+			List<Midia> midias = recuperarMidias(mensagem);
+			midias.add(0, texto);
 			if (mensagem.contains("#")) {
 				String[] hashTags = recuperarHashtagsValidas(mensagem);
-				return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
-			}else{
+				return new Post(midias, construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
+			} else {
 				String[] hashTags = new String[0];
-				return new Post(construirConteudo(texto, midias), construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
+				return new Post(midias, construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
 			}
 			
 		} catch (TamanhoMensagemException | HashTagException e) {
@@ -79,16 +84,31 @@ public class FabricaDePost {
 			return mensagem.length();
 	}
 
-	private String recuperarTextoValido(String mensagem) 
+	private Mensagem recuperarMensagem(String mensagem) 
 			throws TamanhoMensagemException {
 		String textoSemMidia = recuperarMensagemSemMidia(mensagem);
 		if (textoSemMidia.length() > 200)
 			throw new TamanhoMensagemException();
-		return textoSemMidia;
+		return new Mensagem(textoSemMidia);
 	}
 
-	private String[] recuperarMidias(String mensagem) {
-		return mensagem.substring(this.indiceMidia, this.indiceHashtag).split(" ");
+	private List<Midia> recuperarMidias(String mensagem) {
+		String[] textoMidias = mensagem.substring(this.indiceMidia, this.indiceHashtag).split(" ");
+		List<Midia> midias = new ArrayList<>();
+		Midia midia = null;
+		for (String e : textoMidias) {
+			if (e.startsWith("<audio>")) {
+				int gap = "<audio>".length();
+				midia = new Audio(e.substring(e.indexOf("<audio>") + gap, e.indexOf("</audio>")));
+			}
+			else if (e.startsWith("<imagem>")) {
+				int gap = "<imagem>".length();
+				midia = new Imagem(e.substring(e.indexOf("<imagem>") + gap, e.indexOf("</imagem>")));
+			}
+			if (midia != null)
+				midias.add(midia);
+		}
+		return midias;
 	}
 
 	private String[] recuperarHashtagsValidas(String mensagem) 
@@ -98,13 +118,6 @@ public class FabricaDePost {
 			if (hashTag.trim().equals("") || !hashTag.startsWith("#"))
 				throw new HashTagException(hashTag);
 		return hashTags;
-	}
-
-	private List<String> construirConteudo(String mensagem, String[] midias){
-		List<String> conteudo = new ArrayList<String>();
-		conteudo.add(mensagem);
-		Collections.addAll(conteudo, midias);
-		return conteudo;
 	}
 
 	private List<String> construirHashTags(String[] hashTags){
@@ -124,7 +137,7 @@ public class FabricaDePost {
 			this.indiceMidia = primeiraImagem;
 		else
 			this.indiceMidia = this.indiceHashtag;
-		return mensagem.substring(0, indiceMidia);
+		return mensagem.substring(0, indiceMidia).trim();
 	}
 
 	private boolean existeApenasAudio(int primeiroAudio, int primeiraImagem) {

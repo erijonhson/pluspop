@@ -27,10 +27,9 @@ public class Normal implements ComportamentoSocial {
 	public int qtdParaCompartilhar() {
 		return QTDPOSTSTOSHARE;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Normal Pop";
 	}
-
 }
