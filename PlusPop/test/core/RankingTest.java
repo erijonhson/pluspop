@@ -1,18 +1,18 @@
 package core;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import util.FabricaDePost;
-import util.FabricaDeUsuario;
 import exception.ConversaoDeDataException;
 import exception.CriaPostException;
 import exception.EmailInvalidoException;
 import exception.NomeUsuarioException;
+import util.FabricaDeUsuario;
 
 public class RankingTest {
 
@@ -109,12 +109,12 @@ public class RankingTest {
 			usuarios.add(A);
 			usuarios.add(B);
 			
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #java", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #java", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #java", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #cpp", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #cpp", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
+			A.criaPost("teste #java", "11/12/1212 12:12:12");
+			A.criaPost("teste #java", "11/12/1212 12:12:12");
+			A.criaPost("teste #java", "11/12/1212 12:12:12");
+			B.criaPost("teste #cpp", "11/12/1212 12:12:12");
+			B.criaPost("teste #cpp", "11/12/1212 12:12:12");
+			B.criaPost("teste #php", "11/12/1212 12:12:12");
 			
 			Ranking ranking = new Ranking();
 			
@@ -124,18 +124,18 @@ public class RankingTest {
 					"Trending Topics:  (1) #java: 3; (2) #cpp: 2; (3) #php: 1;", 
 					ranking.getRankHashtag());
 			
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #cpp", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #cpp", "11/12/1212 12:12:12"));
+			A.criaPost("teste #cpp", "11/12/1212 12:12:12");
+			B.criaPost("teste #cpp", "11/12/1212 12:12:12");
 			ranking.atualizaRank(usuarios);
 
 			assertEquals(
 					"Trending Topics:  (1) #cpp: 4; (2) #java: 3; (3) #php: 1;", 
 					ranking.getRankHashtag());
 			
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
+			B.criaPost("teste #php", "11/12/1212 12:12:12");
+			A.criaPost("teste #php", "11/12/1212 12:12:12");
+			A.criaPost("teste #php", "11/12/1212 12:12:12");
+			A.criaPost("teste #php", "11/12/1212 12:12:12");
 
 			ranking.atualizaRank(usuarios);
 			
@@ -143,14 +143,14 @@ public class RankingTest {
 					"Trending Topics:  (1) #php: 5; (2) #cpp: 4; (3) #java: 3;",
 					ranking.getRankHashtag());
 			
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #php", "11/12/1212 12:12:12"));
-			A.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
-			B.addPost(FabricaDePost.getInstance().construirPost("teste #js", "11/12/1212 12:12:12"));
+			B.criaPost("teste #js", "11/12/1212 12:12:12");
+			A.criaPost("teste #js", "11/12/1212 12:12:12");
+			B.criaPost("teste #js", "11/12/1212 12:12:12");
+			B.criaPost("teste #js", "11/12/1212 12:12:12");
+			A.criaPost("teste #php", "11/12/1212 12:12:12");
+			A.criaPost("teste #js", "11/12/1212 12:12:12");
+			B.criaPost("teste #js", "11/12/1212 12:12:12");
+			B.criaPost("teste #js", "11/12/1212 12:12:12");
 			ranking.atualizaRank(usuarios);
 			
 			assertEquals(

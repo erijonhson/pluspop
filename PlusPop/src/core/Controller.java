@@ -9,6 +9,7 @@ import exception.CriaPostException;
 import exception.EmailInvalidoException;
 import exception.ErroNaConsultaDePopsException;
 import exception.FechaSistemaException;
+import exception.HashTagException;
 import exception.LoginException;
 import exception.LogoutException;
 import exception.NomeUsuarioException;
@@ -22,7 +23,6 @@ import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
 import util.ConversorDeData;
-import util.FabricaDePost;
 
 /**
  * Controller do +Pop.
@@ -279,9 +279,10 @@ public class Controller {
 	 * @throws UsuarioNaoExisteException
 	 * @throws UsuarioNaoLogadoException
 	 * @throws PostOutOfRangeException
+	 * @throws HashTagException 
 	 */
 	public void curtirPost(String amigoEmail, int post) 
-			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException{
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException, HashTagException{
 
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
 		Post postAmigo = amigo.getPostByIndex(post);
@@ -305,9 +306,10 @@ public class Controller {
 	 * @throws UsuarioNaoExisteException
 	 * @throws UsuarioNaoLogadoException
 	 * @throws PostOutOfRangeException
+	 * @throws HashTagException 
 	 */
 	public void rejeitarPost(String amigoEmail, int post) 
-			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException {
+			throws UsuarioNaoExisteException, UsuarioNaoLogadoException, PostOutOfRangeException, HashTagException {
 
 		Usuario amigo = this.recuperarUsuario(amigoEmail);
 		Post postAmigo = amigo.getPostByIndex(post);
@@ -353,8 +355,7 @@ public class Controller {
 	 */
 	public void criaPost(String mensagem, String dataHora) 
 			throws CriaPostException, UsuarioNaoLogadoException {
-		Post post = FabricaDePost.getInstance().construirPost(mensagem, dataHora);
-		getUsuarioDaSessao().addPost(post);
+		getUsuarioDaSessao().criaPost(mensagem, dataHora);
 	}
 
 	

@@ -6,8 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import core.midia.Audio;
+import core.midia.HashTag;
 import core.midia.Imagem;
 import core.midia.Midia;
+import exception.HashTagException;
 
 /**
  * Representa um post de um usuario do PlusPop.
@@ -17,7 +19,7 @@ import core.midia.Midia;
 public class Post {
 	
 	private List<Midia> conteudos;
-	private List<String> hashtags;
+	private List<HashTag> hashtags;
 	private int popularidade;
 	private LocalDate data;
 	private LocalTime hora;
@@ -31,7 +33,7 @@ public class Post {
 	 * @param data do post
 	 * @param hora do post
 	 */
-	public Post(List<Midia> conteudo, List<String> hashtags, LocalDate data, LocalTime time) {		
+	public Post(List<Midia> conteudo, List<HashTag> hashtags, LocalDate data, LocalTime time) {		
 		
 		this.conteudos = conteudo;
 		this.hashtags = hashtags;
@@ -71,7 +73,7 @@ public class Post {
 		return sb.toString().trim();
 	}
 	
-	public List<String> getHashtags(){
+	public List<HashTag> getHashtags(){
 		return this.hashtags;
 	}
 
@@ -93,7 +95,7 @@ public class Post {
 		sb.append(getConteudo());
 		for (int i = 0; this.hashtags.size() > i; i++) {
 			sb.append(" ");
-			sb.append(this.hashtags.get(i).trim());
+			sb.append(this.hashtags.get(i).getRepresentacaoMidia().trim());
 		}
 		sb.append(" (");
 		sb.append(getMomento());
@@ -193,9 +195,13 @@ public class Post {
 	/**
 	 * Adiciona uma hashtag à lista de hashtags
 	 * @param hashtag
+	 * @throws HashTagException 
 	 */
-	public void addHashTag(String hashtag){
-		this.hashtags.add(hashtag);
+	public void addHashTag(String hashtag) throws HashTagException{
+		HashTag novaHashTag = new HashTag(hashtag);
+		if (!this.hashtags.contains(novaHashTag)) {
+			this.hashtags.add(novaHashTag);
+		}
 	}
 	
 	public LocalDate getData(){
@@ -213,14 +219,25 @@ public class Post {
 	}
 	
 	public String toFileFormat(){
-		String out = "";
+		StringBuilder sb = new StringBuilder();
 		String endl = System.getProperty("line.separator");
-		out += "Conteúdo:" + endl + getConteudo() + endl + getImagens() + endl + getAudios() + endl;
-		for (String hashtag : hashtags){
-			out += hashtag + " ";
+		
+		sb.append("Conteúdo:");
+		sb.append(endl);
+		sb.append(getConteudo());
+		sb.append(endl);
+		sb.append(getImagens());
+		sb.append(endl);
+		sb.append(getAudios());
+		sb.append(endl);
+		for (HashTag hashtag : hashtags){
+			sb.append(hashtag.getRepresentacaoMidia());
+			sb.append(" ");
 		}
-		out += "+Pop: " + getPopularidade() + endl;
-		return out;
+		sb.append("+Pop: ");
+		sb.append(getPopularidade());
+		sb.append(endl);
+		return sb.toString();
 	}
 		
 }

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import core.midia.HashTag;
+
 /**
  * Classe que fornece o ranking dos usuários e das hashtags
  * @author ordan
@@ -33,8 +35,8 @@ public class Ranking {
 			atualizaRankUsuarioMaisPopulares(usuario);
 			atualizaRankUsuarioMenosPopulares(usuario);
 			for (Post post : usuario.getPosts()){
-				for (String hashtag : post.getHashtags()){
-					atualizaHashtag(hashtag);
+				for (HashTag hashtag : post.getHashtags()){
+					atualizaHashtag(hashtag.getRepresentacaoMidia());
 				}
 			}
 		}

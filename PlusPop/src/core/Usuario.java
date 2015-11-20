@@ -9,13 +9,16 @@ import java.util.List;
 import java.util.Set;
 
 import util.EmailValidator;
+import util.FabricaDePost;
 import core.popularidade.CelebridadePop;
 import core.popularidade.ComportamentoSocial;
 import core.popularidade.IconePop;
 import core.popularidade.Normal;
 import exception.ConteudoPostInexistenteException;
 import exception.ConteudoPostNegativoException;
+import exception.CriaPostException;
 import exception.EmailInvalidoException;
+import exception.HashTagException;
 import exception.NomeUsuarioException;
 import exception.PostOutOfRangeException;
 import exception.SemNotificacaoException;
@@ -73,8 +76,10 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	/**
 	 * Adiciona um post dado à lista de mural.
 	 * @param post a ser adicionado.
+	 * @throws CriaPostException 
 	 */
-	public void addPost(Post post){
+	public void criaPost(String mensagem, String dataHora) throws CriaPostException {
+		Post post = FabricaDePost.getInstance().construirPost(mensagem, dataHora);
 		mural.add(post);
 	}
 
@@ -284,16 +289,18 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	/**
 	 * Delega ao comportamento social a função de curtir um post recebido
 	 * @param post a ser curtido
+	 * @throws HashTagException 
 	 */
-	public void curtir(Post post){
+	public void curtir(Post post) throws HashTagException{
 		comportamentoSocial.curtir(post);
 	}
 	
 	/**
 	 * Delega ao comportamento social a função de rejeitar um post recebido
 	 * @param post a ser rejeitado
+	 * @throws HashTagException 
 	 */
-	public void rejeitar(Post post){
+	public void rejeitar(Post post) throws HashTagException{
 		comportamentoSocial.rejeitar(post);
 	}
 

@@ -6,6 +6,7 @@ import exception.CadastraUsuarioException;
 import exception.CriaPostException;
 import exception.ErroNaConsultaDePopsException;
 import exception.FechaSistemaException;
+import exception.HashTagException;
 import exception.LoginException;
 import exception.LogoutException;
 import exception.PostOutOfRangeException;
@@ -151,7 +152,7 @@ public class Facade {
 
 	public void curtirPost(String amigo, int post)
 			throws UsuarioNaoExisteException, UsuarioNaoLogadoException,
-			PostOutOfRangeException {
+			PostOutOfRangeException, HashTagException {
 		popController.curtirPost(amigo, post);
 	}
 
@@ -171,7 +172,7 @@ public class Facade {
 
 	public void rejeitarPost(String amigoEmail, int post)
 			throws UsuarioNaoExisteException, UsuarioNaoLogadoException,
-			PostOutOfRangeException {
+			PostOutOfRangeException, HashTagException {
 		popController.rejeitarPost(amigoEmail, post);
 	}
 

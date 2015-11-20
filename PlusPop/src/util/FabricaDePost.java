@@ -5,10 +5,12 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import core.Post;
 import core.midia.Audio;
+import core.midia.HashTag;
 import core.midia.Imagem;
 import core.midia.Mensagem;
 import core.midia.Midia;
@@ -48,18 +50,14 @@ public class FabricaDePost {
 	public Post construirPost(String mensagem, String dataHora) 
 			throws CriaPostException {
 		try {
+
 			this.indiceHashtag = encontrarIndiceHashtag(mensagem);
 			Mensagem texto = recuperarMensagem(mensagem);
 			List<Midia> midias = recuperarMidias(mensagem);
 			midias.add(0, texto);
-			if (mensagem.contains("#")) {
-				String[] hashTags = recuperarHashtagsValidas(mensagem);
-				return new Post(midias, construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
-			} else {
-				String[] hashTags = new String[0];
-				return new Post(midias, construirHashTags(hashTags), buildDate(dataHora), buildTime(dataHora));
-			}
-			
+			List<HashTag> hashTags = recuperarHashtagsValidas(mensagem);
+			return new Post(midias, hashTags, buildDate(dataHora), buildTime(dataHora));
+
 		} catch (TamanhoMensagemException | HashTagException e) {
 			throw new CriaPostException(e);
 		}
@@ -125,13 +123,17 @@ public class FabricaDePost {
 		return midias;
 	}
 
-	private String[] recuperarHashtagsValidas(String mensagem) 
-			throws HashTagException {
-		String[] hashTags = mensagem.substring(this.indiceHashtag).split(" ");
-		for (String hashTag : hashTags)
-			if (hashTag.trim().equals("") || !hashTag.startsWith("#"))
-				throw new HashTagException(hashTag);
-		return hashTags;
+	private List<HashTag> recuperarHashtagsValidas(String mensagem) throws HashTagException {
+		List<HashTag> lista = new LinkedList<>();
+		if (mensagem.contains("#")) {
+			String[] tags = mensagem.substring(this.indiceHashtag).trim().split(" ");
+			HashTag tag = null;
+			for (String hashTag : tags) {
+				tag = new HashTag(hashTag);
+				lista.add(tag);
+			}
+		}
+		return lista;
 	}
 
 	private List<String> construirHashTags(String[] hashTags){
