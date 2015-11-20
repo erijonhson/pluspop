@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import util.EmailValidator;
@@ -42,7 +44,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private LocalDate dataNasc;
 	private String imagem;
 	private List<Post> mural;
-	private List<String> notificacoes;
+	private Queue<String> notificacoes;
 	private Set<Usuario> amigos;
 	private Set<Usuario> solicitacoesDeAmizade;
 	private ComportamentoSocial comportamentoSocial;
@@ -65,7 +67,7 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		this.imagem = imagem;
 		this.comportamentoSocial = new Normal();
 		this.mural = new ArrayList<Post>();
-		this.notificacoes = new ArrayList<String>();
+		this.notificacoes = new LinkedList<String>();
 		this.amigos = new HashSet<Usuario>();
 		this.solicitacoesDeAmizade = new HashSet<Usuario>();
 		this.popularidade = 0;
@@ -325,10 +327,9 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	 * @return próxima notificação da fila
 	 * @throws SemNotificacaoException
 	 */
-	public String getNextNotificacao() throws SemNotificacaoException{
-		if (this.notificacoes.size() == 0) throw new SemNotificacaoException();
-		String notificacao = this.notificacoes.get(0);
-		this.notificacoes.remove(0);
+	public String getNextNotificacao() throws SemNotificacaoException {
+		if (this.notificacoes.isEmpty()) throw new SemNotificacaoException();
+		String notificacao = this.notificacoes.remove();
 		return notificacao;
 	}
 
