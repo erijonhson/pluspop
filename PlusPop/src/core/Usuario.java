@@ -46,6 +46,14 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 	private int popularidade;
 	private Feed feedPopular, feedRecente;
 	
+	/**
+	 * Construtor de Usuário
+	 * @param nome do usuario
+	 * @param email do usuario
+	 * @param senha do usuario
+	 * @param dataNasc do usuario
+	 * @param foto do usuario
+	 */
 	public Usuario(String nome, String email, String senha, LocalDate dataNasc, String imagem) {
 		this.nome = nome;
 		this.email = email;
@@ -62,6 +70,10 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		this.feedPopular = new Feed(new ComparatorFeedPopular());
 	}
 
+	/**
+	 * Adiciona um post dado à lista de mural.
+	 * @param post a ser adicionado.
+	 */
 	public void addPost(Post post){
 		mural.add(post);
 	}
@@ -216,10 +228,19 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		return post.getConteudoPost(indice);
 	}
 
+	/**
+	 * Adiciona um Usuario recebido ao set de solicitações de amizade.
+	 * @param Usuario a ser adicionado às solicitações
+	 */
 	public void addSolicitacaoAmizade(Usuario amigo){
 		this.solicitacoesDeAmizade.add(amigo);
 	}
 	
+	/**
+	 * Remove usuario recebido do set de solicitações de amizade.
+	 * @param usuario a ser removido
+	 * @throws SolicitacaoNaoEnviadaException
+	 */
 	public void rejeitaAmizade(Usuario amigo) 
 			throws SolicitacaoNaoEnviadaException{
 		
@@ -229,6 +250,11 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		this.solicitacoesDeAmizade.remove(amigo);
 	}
 
+	/**
+	 * Adiciona usuario recebido à lista de amigos, remove usuario recebido do set de solicitações de amizade
+	 * @param novo usuario amigo
+	 * @throws SolicitacaoNaoEnviadaException
+	 */
 	public void aceitaAmizade(Usuario amigo) 
 			throws SolicitacaoNaoEnviadaException{
 		
@@ -239,18 +265,34 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		this.solicitacoesDeAmizade.remove(amigo);
 	}
 
+	/**
+	 * Remove o usuario recebido da lista de amigos
+	 * @param amigo a ser removido
+	 */
 	public void removeAmigo(Usuario amigo){
 		this.amigos.remove(amigo);
 	}
 
+	/**
+	 * Adiciona usuario recebido à lista de amigos
+	 * @param amigo
+	 */
 	public void addAmigo(Usuario amigo){
 		this.amigos.add(amigo);
 	}
 
+	/**
+	 * Delega ao comportamento social a função de curtir um post recebido
+	 * @param post a ser curtido
+	 */
 	public void curtir(Post post){
 		comportamentoSocial.curtir(post);
 	}
 	
+	/**
+	 * Delega ao comportamento social a função de rejeitar um post recebido
+	 * @param post a ser rejeitado
+	 */
 	public void rejeitar(Post post){
 		comportamentoSocial.rejeitar(post);
 	}
@@ -259,6 +301,10 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		return this.amigos.size();
 	}
 
+	/**
+	 * Adiciona uma notificação à fila de notificações
+	 * @param notificacao a ser adicionada
+	 */
 	public void addNotificacao(String notificacao){
 		this.notificacoes.add(notificacao);
 	}
@@ -267,6 +313,11 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		return this.notificacoes.size();
 	}
 
+	/**
+	 * Retorna a próxima notificação da fila de notificações.
+	 * @return próxima notificação da fila
+	 * @throws SemNotificacaoException
+	 */
 	public String getNextNotificacao() throws SemNotificacaoException{
 		if (this.notificacoes.size() == 0) throw new SemNotificacaoException();
 		String notificacao = this.notificacoes.get(0);
@@ -274,6 +325,12 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		return notificacao;
 	}
 
+	/**
+	 * Retorna o post de indice recebido do mural.
+	 * @param indice do post
+	 * @return post
+	 * @throws PostOutOfRangeException
+	 */
 	public Post getPostByIndex(int index) 
 			throws PostOutOfRangeException{
 		if (index >= mural.size()) throw new PostOutOfRangeException(index, mural.size());
@@ -292,6 +349,10 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		this.comportamentoSocial = new IconePop();
 	}
 
+	/**
+	 * Altera a popularidade do usuario, provoca troca dinâmica de comportamento social, de acordo com a quantidade de popularidade.
+	 * @param quantidade de popularidade a ser alterada.
+	 */
 	public void changePopularidade(int delta){
 		this.popularidade += delta;
 		if (this.popularidade < 500)
@@ -335,6 +396,9 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		return postsRecentes;
 	}
 
+	/**
+	 * Atualiza os feeds de noticias recentes e populares.
+	 */
 	public void updateFeed(){
 		this.feedRecente.update(this.amigos);
 		this.feedPopular.update(this.amigos);

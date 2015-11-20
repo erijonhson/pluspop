@@ -38,9 +38,13 @@ public class FabricaDePost {
 	private int indiceMidia;
 	private int indiceHashtag;
 
+	/**
+	 * Construtor da Fabrica de Post.
+	 */
 	private FabricaDePost() {
 	}
 
+	
 	public Post construirPost(String mensagem, String dataHora) 
 			throws CriaPostException {
 		try {
@@ -61,12 +65,22 @@ public class FabricaDePost {
 		}
 	}
 	
+	/**
+	 * Recebe uma string representado a data e hora e retorna um objeto {@link LocalDate} representando a data.
+	 * @param String dataHora
+	 * @return LocalDate data
+	 */
 	public LocalDate buildDate(String dataHora){
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate data = LocalDate.parse(dataHora.substring(0, 10), formatter);
 		return data;
 	}
 	
+	/**
+	 * Recebe uma string representado a data e hora e retorna um objeto {@link LocalDate} representando a hora.
+	 * @param String dataHora
+	 * @return LocalDate hora
+	 */
 	public LocalTime buildTime(String dataHora){
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		LocalTime time = LocalTime.parse (dataHora.substring(11, 19), formatter);

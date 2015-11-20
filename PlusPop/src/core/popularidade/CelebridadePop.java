@@ -13,6 +13,9 @@ public class CelebridadePop implements ComportamentoSocial{
 	private static final int BONUS = 10;
 	private static final int QTDPOSTSTOSHARE = 4;
 	
+	/**
+	 * Adiciona ao post recebido 25 pops e mais 10, caso o post seja recente. Incrementa o numero de curtidas do post.
+	 */
 	@Override
 	public void curtir(Post post) {
 		post.addPopularidade(DELTA);
@@ -21,6 +24,9 @@ public class CelebridadePop implements ComportamentoSocial{
 			post.addPopularidade(BONUS);		
 	}
 
+	/**
+	 * Remove do post recebido 25 pops e mais 10, caso o post seja recente. Incrementa o numero de rejeições do post.
+	 */
 	@Override
 	public void rejeitar(Post post) {
 		post.removePopularidade(DELTA);

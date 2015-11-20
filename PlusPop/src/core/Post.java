@@ -24,6 +24,13 @@ public class Post {
 	private int curtidas;
 	private int rejeicoes;
 	
+	/**
+	 * Construtor do Post
+	 * @param lista de conteudos
+	 * @param lista de hashtags
+	 * @param data do post
+	 * @param hora do post
+	 */
 	public Post(List<Midia> conteudo, List<String> hashtags, LocalDate data, LocalTime time) {		
 		
 		this.conteudos = conteudo;
@@ -36,6 +43,10 @@ public class Post {
 		
 	}
 
+	/**
+	 * Retorna uma string com todo o conteudo referente ao post.
+	 * @return string com todo o conteudo referente ao post.
+	 */
 	public String getConteudo() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.conteudos.get(0).getRepresentacaoMidia().trim());
@@ -46,6 +57,10 @@ public class Post {
 		return sb.toString().trim();
 	}
 
+	/**
+	 * Retorna uma string com todas as hashtags do post separadas por espaço.
+	 * @return string com todas as hashtags do post separadas por espaço
+	 */
 	public String getStringOfHashtags() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.hashtags.get(0));
@@ -60,6 +75,10 @@ public class Post {
 		return this.hashtags;
 	}
 
+	/**
+	 * Retorna a data e hora de criação do post.
+	 * @return String com data e hora de criação do post.
+	 */
 	public String getMomento() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 		return data + " " + hora.format(formatter);
@@ -85,7 +104,11 @@ public class Post {
 	public int getConteudoSize() {
 		return this.conteudos.size();
 	}
-	
+
+	/**
+	 * Retorna uma string com todos os áudios do post separados por espaço
+	 * @return string com todos os áudios do post separados por espaço
+	 */
 	public String getAudios(){
 		StringBuilder sb = new StringBuilder();
 		for (Midia conteudo : conteudos) {
@@ -96,6 +119,10 @@ public class Post {
 		return sb.toString();
 	}
 
+	/**
+	 * Retorna uma string com todas as imagens do post separadas por espaço
+	 * @return string com todas as imagens do post separadas por espaço
+	 */
 	public String getImagens(){
 		StringBuilder sb = new StringBuilder();
 		for (Midia conteudo : conteudos) {
@@ -106,6 +133,11 @@ public class Post {
 		return sb.toString();
 	}
 
+	/**
+	 * Retorna o conteudo de indice dado da lista de conteudos
+	 * @param indice do conteudo
+	 * @return conteudo de indice dado
+	 */
 	public String getConteudoPost(int indice) {
 		Midia conteudo = this.conteudos.get(indice);
 		if (conteudo instanceof Audio) {
@@ -116,7 +148,11 @@ public class Post {
 			return conteudo.getRepresentacaoMidia();
 		}
 	}
-	
+
+	/**
+	 * Soma o numero dado de popularidade ao post
+	 * @param numero de popularidade
+	 */
 	public void addPopularidade (int popularidade){
 		this.popularidade += popularidade;
 	}
@@ -137,15 +173,27 @@ public class Post {
 		this.rejeicoes = rejeicoes;
 	}
 	
+	/**
+	 * Subtrai a quantidade dada de popularidade no post
+	 * @param quantidade de popularidade a ser subtraida
+	 */
 	public void removePopularidade (int popularidade){
 		this.popularidade -= popularidade;
 	}
 	
+	/**
+	 * Retorna True se a data atual é no mesmo dia da data do post. Retorna False caso contrario
+	 * @return
+	 */
 	public boolean recente(){
 		LocalDate hoje = LocalDate.now();
 		return data.compareTo(hoje) == 0;
 	}
 	
+	/**
+	 * Adiciona uma hashtag à lista de hashtags
+	 * @param hashtag
+	 */
 	public void addHashTag(String hashtag){
 		this.hashtags.add(hashtag);
 	}

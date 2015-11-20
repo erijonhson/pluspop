@@ -3,7 +3,7 @@ package core;
 import java.util.Comparator;
 
 /**
- * Classe que compara o Post por popularidade, caso impate, o tempo de publicação prevalece
+ * Classe que compara o Post por popularidade, caso empate, o tempo de publicação prevalece
  * @author Ordan Santos
  *
  */
