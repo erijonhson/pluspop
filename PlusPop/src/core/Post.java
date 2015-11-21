@@ -16,7 +16,7 @@ import exception.HashTagException;
  * 
  * @author Laybson Plismenn
  */
-public class Post {
+public class Post implements Texto{
 	
 	private List<Midia> conteudos;
 	private List<HashTag> hashtags;
@@ -218,25 +218,39 @@ public class Post {
 		return hora.compareTo(other.getHora());
 	}
 	
-	public String toFileFormat(){
+	public String toTextFormat(){
 		StringBuilder sb = new StringBuilder();
 		String endl = System.getProperty("line.separator");
+		String hora = this.getHora().format(DateTimeFormatter.ofPattern("HH:mm:ss")).toString();
+		String data = this.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString();
 		
-		sb.append("Conteúdo:");
+		sb.append(data + " " + hora);
 		sb.append(endl);
-		sb.append(getConteudo());
+		sb.append("Conteudo:");
 		sb.append(endl);
+		sb.append(getConteudoPost(0));
+		sb.append(endl);
+		
 		sb.append(getImagens());
-		sb.append(endl);
+		if (!getImagens().isEmpty())
+			sb.append(endl);
+		
 		sb.append(getAudios());
-		sb.append(endl);
+		if (!getAudios().isEmpty())
+			sb.append(endl);
+		
 		for (HashTag hashtag : hashtags){
 			sb.append(hashtag.getRepresentacaoMidia());
 			sb.append(" ");
 		}
+		
+		if (hashtags.size() != 0)
+			sb.append(endl);
+		
 		sb.append("+Pop: ");
 		sb.append(getPopularidade());
 		sb.append(endl);
+
 		return sb.toString();
 	}
 		

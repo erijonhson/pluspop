@@ -1,5 +1,6 @@
 package core;
 
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import util.EmailValidator;
 import util.FabricaDePost;
+import util.TextoWritter;
 import core.popularidade.CelebridadePop;
 import core.popularidade.ComportamentoSocial;
 import core.popularidade.IconePop;
@@ -20,6 +22,7 @@ import exception.ConteudoPostInexistenteException;
 import exception.ConteudoPostNegativoException;
 import exception.CriaPostException;
 import exception.EmailInvalidoException;
+import exception.ErroBaixarPostException;
 import exception.HashTagException;
 import exception.NomeUsuarioException;
 import exception.PostOutOfRangeException;
@@ -97,6 +100,13 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 
 	public String getEmail() {
 		return email;
+	}
+	
+	public String getFileName(){
+		String filename = this.getEmail();
+		filename= filename.replaceAll("\\.", "");
+		filename = filename.replaceAll("@", "[at]");
+		return filename;
 	}
 
 	public void setEmail(String email) throws EmailInvalidoException {
@@ -461,5 +471,14 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		Post post = feedPopular.getPost(idx);
 		return post.toString();
 	}
-
+	
+	public void salvarInformacoes() throws FileNotFoundException, ErroBaixarPostException{
+		
+		if (this.mural.size() == 0)
+			throw new ErroBaixarPostException("O usuario nao possui posts.");
+		
+		TextoWritter tw = new TextoWritter("posts_" + this.getFileName());
+		tw.write(this.mural, "Post");
+	}
+	
 }

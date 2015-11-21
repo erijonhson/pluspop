@@ -1,5 +1,6 @@
 package core;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 
 import exception.AtualizaPerfilException;
@@ -7,6 +8,7 @@ import exception.CadastraUsuarioException;
 import exception.ConversaoDeDataException;
 import exception.CriaPostException;
 import exception.EmailInvalidoException;
+import exception.ErroBaixarPostException;
 import exception.ErroNaConsultaDePopsException;
 import exception.FechaSistemaException;
 import exception.HashTagException;
@@ -84,7 +86,7 @@ public class Controller {
 			if (!usuario.autenticarSenha(senha)) 
 				throw new SenhaInvalidaException();
 			setUsuarioDaSessao(usuario);
-		} catch (UsuarioNaoExisteException | SenhaInvalidaException | UsuarioJaLogadoException e) {
+		} catch (UsuarioNaoExisteException | SenhaInvalidaException | UsuarioJaLogadoException e) {;
 			throw new LoginException(e);
 		}
 	}
@@ -499,6 +501,11 @@ public class Controller {
 	public String getPostFeedNoticiasMaisPopulares(int idx) throws UsuarioNaoLogadoException {
 		 Usuario usuario = getUsuarioDaSessao();
 		 return usuario.getPostFeedNoticiasMaisPopulares(idx);
+	}
+	
+	public void baixaPosts() throws UsuarioNaoLogadoException, FileNotFoundException, ErroBaixarPostException{
+		Usuario u = getUsuarioDaSessao();
+		u.salvarInformacoes();
 	}
 
 	/*

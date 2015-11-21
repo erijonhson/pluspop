@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -135,13 +134,15 @@ public class FabricaDePost {
 		}
 		return lista;
 	}
-
+	
+	/**
 	private List<String> construirHashTags(String[] hashTags){
 		List<String> newHashTags = new ArrayList<String>();
 		Collections.addAll(newHashTags, hashTags);
 		return newHashTags;
 	}
-
+	*/
+	
 	private String recuperarMensagemSemMidia(String mensagem) {
 		int primeiroAudio = mensagem.indexOf("<audio>");
 		int primeiraImagem = mensagem.indexOf("<imagem>");

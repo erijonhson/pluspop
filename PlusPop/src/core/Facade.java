@@ -1,9 +1,12 @@
 package core;
 
+import java.io.FileNotFoundException;
+
 import easyaccept.EasyAccept;
 import exception.AtualizaPerfilException;
 import exception.CadastraUsuarioException;
 import exception.CriaPostException;
+import exception.ErroBaixarPostException;
 import exception.ErroNaConsultaDePopsException;
 import exception.FechaSistemaException;
 import exception.HashTagException;
@@ -33,16 +36,16 @@ public class Facade {
 
 	public static void main(String[] args) throws CriaPostException {
 		args = new String[] { "core.Facade",
-				"resources/Scripts de Teste/usecase_1.txt",
-				"resources/Scripts de Teste/usecase_2.txt",
-				"resources/Scripts de Teste/usecase_3.txt",
-				"resources/Scripts de Teste/usecase_4.txt",
-				"resources/Scripts de Teste/usecase_5.txt",
-				"resources/Scripts de Teste/usecase_6.txt",
-				"resources/Scripts de Teste/usecase_7.txt",
-				"resources/Scripts de Teste/usecase_8.txt",
-				"resources/Scripts de Teste/usecase_9/usecase_9.txt",
-				"resources/Scripts de Teste/usecase_10.txt"
+				"./testes/usecase_1.txt",
+				"./testes/usecase_2.txt",
+				"./testes/usecase_3.txt",
+				"./testes/usecase_4.txt",
+				"./testes/usecase_5.txt",
+				"./testes/usecase_6.txt",
+				"./testes/usecase_7.txt",
+				"./testes/usecase_8.txt",
+				"./testes/usecase_9.txt"
+				//"./testes/usecase_10.txt"
 		};
 		EasyAccept.main(args);
 	}
@@ -215,5 +218,9 @@ public class Facade {
 	
 	public String getPostFeedNoticiasMaisPopulares (int idx) throws UsuarioNaoLogadoException{
 		return popController.getPostFeedNoticiasMaisPopulares(idx);
+	}
+	
+	public void baixaPosts() throws FileNotFoundException, UsuarioNaoLogadoException, ErroBaixarPostException{
+		popController.baixaPosts();
 	}
 }
