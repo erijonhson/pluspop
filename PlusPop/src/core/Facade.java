@@ -40,10 +40,12 @@ public class Facade {
 		
 		File file = new File("./arquivos/system.dat");
 		
-		if (file.exists())
-			file.delete();
-		
-		args = new String[] { 
+		if (file.exists()){
+			System.out.println("Testando sistema restaurado: ");
+			args = new String[] {"core.Facade", "./testes/usecase_11.txt"};
+		}
+		else
+			args = new String[] { 
 				"core.Facade",
 				"./testes/usecase_1.txt",
 				"./testes/usecase_2.txt",
@@ -55,7 +57,7 @@ public class Facade {
 				"./testes/usecase_8.txt",
 				"./testes/usecase_9.txt",
 				"./testes/usecase_10.txt"
-		};
+			};
 		
 		EasyAccept.main(args);
 

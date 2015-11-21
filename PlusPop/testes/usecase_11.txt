@@ -1,0 +1,34 @@
+##################
+# Caso de Uso 11 #
+##################
+
+iniciaSistema
+
+login email="chico@mus.com" senha="construcao"
+expect "Chico" getInfoUsuario atributo="Nome"
+expect "resources/rita.jpg" getInfoUsuario atributo="Foto"
+expect "1940-02-05" getInfoUsuario atributo="Data de Nascimento"
+expect "Normal Pop" getPopularidade
+expect "A Rita saiu de casa ontem. Ela levou meu violao e o cachorro. #Procurada #Info (2015-10-15 18:05:00)" getPost post=0
+logout 
+
+login email="ah_cumpadi@mus.com" senha="umasenhaordinaria"
+expect 0 getTotalPosts
+expect 0 getPopsUsuario
+expect 1 getNotificacoes
+expect 1 getQtdAmigos
+expect "Washington" getInfoUsuario atributo="Nome"
+expect "resources/eu.jpg" getInfoUsuario atributo="Foto"
+expect "1960-06-15" getInfoUsuario atributo="Data de Nascimento"
+expect "Normal Pop" getPopularidade
+logout
+
+fechaSistema
+
+iniciaSistema
+
+login email="chico@mus.com" senha="construcao"
+expect "Celebridade Pop" getPopularidade
+logout
+
+fechaSistema
