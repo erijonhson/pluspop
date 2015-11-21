@@ -1,5 +1,7 @@
 package core.popularidade;
 
+import java.io.Serializable;
+
 import core.Post;
 import exception.HashTagException;
 
@@ -8,7 +10,7 @@ import exception.HashTagException;
  * 
  * @author ordan
  */
-public interface ComportamentoSocial {
+public interface ComportamentoSocial extends Serializable{
 
 	public void curtir(Post post) throws HashTagException;
 

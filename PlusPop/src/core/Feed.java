@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,7 +12,11 @@ import java.util.Set;
  * @author ordan
  *
  */
-public class Feed {
+public class Feed implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8706335338312130931L;
 	List <Post> feed;
 	Comparator<Post> comparator;
 	

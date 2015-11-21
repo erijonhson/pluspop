@@ -5,6 +5,10 @@ import exception.HashTagException;
 
 public class IconePop implements ComportamentoSocial {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6678014267871109829L;
 	private static final int DELTA = 50;
 	private static final String EPICWIN = "#epicwin";
 	private static final String EPICFAIL = "#epicfail";

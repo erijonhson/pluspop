@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,9 +14,13 @@ import exception.SenhaProtegidaException;
 import exception.UsuarioJaExisteException;
 import exception.UsuarioNaoExisteException;
 
-public class DepositoDeUsuarios {
+public class DepositoDeUsuarios implements Serializable{
 	
-	private List<Usuario> usuarios;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1241017166512107660L;
+	public List<Usuario> usuarios;
 	private Ranking ranking;
 	
 	public DepositoDeUsuarios () {
@@ -92,5 +97,4 @@ public class DepositoDeUsuarios {
 		}
 	}
 	
-
 }

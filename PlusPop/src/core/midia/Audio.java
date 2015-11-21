@@ -2,6 +2,10 @@ package core.midia;
 
 public class Audio implements Midia {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7736392645174562597L;
 	private String local;
 
 	public Audio(String local) {

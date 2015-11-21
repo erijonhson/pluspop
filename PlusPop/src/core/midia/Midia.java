@@ -1,6 +1,8 @@
 package core.midia;
 
-public interface Midia {
+import java.io.Serializable;
+
+public interface Midia extends Serializable{
 
 	public String getInformacoesMidia();
 

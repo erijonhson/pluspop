@@ -481,4 +481,8 @@ public class Usuario implements Serializable, Comparable<Usuario>{
 		tw.write(this.mural, "Post");
 	}
 	
+	public int getTotalPost(){
+		return mural.size();
+	}
+	
 }

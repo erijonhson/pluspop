@@ -5,6 +5,10 @@ import core.Post;
 
 public class CelebridadePop implements ComportamentoSocial{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7665350583841084664L;
 	private static final int DELTA = 25;
 	private static final int BONUS = 10;
 	private static final int QTDPOSTSTOSHARE = 4;

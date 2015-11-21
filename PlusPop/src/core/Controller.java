@@ -1,6 +1,7 @@
 package core;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import exception.AtualizaPerfilException;
@@ -25,6 +26,7 @@ import exception.UsuarioJaLogadoException;
 import exception.UsuarioNaoExisteException;
 import exception.UsuarioNaoLogadoException;
 import util.ConversorDeData;
+import util.PersistenciaDoSistema;
 
 /**
  * Controller do +Pop.
@@ -33,7 +35,7 @@ import util.ConversorDeData;
  * @author Laybson Plismenn
  * @author Ordan Santos
  */
-public class Controller {
+public class Controller{
 
 	private Usuario usuarioDaSessao;
 	private DepositoDeUsuarios usuariosDoSistema;
@@ -79,8 +81,12 @@ public class Controller {
 	 * @param email do usuario
 	 * @param senha do usuario
 	 * @throws LoginException
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
+	 * @throws FileNotFoundException 
 	 */
-	public void login(String email, String senha) throws LoginException {
+	public void login(String email, String senha) throws LoginException{
+		
 		try {
 			Usuario usuario = recuperarUsuario(email);
 			if (!usuario.autenticarSenha(senha)) 
@@ -107,6 +113,8 @@ public class Controller {
 	/**
 	 * Desloga um usuario logado do sistema.
 	 * @throws LogoutException
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
 	public void logout() throws LogoutException {
 		if (!temUsuarioLogado())
@@ -540,6 +548,26 @@ public class Controller {
 
 	private Usuario retirarUsuarioDaSessao() {
 		return usuarioDaSessao = null;
+	}
+	
+	private DepositoDeUsuarios getUsuariosDoSistema(){
+		return this.usuariosDoSistema;
+	}
+	
+	public void save() throws FileNotFoundException, IOException{
+		PersistenciaDoSistema pds = new PersistenciaDoSistema();
+		pds.save(this.getUsuariosDoSistema());
+	}
+	
+	public void load() throws FileNotFoundException, ClassNotFoundException, IOException{
+		usuariosDoSistema = new PersistenciaDoSistema().load();
+		
+	}
+	
+	public int getTotalPosts() throws UsuarioNaoLogadoException{
+		Usuario usuario = getUsuarioDaSessao();
+		return usuario.getTotalPost();
+		
 	}
 	
 }

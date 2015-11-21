@@ -4,6 +4,10 @@ import core.Post;
 
 public class Normal implements ComportamentoSocial {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7673162452689328855L;
 	private static final int DELTA = 10;
 	private static final int QTDPOSTSTOSHARE = 2;
 

@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -7,7 +8,12 @@ import java.util.Comparator;
  * @author Ordan Santos
  *
  */
-public class ComparatorFeedPopular implements Comparator<Post> {
+public class ComparatorFeedPopular implements Comparator<Post>, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1575612386173162126L;
 
 	@Override
 	public int compare(Post o1, Post o2) {

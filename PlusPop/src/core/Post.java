@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -16,8 +17,12 @@ import exception.HashTagException;
  * 
  * @author Laybson Plismenn
  */
-public class Post implements Texto{
+public class Post implements Texto, Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2376454221269416989L;
 	private List<Midia> conteudos;
 	private List<HashTag> hashtags;
 	private int popularidade;

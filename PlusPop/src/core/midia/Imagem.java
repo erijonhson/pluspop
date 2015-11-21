@@ -2,6 +2,10 @@ package core.midia;
 
 public class Imagem implements Midia {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6254981899471643558L;
 	private String local;
 
 	public Imagem(String local) {

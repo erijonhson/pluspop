@@ -4,6 +4,10 @@ import exception.HashTagException;
 
 public class HashTag implements Midia {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3023336608940954875L;
 	private String texto;
 
 	public HashTag(String texto) throws HashTagException {

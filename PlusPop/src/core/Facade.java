@@ -1,6 +1,8 @@
 package core;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import easyaccept.EasyAccept;
 import exception.AtualizaPerfilException;
@@ -34,8 +36,15 @@ public class Facade {
 		popController = new Controller();
 	}
 
-	public static void main(String[] args) throws CriaPostException {
-		args = new String[] { "core.Facade",
+	public static void main(String[] args) {
+		
+		File file = new File("./arquivos/system.dat");
+		
+		if (file.exists())
+			file.delete();
+		
+		args = new String[] { 
+				"core.Facade",
 				"./testes/usecase_1.txt",
 				"./testes/usecase_2.txt",
 				"./testes/usecase_3.txt",
@@ -44,14 +53,13 @@ public class Facade {
 				"./testes/usecase_6.txt",
 				"./testes/usecase_7.txt",
 				"./testes/usecase_8.txt",
-				"./testes/usecase_9.txt"
-				//"./testes/usecase_10.txt"
+				"./testes/usecase_9.txt",
+				"./testes/usecase_10.txt"
 		};
+		
 		EasyAccept.main(args);
-	}
 
-	public void iniciaSistema() {
-
+		
 	}
 
 	public String cadastraUsuario(String nome, String email, String senha,
@@ -77,7 +85,8 @@ public class Facade {
 		return popController.getInfoUsuario(atributo);
 	}
 
-	public void login(String email, String senha) throws LoginException {
+	public void login(String email, String senha) 
+			throws LoginException {
 		popController.login(email, senha);
 	}
 
@@ -87,10 +96,6 @@ public class Facade {
 
 	public void removeUsuario(String usuario) throws UsuarioNaoExisteException {
 		popController.removeUsuario(usuario);
-	}
-
-	public void fechaSistema() throws FechaSistemaException {
-		popController.fechaSistema();
 	}
 
 	public void atualizaPerfil(String atributo, String valor)
@@ -222,5 +227,18 @@ public class Facade {
 	
 	public void baixaPosts() throws FileNotFoundException, UsuarioNaoLogadoException, ErroBaixarPostException{
 		popController.baixaPosts();
+	}
+	
+	public void iniciaSistema() throws FileNotFoundException, ClassNotFoundException, IOException{
+		popController.load();
+	}
+	
+	public void fechaSistema() throws FileNotFoundException, IOException, FechaSistemaException{
+		popController.fechaSistema();
+		popController.save();
+	}
+	
+	public int getTotalPosts() throws UsuarioNaoLogadoException{
+		return popController.getTotalPosts();
 	}
 }

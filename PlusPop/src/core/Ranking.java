@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,8 +13,12 @@ import core.midia.HashTag;
  * @author ordan
  *
  */
-public class Ranking {
+public class Ranking implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6372965943987657013L;
 	private List<Usuario> usuariosMaisPopulares;
 	private List<Usuario> usuariosMenosPopulares;
 	private List<String> hashtags;
